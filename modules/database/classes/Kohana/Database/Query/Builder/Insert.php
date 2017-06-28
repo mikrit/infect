@@ -89,11 +89,8 @@ class Kohana_Database_Query_Builder_Insert extends Database_Query_Builder {
 
 		// Get all of the passed values
 		$values = func_get_args();
-		
-		foreach ($values as $value)
-		{
-			$this->_values[] = $value;
-		}
+
+		$this->_values = array_merge($this->_values, $values);
 
 		return $this;
 	}

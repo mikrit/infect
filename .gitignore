@@ -1,17 +1,3 @@
-Icon?
-.DS_Store
-.svn
-code_coverage
-*~
-*.swp
-coverage
-kohana_release
-nbproject
-build
-composer.lock
-composer.phar
-vendor/*
-.git/
 .idea/
 application/config
 application/logs

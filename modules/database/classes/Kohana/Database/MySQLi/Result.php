@@ -4,7 +4,7 @@
  *
  * @package    Kohana/Database
  * @category   Query/Result
- * @author     Kohana Team
+ * @author     Tom Lankhorst
  * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
  */
@@ -17,20 +17,20 @@ class Kohana_Database_MySQLi_Result extends Database_Result {
 		parent::__construct($result, $sql, $as_object, $params);
 
 		// Find the number of rows in the result
-		$this->_total_rows = $result->num_rows;
+		$this->_total_rows = mysqli_num_rows($result);
 	}
 
 	public function __destruct()
 	{
 		if (is_resource($this->_result))
 		{
-			$this->_result->free();
+			mysqli_free_result($this->_result);
 		}
 	}
 
 	public function seek($offset)
 	{
-		if ($this->offsetExists($offset) AND $this->_result->data_seek($offset))
+		if ($this->offsetExists($offset) AND mysqli_data_seek($this->_result, $offset))
 		{
 			// Set the current row to the offset
 			$this->_current_row = $this->_internal_row = $offset;
@@ -54,17 +54,17 @@ class Kohana_Database_MySQLi_Result extends Database_Result {
 		if ($this->_as_object === TRUE)
 		{
 			// Return an stdClass
-			return $this->_result->fetch_object();
+			return mysqli_fetch_object($this->_result);
 		}
 		elseif (is_string($this->_as_object))
 		{
 			// Return an object of given class name
-			return $this->_result->fetch_object($this->_as_object, (array) $this->_object_params);
+			return mysqli_fetch_object($this->_result, $this->_as_object);
 		}
 		else
 		{
 			// Return an array of the row
-			return $this->_result->fetch_assoc();
+			return mysqli_fetch_assoc($this->_result);
 		}
 	}
 

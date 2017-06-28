@@ -41,7 +41,7 @@ class Kohana_ORM extends Model implements serializable {
 	public static function factory($model, $id = NULL)
 	{
 		// Set class name
-		$model = 'Model_'.$model;
+		$model = 'Model_'.ucfirst($model);
 
 		return new $model($id);
 	}
@@ -1627,7 +1627,7 @@ class Kohana_ORM extends Model implements serializable {
 			if ($method['name'] == 'select')
 			{
 				// Ignore any selected columns for now
-				$selects[$key] = $method;
+				$selects[] = $method;
 				unset($this->_db_pending[$key]);
 			}
 		}

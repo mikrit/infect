@@ -30,7 +30,7 @@ date_default_timezone_set('Europe/Moscow');
  * @link http://kohanaframework.org/guide/using.configuration
  * @link http://www.php.net/manual/function.setlocale
  */
-setlocale(LC_ALL, 'ru_RU.UTF-8');
+setlocale(LC_ALL, 'en_US.utf-8');
 
 /**
  * Enable the Kohana auto-loader.
@@ -68,7 +68,7 @@ mb_substitute_character('none');
 /**
  * Set the default language
  */
-I18n::lang('ru-ru');
+I18n::lang('en-us');
 
 if (isset($_SERVER['SERVER_PROTOCOL']))
 {
@@ -103,8 +103,8 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/',
-   'index_file' => FALSE,
+ 'base_url'   => '/',
+ 'index_file' => FALSE,
 ));
 
 /**
@@ -123,44 +123,34 @@ Kohana::$config->attach(new Config_File);
 Kohana::modules(array(
 	'pagination' => MODPATH.'pagination',
 	'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
+	//'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	'database'   => MODPATH.'database',   // Database access
-	//'image'      => MODPATH.'image',      // Image manipulation
+	// 'image'      => MODPATH.'image',      // Image manipulation
 	// 'minion'     => MODPATH.'minion',     // CLI Tasks
 	'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	//'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
-
-/**
- * Cookie Salt
- * @see  http://kohanaframework.org/3.3/guide/kohana/cookies
- * 
- * If you have not defined a cookie salt in your Cookie class then
- * uncomment the line below and define a preferrably long salt.
- */
-
-Cookie::$salt = 'eqw345ewrq324ew';
-
-Route::set('about', 'about')
-	->defaults(array(
-		'controller' => 'info',
-		'action'     => 'about',
-	));
-
-Route::set('vhod', 'vhod')
-	->defaults(array(
-		'controller' => 'info',
-		'action'     => 'vhod',
+	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
+
+Cookie::$salt = 'eqw345ewrq324ew';
+	
+Route::set('auth', '<action>',
+	array(
+		'action' => '(login|logout)',
+	))
+	->defaults(array(
+		'controller' => 'bauth',
+		'action' => 'login',
+	));
+	
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'controller' => 'welcome',
+		'controller' => 'main',
 		'action'     => 'index',
 	));

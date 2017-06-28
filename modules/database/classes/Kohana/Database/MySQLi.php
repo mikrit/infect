@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 /**
- * MySQLi database connection.
+ * MySQLi database connection. Based on standard MySQL driver.
  *
  * @package    Kohana/Database
  * @category   Drivers
- * @author     Kohana Team
+ * @author     Tom Lankhorst (Webhub)
  * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
  */
@@ -19,7 +19,7 @@ class Kohana_Database_MySQLi extends Database {
 	// Identifier for this connection within the PHP driver
 	protected $_connection_id;
 
-	// MySQL uses a backtick for identifiers
+	// MySQLi uses a backtick for identifiers
 	protected $_identifier = '`';
 
 	public function connect()
@@ -30,19 +30,18 @@ class Kohana_Database_MySQLi extends Database {
 		if (Database_MySQLi::$_set_names === NULL)
 		{
 			// Determine if we can use mysqli_set_charset(), which is only
-			// available on PHP 5.2.3+ when compiled against MySQL 5.0+
+			// available on PHP 5.2.3+ when compiled against MySQLi 5.0+
 			Database_MySQLi::$_set_names = ! function_exists('mysqli_set_charset');
 		}
 
 		// Extract the connection parameters, adding required variabels
 		extract($this->_config['connection'] + array(
-			'database' => '',
-			'hostname' => '',
-			'username' => '',
-			'password' => '',
-			'socket'   => '',
-			'port'     => 3306,
-			'ssl'      => NULL,
+			'database'   => '',
+			'hostname'   => '',
+			'username'   => '',
+			'password'   => '',
+			'port'       => null,
+			'socket'     => ''
 		));
 
 		// Prevent this information from showing up in traces
@@ -50,33 +49,22 @@ class Kohana_Database_MySQLi extends Database {
 
 		try
 		{
-			if(is_array($ssl))
-			{
-				$this->_connection = mysqli_init();
-				$this->_connection->ssl_set(
-					Arr::get($ssl, 'client_key_path'),
-					Arr::get($ssl, 'client_cert_path'),
-					Arr::get($ssl, 'ca_cert_path'),
-					Arr::get($ssl, 'ca_dir_path'),
-					Arr::get($ssl, 'cipher')
-				);
-				$this->_connection->real_connect($hostname, $username, $password, $database, $port, $socket, MYSQLI_CLIENT_SSL);
-			}
-			else
-			{
-				$this->_connection = new mysqli($hostname, $username, $password, $database, $port, $socket);
-			}
+			$this->_connection = mysqli_connect($hostname, $username, $password, $database, $port, $socket);
 		}
 		catch (Exception $e)
 		{
 			// No connection exists
 			$this->_connection = NULL;
 
-			throw new Database_Exception(':error', array(':error' => $e->getMessage()), $e->getCode());
+			throw new Database_Exception(':error',
+				array(':error' => $e->getMessage()),
+				$e->getCode());
 		}
 
 		// \xFF is a better delimiter, but the PHP driver uses underscore
 		$this->_connection_id = sha1($hostname.'_'.$username.'_'.$password);
+
+		$this->_select_db($database);
 
 		if ( ! empty($this->_config['charset']))
 		{
@@ -94,8 +82,21 @@ class Kohana_Database_MySQLi extends Database {
 				$variables[] = 'SESSION '.$var.' = '.$this->quote($val);
 			}
 
-			$this->_connection->query('SET '.implode(', ', $variables));
+			mysqli_query($this->_connection, 'SET '.implode(', ', $variables));
 		}
+	}
+
+	/**
+	 * Select the database
+	 *
+	 * @param   string  $database Database
+	 * @return  void
+	 */
+	protected function _select_db($database)
+	{
+		// in MySQLi, the DB is already selected
+
+		Database_MySQLi::$_current_databases[$this->_connection_id] = $database;
 	}
 
 	public function disconnect()
@@ -107,7 +108,7 @@ class Kohana_Database_MySQLi extends Database {
 
 			if (is_resource($this->_connection))
 			{
-				if ($status = $this->_connection->close())
+				if ($status = mysqli_close($this->_connection))
 				{
 					// Clear the connection
 					$this->_connection = NULL;
@@ -133,18 +134,20 @@ class Kohana_Database_MySQLi extends Database {
 
 		if (Database_MySQLi::$_set_names === TRUE)
 		{
-			// PHP is compiled against MySQL 4.x
-			$status = (bool) $this->_connection->query('SET NAMES '.$this->quote($charset));
+			// PHP is compiled against MySQLi 4.x
+			$status = (bool) mysqli_query($this->_connection, 'SET NAMES '.$this->quote($charset));
 		}
 		else
 		{
-			// PHP is compiled against MySQL 5.x
-			$status = $this->_connection->set_charset($charset);
+			// PHP is compiled against MySQLi 5.x
+			$status = mysqli_set_charset($this->_connection, $charset);
 		}
 
 		if ($status === FALSE)
 		{
-			throw new Database_Exception(':error', array(':error' => $this->_connection->error), $this->_connection->errno);
+			throw new Database_Exception(':error',
+				array(':error' => mysqli_error($this->_connection)),
+				mysqli_errno($this->_connection));
 		}
 	}
 
@@ -160,7 +163,7 @@ class Kohana_Database_MySQLi extends Database {
 		}
 
 		// Execute the query
-		if (($result = $this->_connection->query($sql)) === FALSE)
+		if (($result = mysqli_query($this->_connection, $sql)) === FALSE)
 		{
 			if (isset($benchmark))
 			{
@@ -168,10 +171,9 @@ class Kohana_Database_MySQLi extends Database {
 				Profiler::delete($benchmark);
 			}
 
-			throw new Database_Exception(':error [ :query ]', array(
-				':error' => $this->_connection->error,
-				':query' => $sql
-			), $this->_connection->errno);
+			throw new Database_Exception(':error [ :query ]',
+				array(':error' => mysqli_error($this->_connection), ':query' => $sql),
+				mysqli_errno($this->_connection));
 		}
 
 		if (isset($benchmark))
@@ -191,14 +193,14 @@ class Kohana_Database_MySQLi extends Database {
 		{
 			// Return a list of insert id and rows created
 			return array(
-				$this->_connection->insert_id,
-				$this->_connection->affected_rows,
+				mysqli_insert_id($this->_connection),
+				mysqli_affected_rows($this->_connection),
 			);
 		}
 		else
 		{
 			// Return the number of rows affected
-			return $this->_connection->affected_rows;
+			return mysqli_affected_rows($this->_connection);
 		}
 	}
 
@@ -218,7 +220,6 @@ class Kohana_Database_MySQLi extends Database {
 			'fixed'                     => array('type' => 'float', 'exact' => TRUE),
 			'fixed unsigned'            => array('type' => 'float', 'exact' => TRUE, 'min' => '0'),
 			'float unsigned'            => array('type' => 'float', 'min' => '0'),
-			'geometry'                  => array('type' => 'string', 'binary' => TRUE),
 			'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
 			'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
 			'longblob'                  => array('type' => 'string', 'binary' => TRUE, 'character_maximum_length' => '4294967295'),
@@ -263,14 +264,14 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		if ($mode AND ! $this->_connection->query("SET TRANSACTION ISOLATION LEVEL $mode"))
+		if ($mode AND ! mysqli_query($this->_connection, "SET TRANSACTION ISOLATION LEVEL $mode"))
 		{
-			throw new Database_Exception(':error', array(
-				':error' => $this->_connection->error
-			), $this->_connection->errno);
+			throw new Database_Exception(':error',
+				array(':error' => mysqli_error($this->_connection)),
+				mysqli_errno($this->_connection));
 		}
 
-		return (bool) $this->_connection->query('START TRANSACTION');
+		return (bool) mysqli_query($this->_connection, 'START TRANSACTION');
 	}
 
 	/**
@@ -283,7 +284,7 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		return (bool) $this->_connection->query('COMMIT');
+		return (bool) mysqli_query($this->_connection, 'COMMIT');
 	}
 
 	/**
@@ -296,7 +297,7 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		return (bool) $this->_connection->query('ROLLBACK');
+		return (bool) mysqli_query($this->_connection, 'ROLLBACK');
 	}
 
 	public function list_tables($like = NULL)
@@ -362,7 +363,7 @@ class Kohana_Database_MySQLi extends Database {
 				case 'int':
 					if (isset($length))
 					{
-						// MySQL attribute
+						// MySQLi attribute
 						$column['display'] = $length;
 					}
 				break;
@@ -391,7 +392,7 @@ class Kohana_Database_MySQLi extends Database {
 				break;
 			}
 
-			// MySQL attributes
+			// MySQLi attributes
 			$column['comment']      = $row['Comment'];
 			$column['extra']        = $row['Extra'];
 			$column['key']          = $row['Key'];
@@ -408,11 +409,11 @@ class Kohana_Database_MySQLi extends Database {
 		// Make sure the database is connected
 		$this->_connection or $this->connect();
 
-		if (($value = $this->_connection->real_escape_string( (string) $value)) === FALSE)
+		if (($value = mysqli_real_escape_string( $this->_connection,  (string) $value)) === FALSE)
 		{
-			throw new Database_Exception(':error', array(
-				':error' => $this->_connection->error,
-			), $this->_connection->errno);
+			throw new Database_Exception(':error',
+				array(':error' => mysqli_error($this->_connection)),
+				mysqli_errno($this->_connection));
 		}
 
 		// SQL standard is to use single-quotes for all values

@@ -26,7 +26,6 @@ class Kohana_NumTest extends Unittest_TestCase
 	{
 		parent::setUp();
 
-		$this->default_locale = setlocale(LC_ALL, 0);
 		setlocale(LC_ALL, 'en_US.utf8');
 	}
 

@@ -50,6 +50,7 @@ return array(
 	),
 
 	'irregular' => array(
+		'analysis'    => 'analyzes',
 		'appendix'    => 'appendices',
 		'cactus'      => 'cacti',
 		'calf'        => 'calves',

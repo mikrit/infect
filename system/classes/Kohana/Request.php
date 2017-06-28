@@ -38,7 +38,7 @@ class Kohana_Request implements HTTP_Request {
 
 	/**
 	 * Creates a new request object for the given URI. New requests should be
-	 * Created using the [Request::factory] method.
+	 * created using the [Request::instance] or [Request::factory] methods.
 	 *
 	 *     $request = Request::factory($uri);
 	 *
@@ -462,12 +462,6 @@ class Kohana_Request implements HTTP_Request {
 
 		foreach ($routes as $name => $route)
 		{
-			// Use external routes for reverse routing only
-			if ($route->is_external())
-			{
-				continue;
-			}
-
 			// We found something suitable
 			if ($params = $route->matches($request))
 			{
@@ -637,7 +631,7 @@ class Kohana_Request implements HTTP_Request {
 
 	/**
 	 * Creates a new request object for the given URI. New requests should be
-	 * Created using the [Request::factory] method.
+	 * created using the [Request::instance] or [Request::factory] methods.
 	 *
 	 *     $request = new Request($uri);
 	 *
@@ -667,9 +661,13 @@ class Kohana_Request implements HTTP_Request {
 		$split_uri = explode('?', $uri);
 		$uri = array_shift($split_uri);
 
-		if ($split_uri)
+		// Initial request has global $_GET already applied
+		if (Request::$initial !== NULL)
 		{
-			parse_str($split_uri[0], $this->_get);
+			if ($split_uri)
+			{
+				parse_str($split_uri[0], $this->_get);
+			}
 		}
 
 		// Detect protocol (if present)
@@ -677,7 +675,7 @@ class Kohana_Request implements HTTP_Request {
 		// being able to proxy external pages.
 		if ( ! $allow_external OR strpos($uri, '://') === FALSE)
 		{
-			// Remove leading and trailing slashes from the URI
+			// Remove trailing slashes from the URI
 			$this->_uri = trim($uri, '/');
 
 			// Apply the client
@@ -728,7 +726,7 @@ class Kohana_Request implements HTTP_Request {
 		if ($uri === NULL)
 		{
 			// Act as a getter
-			return ($this->_uri === '') ? '/' : $this->_uri;
+			return empty($this->_uri) ? '/' : $this->_uri;
 		}
 
 		// Act as a setter
@@ -742,6 +740,7 @@ class Kohana_Request implements HTTP_Request {
 	 *
 	 *     echo URL::site($this->request->uri(), $protocol);
 	 *
+	 * @param   array    $params    URI parameters
 	 * @param   mixed    $protocol  protocol string or Request object
 	 * @return  string
 	 * @since   3.0.7
@@ -749,13 +748,7 @@ class Kohana_Request implements HTTP_Request {
 	 */
 	public function url($protocol = NULL)
 	{
-		if ($this->is_external())
-		{
-			// If it's an external request return the URI
-			return $this->uri();
-		}
-
-		// Create a URI with the current route, convert to a URL and returns
+		// Create a URI with the current route and convert it to a URL
 		return URL::site($this->uri(), $protocol);
 	}
 
@@ -1142,10 +1135,10 @@ class Kohana_Request implements HTTP_Request {
 	}
 
 	/**
-	 * Set and get cookies values for this request.
+	 * Устанавливает и получает значения cookies для запроса.
 	 *
-	 * @param   mixed    $key    Cookie name, or array of cookie values
-	 * @param   string   $value  Value to set to cookie
+	 * @param   mixed    $key    Имя cookie , или массив значений cookie
+	 * @param   string   $value  Значение для cookie
 	 * @return  string
 	 * @return  mixed
 	 */
@@ -1175,7 +1168,7 @@ class Kohana_Request implements HTTP_Request {
 	}
 
 	/**
-	 * Gets or sets the HTTP body of the request. The body is
+	 * Устанавливает и получает HTTP тела для запроса. The body is
 	 * included after the header, separated by a single empty new line.
 	 *
 	 * @param   string  $content Content to set to the object
@@ -1226,9 +1219,9 @@ class Kohana_Request implements HTTP_Request {
 		}
 		else
 		{
+			$this->headers('content-type',
+				'application/x-www-form-urlencoded; charset='.Kohana::$charset);
 			$body = http_build_query($post, NULL, '&');
-			$this->body($body)
-				->headers('content-type', 'application/x-www-form-urlencoded; charset='.Kohana::$charset);
 		}
 
 		// Set the content length
