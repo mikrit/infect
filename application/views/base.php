@@ -9,7 +9,7 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 
-		<title>Мой бюджет</title>
+		<title>Инфекции</title>
 
 		<?=Html::style('media/bootstrap/css/bootstrap.min.css')?>
 		<?=Html::style('media/css/sticky-footer-navbar.css')?>
@@ -26,7 +26,7 @@
 		    <div class="container">
 		        <div class="navbar-header">
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		                <span class="sr-only">Toggle navigation</span>
+		                <span class="sr-only">Мини меню</span>
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
@@ -39,7 +39,9 @@
 		</div>
 
 		<div class="container">
-		    <?=$content?>
+			<div class="row">
+		      <?=$content?>
+			</div>
 		</div>
 
 		<div id="footer">
