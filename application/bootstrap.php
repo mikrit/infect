@@ -147,7 +147,7 @@ Route::set('auth', '<action>',
         'action' => '(login|logout)',
     ))
     ->defaults(array(
-        'controller' => 'bauth',
+        'controller' => 'auth',
         'action' => 'login',
     ));
 

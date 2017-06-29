@@ -45,7 +45,7 @@ class Controller_User extends Controller_Base
 
 		}
 
-		$view_profile = View::factory('user/profile');
+		$view_profile = View::factory('user/index');
 		$view_profile->user = $user;
 		$view_profile->message = $message;
 		$view_profile->message2 = $message2;

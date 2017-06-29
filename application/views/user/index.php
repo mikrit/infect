@@ -18,10 +18,6 @@
 				<td><?=Form::input('name', $user->name, array('class' => 'input'));?></td>
 			</tr>
 			<tr>
-				<td>Должность:</td>
-				<td><?=Form::input('position',$user->position, array('class' => 'input'));?></td>
-			</tr>
-			<tr>
 				<td colspan="2" class="right">
 					<?
 						echo Form::input('submit','Обновить данные', array('type'=>'submit'));

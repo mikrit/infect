@@ -2,14 +2,16 @@
 
 <ul class="nav navbar-nav">
 	<li class="active"><?=HTML::anchor('/', '<span class="glyphicon glyphicon-home"></span>');?></li>
-	<li><?=HTML::anchor('/faq', 'FAQ');?></li>
-	<li><?=HTML::anchor('/about', 'О поекте');?></li>
+	<li><?=HTML::anchor('data/index', 'Форма заполнения');?></li>
+	<li><?=HTML::anchor('report/index', 'Отчёт');?></li>
+	<li><?=HTML::anchor('logs/index', 'Логи');?></li>
+	<li><?=HTML::anchor('user/index', 'Пользователи');?></li>
 </ul>
 
 <? if(Auth::instance()->logged_in()){?>
 	<ul class="nav navbar-nav navbar-right">
 		<li>
-			<?=HTML::anchor('bauth/logout', 'Выход');?>
+			<?=HTML::anchor('auth/logout', 'Выход');?>
 		</li>
 	</ul>
 <?}?>

@@ -1,10 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Bauth extends Controller
+class Controller_Auth extends Controller
 {
-	
-	protected $auth;
-
 	public function action_login()
 	{
 		$error = '';
@@ -16,10 +13,12 @@ class Controller_Bauth extends Controller
 		
 		if ($_POST)
 		{
-			if (!Auth::instance()->login($_POST['login'], $_POST['password']))
+			if (!Auth::instance()->login($_POST['login'], $_POST['password'], isset($_POST['remember'])))
 			{
-				$error = "Неправильно введён<br/>логин или пароль";
-				
+				$error = '<div class="alert alert-danger">
+								<a href="#" class="close" data-dismiss="alert">×</a>
+								<strong><span class="glyphicon glyphicon-exclamation-sign"></span></strong> Неправильно введён логин или пароль
+							</div>';
 			}
 			else
 			{
@@ -82,7 +81,7 @@ class Controller_Bauth extends Controller
 	public function action_logout()
 	{
 		Auth::instance()->logout();
-		$this->redirect('/');
+		$this->redirect('/login');
 	}
 	
 }
