@@ -5,7 +5,7 @@
 <table id="proj_task">
 	<tr>
 		<td class="right_t" colspan="8">
-			<?=Html::anchor('adminka', 'Назад')?>
+			<?=HTML::anchor('adminka', 'Назад')?>
 		</td>
 	</tr>
 	<tr id="head_tasks">

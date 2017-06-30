@@ -11,11 +11,11 @@
 
 		<title>Страница входа</title>
 
-		<?=Html::style('media/bootstrap/css/bootstrap.min.css')?>
-		<?=Html::style('media/css/login-box.css')?>
+		<?=HTML::style('media/bootstrap/css/bootstrap.min.css')?>
+		<?=HTML::style('media/css/login-box.css')?>
 
-		<?=Html::script('media/js/jquery.js')?>
-		<?=Html::script('media/bootstrap/js/bootstrap.min.js')?>
+		<?=HTML::script('media/js/jquery.js')?>
+		<?=HTML::script('media/bootstrap/js/bootstrap.min.js')?>
 	</head>
 
 	<body>

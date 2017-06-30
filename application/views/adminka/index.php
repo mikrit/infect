@@ -5,12 +5,12 @@
 <table id="user">
 	<tr>
 		<td>
-			<?=Html::anchor('adminka/list_users', 'Сотрудники'); ?>
+			<?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
 		</td>
     </tr>
     <tr>
         <td>
-            <?Html::anchor('adminka/logs', 'Логирование'); ?>
+            <?HTML::anchor('adminka/logs', 'Логирование'); ?>
         </td>
 	</tr>
 </table>

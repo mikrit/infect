@@ -16,7 +16,7 @@
 			<tr><td colspan="2" style="color: green"><?=$message?></td></tr>
 			<tr>
 				<td class="right" colspan="2">
-					<div id="edit"><?=Html::anchor('adminka/update_user', 'Назад');?></div>
+					<div id="edit"><?=HTML::anchor('adminka/update_user', 'Назад');?></div>
 				</td>
 			</tr>
 			<tr>

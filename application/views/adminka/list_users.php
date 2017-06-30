@@ -3,12 +3,12 @@
 <div id="title">Сотрудники</div>
 
 <div id="edit">
-    <?=Html::anchor('adminka/register', '+ Добавить нового сотрудника')?>
+    <?=HTML::anchor('adminka/register', '+ Добавить нового сотрудника')?>
 </div>
 <table id="proj_task">
 	<tr>
 		<td class="right_t" colspan="8">
-			<?=Html::anchor('adminka', 'Назад')?>
+			<?=HTML::anchor('adminka', 'Назад')?>
 		</td>
 	</tr>
 	<tr id="head_tasks">
@@ -34,7 +34,7 @@
 					<?=$i++?>
 				</td>
 				<td>
-					<?=Html::anchor('adminka/update_user/'.$user->id, $user->name)?>
+					<?=HTML::anchor('adminka/update_user/'.$user->id, $user->name)?>
 				</td>
 				<td>
 					<?=$user->username?>

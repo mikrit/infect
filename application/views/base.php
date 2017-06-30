@@ -11,11 +11,11 @@
 
 		<title>Инфекции</title>
 
-		<?=Html::style('media/bootstrap/css/bootstrap.min.css')?>
-		<?=Html::style('media/css/sticky-footer-navbar.css')?>
+		<?=HTML::style('media/bootstrap/css/bootstrap.min.css')?>
+		<?=HTML::style('media/css/sticky-footer-navbar.css')?>
 
-		<?=Html::script('media/js/jquery.js')?>
-		<?=Html::script('media/bootstrap/js/bootstrap.min.js')?>
+		<?=HTML::script('media/js/jquery.js')?>
+		<?=HTML::script('media/bootstrap/js/bootstrap.min.js')?>
 
 		<link rel="apple-touch-icon" href="media/img/cash.png">
 		<link rel="icon" href="media/img/cash.ico">
