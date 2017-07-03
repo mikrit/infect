@@ -1,8 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
-<div id="title">Админка</div>
+<h3>Админка</h3>
 
-<table id="user">
+<table class="table">
 	<tr>
 		<td>
 			<?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
@@ -10,7 +10,12 @@
     </tr>
     <tr>
         <td>
-            <?HTML::anchor('adminka/logs', 'Логирование'); ?>
+            <?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
+        </td>
+	</tr>
+    <tr>
+        <td>
+            <?=HTML::anchor('adminka/logs', 'Логирование'); ?>
         </td>
 	</tr>
 </table>

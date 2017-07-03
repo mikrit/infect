@@ -10,7 +10,7 @@ class Model_User extends Model_Auth_User
 			->rule('username', 'max_length', array(':value', 60))
 			->rule('username', 'regex', array(':value', '/^[a-z0-9_.]++$/iD'))
 	
-			->rule('name', 'not_empty')
+			->rule('fio', 'not_empty')
 		 
 			->rule('password', 'not_empty')
 			->rule('password', 'min_length', array(':value', 6))
@@ -26,13 +26,13 @@ class Model_User extends Model_Auth_User
 			->rule('username', 'max_length', array(':value', 60))
 			->rule('username', 'regex', array(':value', '/^[a-z0-9_.]++$/iD'))
 			
-			->rule('name', 'not_empty');
+			->rule('fio', 'not_empty');
 	}
 	
 	public static function validation_prof($values)
 	{
 		return Validation::factory($values)
-			->rule('name', 'not_empty');
+			->rule('fio', 'not_empty');
 	}
 	
 	public static function validation_up2($values)

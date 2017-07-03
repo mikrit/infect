@@ -1,48 +1,52 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
-<div id="title">Сотрудники</div>
+<h3>Сотрудники</h3>
 
 <div id="edit">
     <?=HTML::anchor('adminka/register', '+ Добавить нового сотрудника')?>
 </div>
-<table id="proj_task">
-	<tr>
-		<td class="right_t" colspan="8">
-			<?=HTML::anchor('adminka', 'Назад')?>
-		</td>
-	</tr>
-	<tr id="head_tasks">
-		<td>
-			№
-		</td>
-		<td>
-			Имя
-		</td>
-		<td>
-			Логин
-		</td>
-		<td>
-			Должность
-		</td>
-	</tr>
-	<? $i=1;
-	foreach($users as $user){
-		$class = ($i%2==1)?'class="task_1"':'class="task_2"';?>
-		<?if($user->id != 1){?>
-			<tr <?=$class?>>
-				<td>
-					<?=$i++?>
-				</td>
-				<td>
-					<?=HTML::anchor('adminka/update_user/'.$user->id, $user->name)?>
-				</td>
-				<td>
-					<?=$user->username?>
-				</td>
-				<td>
-					<?=$user->position?>
-				</td>
-			</tr>
-		<?}?>
-	 <?}?>
+<table class="table">
+    <thead>
+        <tr>
+            <td class="text-right" colspan="8">
+                <?=HTML::anchor('adminka', 'Назад')?>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+                №
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Логин
+            </th>
+            <th>
+                Должность
+            </th>
+        </tr>
+        <? $i=1;
+        foreach($users as $user){
+            $class = ($i%2==1)?'class="task_1"':'class="task_2"';?>
+            <?if($user->id != 1){?>
+                <tr <?=$class?>>
+                    <td>
+                        <?=$i++?>
+                    </td>
+                    <td>
+                        <?=HTML::anchor('adminka/update_user/'.$user->id, $user->fio)?>
+                    </td>
+                    <td>
+                        <?=$user->username?>
+                    </td>
+                    <td>
+                        <??>
+                    </td>
+                </tr>
+            <?}?>
+         <?}?>
+    </tbody>
 </table>

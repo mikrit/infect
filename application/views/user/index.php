@@ -15,7 +15,7 @@
 			<tr><td colspan="2" style="color: green"><?=$message?></td></tr>
 			<tr>
 				<td>Имя:</td>
-				<td><?=Form::input('name', $user->name, array('class' => 'input'));?></td>
+				<td><?=Form::input('name', $user->fio, array('class' => 'input'));?></td>
 			</tr>
 			<tr>
 				<td colspan="2" class="right">
