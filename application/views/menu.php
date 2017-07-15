@@ -14,11 +14,24 @@
     </li>
     <?if($admin){?>
         <li <?if($request[0] == 'user'){echo 'class="active"';}?>>
-            <?=HTML::anchor('user', 'Пользователи');?>
+            <?HTML::anchor('user', 'Пользователи');?>
         </li>
 
-        <li <?if($request[0] == 'adminka'){echo 'id="current"';}?>>
-            <?=HTML::anchor('adminka', 'Админка'); ?>
+        <?$active = '';if($request[0] == 'adminka'){$active = ' active';}?>
+
+        <li class="dropdown<?=$active?>">
+            <?=HTML::anchor('#', 'Админка', array("data-toggle" => "dropdown", "class" => "dropdown-toggle"));?>
+            <ul class="dropdown-menu">
+                <li>
+                    <?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
+                </li>
+                <li>
+                    <?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
+                </li>
+                <li>
+                    <?=HTML::anchor('adminka/logs', 'Логирование'); ?>
+                </li>
+            </ul>
         </li>
     <?}?>
 </ul>

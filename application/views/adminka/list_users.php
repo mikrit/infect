@@ -24,9 +24,6 @@
             <th>
                 Логин
             </th>
-            <th>
-                Должность
-            </th>
         </tr>
         <? $i=1;
         foreach($users as $user){
@@ -41,9 +38,6 @@
                     </td>
                     <td>
                         <?=$user->username?>
-                    </td>
-                    <td>
-                        <??>
                     </td>
                 </tr>
             <?}?>

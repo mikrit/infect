@@ -44,10 +44,12 @@
 			</div>
 		</div>
 
-		<div id="footer">
-		    <div class="container">
-		        <p class="text-muted text-center">&copy;2017<?=(date('Y') != 2017) ? '-'.date('Y') : ''?> All Rights Reserved.</p>
-		    </div>
-		</div>
+        <div class="navbar-fixed-bottom row-fluid">
+            <div class="navbar-inner">
+                <div class="container">
+                    <p class="text-muted text-center">&copy;2017<?=(date('Y') != 2017) ? '-'.date('Y') : ''?> All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
 	</body>
 </html>

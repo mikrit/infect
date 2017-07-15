@@ -10,14 +10,19 @@ html, body
 	height: 100%;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body
 {
-	margin: 0;
 	padding: 0;
     color: #484848;
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     min-width: 900px;
+    margin-bottom: 60px;
 }
 
 h1, h2, h3

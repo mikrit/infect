@@ -1,42 +1,36 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
-<h3>Добавление нового сотрудника</h3>
+<div class="col-lg-8 col-sm-12">
+    <h3>Добавление нового сотрудника</h3>
 
-<?=Form::open('adminka/register',array('method'=>'post'));?>
-    <table class="table">
-        <?php if(count($errors)):?>
-            <?php foreach ($errors as $error):?>
-                <tr>
-                    <td class="error" colspan="2"><?=$error?></td>
-                </tr>
-            <?php endforeach;?>
-        <?php endif;?>
-        <tr><td colspan="2" style="color: green"><?=$message?></td></tr>
-        <tr>
-            <td class="right" colspan="2">
-                <div id="edit"><?=HTML::anchor('adminka', 'Назад')?></div>
-            </td>
-        </tr>
-        <tr>
-            <td>ФИО:</td><td><?=Form::input('fio', $data['fio'], array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td>Должность:</td><td><?//Form::input('position', $data['position'], array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td>Логин:</td><td><?=Form::input('username', $data['username'], array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td>E-mail:</td><td><?=Form::input('email', $data['email'], array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td>Пароль:</td><td><?=Form::password('password', '', array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td>Повторить пароль:</td><td><?=Form::password('password_confirm', '', array('class' => 'input'));?></td>
-        </tr>
-        <tr>
-            <td class="right" colspan="2"><?=Form::input('submit', 'Создать',array('id' => 'button', 'type'=>'submit'));?></td>
-        </tr>
-    </table>
-<?=Form::close();?>
+    <div class="text-right">
+        <?=HTML::anchor('adminka/list_users', 'Назад')?>
+    </div>
+    <div>
+        <?=Form::open('adminka/register',array('method'=>'post'));?>
+            <div class="form-group">
+                <label>ФИО:</label>
+                <?=Form::input('fio', $data['fio'], array('class' => 'form-control', 'type' => 'text'));?>
+            </div>
+            <div class="form-group">
+                <label>Логин:</label>
+                <?=Form::input('username', $data['username'], array('class' => 'form-control', 'type' => 'text'));?>
+            </div>
+            <div class="form-group">
+                <label>e-mail:</label>
+                <?=Form::input('email', $data['email'], array('class' => 'form-control', 'type' => 'email'));?>
+            </div>
+            <div class="form-group">
+                <label>Пароль:</label>
+                <?=Form::input('password', '', array('class' => 'form-control', 'type' => 'password'));?>
+            </div>
+            <div class="form-group">
+                <label>Повторить пароль:</label>
+                <?=Form::input('password_confirm', '', array('class' => 'form-control', 'type' => 'password'));?>
+            </div>
+            <div class="form-group text-right">
+                <?=Form::button('button', 'Сохранить',array("id" => "", "class" => "btn btn-primary"))?>
+            </div>
+        <?=Form::close();?>
+    </div>
+</div>
