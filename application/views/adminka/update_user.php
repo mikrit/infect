@@ -21,20 +21,20 @@
                 <?=Form::input('email', $data->email, array('class' => 'form-control', 'type' => 'email'));?>
             </div>
             <div class="form-group">
+                <label>Округ:</label>
+                <?=Form::select('admin', array(0 => "Не админ", 1 => "Админ"), $admin, array('class' => 'form-control'));?>
+            </div>
+            <div class="form-group">
+                <label>Субъект:</label>
+                <?=Form::select('admin', array(0 => "Не админ", 1 => "Админ"), $admin, array('class' => 'form-control'));?>
+            </div>
+            <div class="form-group">
                 <label>Админ:</label>
                 <?=Form::select('admin', array(0 => "Не админ", 1 => "Админ"), $admin, array('class' => 'form-control'));?>
             </div>
             <div class="form-group">
                 <label>Пароль:</label>
                 <?=Form::input('password', '', array('class' => 'form-control', 'type' => 'password'));?>
-            </div>
-            <div class="form-group">
-                <label>Повторить пароль:</label>
-                <?=Form::input('password_confirm', '', array('class' => 'form-control', 'type' => 'password'));?>
-            </div>
-            <div class="form-group">
-                <label>Повторить пароль:</label>
-                <?=Form::input('password_confirm', '', array('class' => 'form-control', 'type' => 'password'));?>
             </div>
             <div class="form-group">
                 <label>Повторить пароль:</label>

@@ -22,34 +22,32 @@
 	</head>
 
 	<body>
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-		    <div class="container">
-		        <div class="navbar-header">
-		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		                <span class="sr-only">Мини меню</span>
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		            </button>
-		        </div>
-		        <div class="collapse navbar-collapse">
-		            <?=$menu?>
-		        </div>
-		    </div>
-		</div>
-
-		<div class="container">
-			<div class="row">
-		      <?=$content?>
-			</div>
-		</div>
-
-        <div class="navbar-fixed-bottom row-fluid">
-            <div class="navbar-inner">
-                <div class="container">
-                    <p class="text-muted text-center">&copy;2017<?=(date('Y') != 2017) ? '-'.date('Y') : ''?> All Rights Reserved.</p>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Мини меню</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <?=$menu?>
                 </div>
             </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <?=$content?>
+            </div>
         </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted text-center">&copy;2017<?=(date('Y') != 2017) ? '-'.date('Y') : ''?> All Rights Reserved.</p>
+            </div>
+        </footer>
 	</body>
 </html>
