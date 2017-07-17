@@ -82,6 +82,15 @@ Enjoy your work.';
 	{
 		$id = $this->request->param('id');
 		$user = ORM::factory('user', $id);
+
+        $district = 0;
+        $districts_o = ORM::factory('district')->find_all();
+
+        $districts = array(0 => 'Нет');
+        foreach($districts_o as $elem)
+        {
+            $districts[$elem->id] = $elem->title;
+        }
 		
 		if(!$user->loaded())
 			$this->redirect('adminka/list_users');
@@ -93,51 +102,51 @@ Enjoy your work.';
 		
 		if($_POST)
 		{
-			if($_POST['prov'] == 1)
-			{
-				$data = $_POST;
-				$post = Model_User::validation_up1($_POST);
-			}
-			elseif($_POST['prov'] == 2)
-			{
-				$post = Model_User::validation_up2($_POST);
-			}
-			
-			if (!$post->check())
-			{
-				$errors = $post->errors('projects/mes');
-			}
-			else
-			{
-				$user->values($_POST)->update($post);
-				$message = "Данные успешно обновленны";
-			}
-		
-			if(isset($_POST['admin']))
-			{
-				if($_POST['admin'])
-				{
-					if(!$admin)
-					{
-						$user->add('roles', ORM::factory('role', 2));
-						$admin = 1;
-					}
-				}
-				else
-				{
-					$user->remove('roles', ORM::factory('role', 2));
-					$admin = 0;
-				}
-			}
+            if($_POST['prov'] == 1)
+            {
+                $data = $_POST;
+                $post = Model_User::validation_up1($_POST);
+            }
+            elseif($_POST['prov'] == 2)
+            {
+                $post = Model_User::validation_up2($_POST);
+            }
+
+            if (!$post->check())
+            {
+                $errors = $post->errors('projects/mes');
+            }
+            else
+            {
+                $user->values($_POST)->update($post);
+                $message = "Данные успешно обновленны";
+            }
+
+            if(isset($_POST['admin']))
+            {
+                if($_POST['admin'])
+                {
+                    if(!$admin)
+                    {
+                        $user->add('roles', ORM::factory('role', 2));
+                        $admin = 1;
+                    }
+                }
+                else
+                {
+                    $user->remove('roles', ORM::factory('role', 2));
+                    $admin = 0;
+                }
+            }
 		}
-
-
 
 		$view_profile = View::factory('adminka/update_user');
 		$view_profile->id = $user->id;
 		$view_profile->data = $user;
 		$view_profile->message = $message;
 		$view_profile->admin = $admin;
+		$view_profile->district = $district;
+		$view_profile->districts = $districts;
 
 		$view_profile->errors = $errors;
 		$this->template->content = $view_profile->render();
