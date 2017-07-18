@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label>Округ:</label>
-                <?=Form::select('district_id', $districts, $data->district_id, array('class' => 'form-control', 'id' => 'district'));?>
+                <?=Form::select('district_id', $districts, $data->district_id, array('class' => 'form-control', 'id' => 'district', 'autocomplete' => 'off'));?>
             </div>
             <div class="form-group">
                 <label>Субъект:</label>

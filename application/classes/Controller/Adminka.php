@@ -151,6 +151,8 @@ class Controller_Adminka extends Controller_Base
                     $admin = 0;
                 }
             }
+
+            $this->redirect('adminka/update_user/'.$id);
 		}
 
 		$view_profile = View::factory('adminka/update_user');
