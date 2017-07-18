@@ -3,10 +3,18 @@
 <div class="col-lg-8 col-sm-12">
     <h3>Добавление нового сотрудника</h3>
 
+    <?if(count($errors)){?>
+        <div class="alert alert-danger">
+            <?foreach ($errors as $error){?>
+                <?=$error?><br/>
+            <?}?>
+        </div>
+    <?}?>
+
     <div class="text-right">
         <?=HTML::anchor('adminka/list_users', 'Назад')?>
     </div>
-    <div>
+    <div class="row">
         <?=Form::open('adminka/register',array('method'=>'post'));?>
             <div class="form-group">
                 <label>ФИО:</label>
@@ -19,6 +27,16 @@
             <div class="form-group">
                 <label>e-mail:</label>
                 <?=Form::input('email', $data['email'], array('class' => 'form-control', 'type' => 'email'));?>
+            </div>
+            <div class="form-group">
+                <label>Округ:</label>
+                <?=Form::select('district_id', $districts, $data['district_id'], array('class' => 'form-control', 'id' => 'district', 'autocomplete' => 'off'));?>
+            </div>
+            <div class="form-group">
+                <label>Субъект:</label>
+                <div id="subject">
+                    <?=Form::select('subject_id', $subjects, $data['subject_id'], array('class' => 'form-control'));?>
+                </div>
             </div>
             <div class="form-group">
                 <label>Пароль:</label>
@@ -34,3 +52,23 @@
         <?=Form::close();?>
     </div>
 </div>
+
+<script>
+    $("#district").change(function(){
+
+        var district_id = $('#district').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/ajax/change_district",
+            dataType: "json",
+            data: {
+                action: 'change_district',
+                district_id: district_id
+            },
+            success: function(data){
+                $('#subject').html(data.result);
+            }
+        });
+    });
+</script>

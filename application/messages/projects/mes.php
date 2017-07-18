@@ -1,12 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 return array(
-	'title' => array(
-		'not_empty'     => 'Заполните поле \'Вид анализа\'',
-	),
-	'number_a' => array(
-		'not_empty'     => 'Заполните поле \'Номер анализа\'',
-	),
 	'password' => array(
 		'not_empty'			=> 'Заполните поле \'Пароль\'',
 		'min_length'		=> 'Пароль должен состоять минимум из 6 символов',
@@ -20,7 +14,8 @@ return array(
 	'password_confirm' => array(
 		'matches'		=> 'Пароли не совпадают',
 	),
-	'material_number' => array(
-		'max_length'		=> 'Длина номера должна быть не более 30 символов',
+	'email' => array(
+		'not_empty'		=> 'Заполните поле \'e-mail\'',
+		'email'		=> 'Поле \'e-mail\' должен быть электронной почтой',
 	),
 );

@@ -2,18 +2,10 @@
 
 <h3>Сотрудники</h3>
 
-<div id="edit">
-    <?=HTML::anchor('adminka/register', '+ Добавить нового сотрудника')?>
-</div>
+<h4><?=HTML::anchor('adminka/register', '+ Добавить нового сотрудника')?></h4>
+
 <table class="table">
     <thead>
-        <tr>
-            <td class="text-right" colspan="8">
-                <?=HTML::anchor('adminka', 'Назад')?>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
         <tr>
             <th>
                 №
@@ -24,7 +16,18 @@
             <th>
                 Логин
             </th>
+            <th>
+                e-mail
+            </th>
+            <th>
+                Федеральный округ
+            </th>
+            <th>
+                Субъект РФ
+            </th>
         </tr>
+    </thead>
+    <tbody>
         <? $i=1;
         foreach($users as $user){
             $class = ($i%2==1)?'class="task_1"':'class="task_2"';?>
@@ -38,6 +41,17 @@
                     </td>
                     <td>
                         <?=$user->username?>
+                    </td>
+                    <td>
+                        <?=$user->email?>
+                    </td>
+                    <td>
+                        <?$district = $user->district->title?>
+                        <?=$district == NULL ? 'Нет' : $district?>
+                    </td>
+                    <td>
+                        <?$subject = $user->subject->title?>
+                        <?=$subject == NULL ? 'Нет' : $subject?>
                     </td>
                 </tr>
             <?}?>

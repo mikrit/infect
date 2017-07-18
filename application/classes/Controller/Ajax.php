@@ -15,11 +15,11 @@ class Controller_Ajax extends Controller {
                 $subjects[$subject->id] = $subject->title;
             }
 
-            $select = Form::select('subject', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
+            $select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
         }
         else
         {
-            $select = Form::select('subject', array(0 => 'Нет'), 0, array('class' => 'form-control', 'id' => 'subject'));
+            $select = Form::select('subject_id', array(0 => 'Нет'), 0, array('class' => 'form-control', 'id' => 'subject'));
         }
 
         echo json_encode(array('result' => $select));

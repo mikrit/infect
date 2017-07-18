@@ -1,49 +1,44 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
-<div id="title">Изменения</div>
+<h3>Изменения</h3>
 
-<table id="proj_task">
-	<tr>
-		<td class="right_t" colspan="8">
-			<?=HTML::anchor('adminka', 'Назад')?>
-		</td>
-	</tr>
-	<tr id="head_tasks">
-		<td>
-			Дата
-		</td>
-		<td>
-			Имя
-		</td>
-		<td>
-			Где
-		</td>
-		<td>
-			Было
-		</td>
-		<td>
-			Стало
-		</td>
-	</tr>
-	<? $i=1;
-	foreach($logs as $log){
-		$class = ($i%2==1)?'class="task_1"':'class="task_2"';?>
-		<tr>
-			<td>
-				<?=$log->date?>
-			</td>
-			<td>
-				<?=$log->user->name?>
-			</td>
-			<td>
-				<?=$log->table?>
-			</td>
-			<td>
-				<?=$log->before?>
-			</td>
-			<td>
-				<?=$log->after?>
-			</td>
-		</tr>
-	<?}?>
+<div class="text-right">
+    <?=HTML::anchor('adminka/list_users', 'Назад')?>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Дата
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Было
+            </th>
+            <th>
+                Стало
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?foreach($logs as $log){?>
+            <tr>
+                <td>
+                    <?=$log->date?>
+                </td>
+                <td>
+                    <?=$log->user->name?>
+                </td>
+                <td>
+                    <?=$log->before?>
+                </td>
+                <td>
+                    <?=$log->after?>
+                </td>
+            </tr>
+        <?}?>
+    </tbody>
 </table>

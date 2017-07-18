@@ -231,7 +231,6 @@ abstract class Kohana_HTTP {
         $body = iconv('utf-8', 'cp1251', $body);
 
         return mail($to_email, $subject, $body, $headers);
-
     }
 
 	static function translitIt($str) 

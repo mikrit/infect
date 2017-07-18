@@ -23,18 +23,28 @@ class Controller_Adminka extends Controller_Base
 	public function action_register()
 	{
 		$errors = array();
-		$message = "";
 		
 		$data['username'] = '';
 		$data['fio'] = '';
 		$data['position'] = '';
 		$data['email'] = '';
+		$data['district_id'] = 0;
+		$data['subject_id'] = 0;
+
+        $districts_O = ORM::factory('district')->find_all();
+        $districts = array(0 => 'Нет');
+        foreach($districts_O as $district)
+        {
+            $districts[$district->id] = $district->title;
+        }
+
+        $subjects = array(0 => 'Нет');
 
 		if ($_POST)
 		{
 			$user = ORM::factory('user');
 			
-			$post = Model_User::validation_n($_POST);
+			$post = Model_User::validation_user($_POST);
 			
 			$data = $_POST;
 			
@@ -50,22 +60,20 @@ class Controller_Adminka extends Controller_Base
 			}
 			else
 			{	
-				$user->create_user($_POST, array('username', 'email', 'fio', 'password'));
+				$user->create_user($_POST, array('username', 'email', 'fio', 'password', 'district_id', 'subject_id'));
 				$user->add('roles', ORM::factory('role', 1));
 				
-				/*$mess = 'You are logged in "Jadran"<br/>
+				/*$mess = 'Вас добавили в систему "Инфекционной службы"<br/>
 				
-Your login: '.$_POST['username'].'<br/>
-Your password: '.$_POST['password'].'<br/>
+Ваш логин: '.$_POST['username'].'<br/>
+Ваш пароль: '.$_POST['password'].'<br/>
 
-Enjoy your work.';
+Приятной работы.';
 */				
 				//Http::send_letter($_POST['email'], 'Registration user', $mess);
 
 				//Нужна переброска на Form если пришли от туда и сохранять данные
 				$this->redirect('adminka/list_users/'.$user->id);
-
-				//$message = "User added successfully";
 			}
 		}
 	
@@ -73,38 +81,44 @@ Enjoy your work.';
 		
 		$view_user->data = $data;
 		$view_user->errors = $errors;
-		$view_user->message = $message;
+        $view_user->districts = $districts;
+        $view_user->subjects = $subjects;
 	
 		$this->template->content = $view_user->render();
 	}
 	
 	public function action_update_user()
 	{
+        $errors = array();
+
 		$id = $this->request->param('id');
 		$user = ORM::factory('user', $id);
 
-        $district = 0;
-        $districts_o = ORM::factory('district')->find_all();
-
+        $districts_O = ORM::factory('district')->find_all();
         $districts = array(0 => 'Нет');
-        foreach($districts_o as $elem)
+        foreach($districts_O as $district)
         {
-            $districts[$elem->id] = $elem->title;
+            $districts[$district->id] = $district->title;
+        }
+
+        $subjects_O = ORM::factory('subject')->where('district_id', '=', $user->district_id)->find_all();
+        $subjects = array(0 => 'Нет');
+        foreach($subjects_O as $subject)
+        {
+            $subjects[$subject->id] = $subject->title;
         }
 		
 		if(!$user->loaded())
-			$this->redirect('adminka/list_users');
-			
-		$errors = array();
-		$message = '';
-		
+        {
+            $this->redirect('adminka/list_users');
+        }
+
 		$admin = $user->has('roles', ORM::factory('role', 2));
 		
 		if($_POST)
 		{
             if($_POST['prov'] == 1)
             {
-                $data = $_POST;
                 $post = Model_User::validation_up1($_POST);
             }
             elseif($_POST['prov'] == 2)
@@ -119,7 +133,6 @@ Enjoy your work.';
             else
             {
                 $user->values($_POST)->update($post);
-                $message = "Данные успешно обновленны";
             }
 
             if(isset($_POST['admin']))
@@ -143,10 +156,9 @@ Enjoy your work.';
 		$view_profile = View::factory('adminka/update_user');
 		$view_profile->id = $user->id;
 		$view_profile->data = $user;
-		$view_profile->message = $message;
 		$view_profile->admin = $admin;
-		$view_profile->district = $district;
 		$view_profile->districts = $districts;
+		$view_profile->subjects = $subjects;
 
 		$view_profile->errors = $errors;
 		$this->template->content = $view_profile->render();
@@ -165,6 +177,15 @@ Enjoy your work.';
 
         $view->year_now = $year_now;
         $view->years = $years;
+
+        $this->template->content = $view->render();
+    }
+
+    public function action_logs()
+    {
+        $view = View::factory('adminka/logs');
+
+        $view->logs = array();
 
         $this->template->content = $view->render();
     }
