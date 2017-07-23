@@ -19,110 +19,39 @@
 	<li><a href="#panel7">Вирусные гепатиты</a></li>
 </ul>
 
+<?=Form::open('data', array('method'=>'post', 'name' => 'year_1', 'class' => 'year', 'id' => 'panel_1'))?>
+<div class="form-group">
+    <label>Год:</label>
+    <?=Form::select('year', $years, $year_now, array('class' => 'form-control'));?>
+</div>
+<?=Form::close()?>
+
 <div class="tab-content">
-	<div id="panel1" class="tab-pane fade in active">
-		<h3>Инфекционная заболеваемость</h3>
-			<?=Form::open('data', array('method'=>'post', 'name' => 'infect'))?>
-				<table class="table">
-					<thead>
-					<tr>
-						<th>
-							Инфекционная и паразитарная заболеваемость
-						</th>
-						<th>
-							Абс.
-						</th>
-						<th>
-							На 100 тыс. населения
-						</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<b>Брюшной тиф</b>
-							</td>
-							<td>
-								<?=Form::input('bru_tif', '',array("class" => "form-control", "name" => "bru_tif", "type" => "text", "autofocus" => ""))?>
-							</td>
-							<td>
-								<?=Form::input('t_bru_tif', '',array("class" => "form-control", "name" => "t_bru_tif", "type" => "text"))?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>Паратифы</b>
-							</td>
-							<td>
-								<?=Form::input('paratif', '',array("class" => "form-control", "name" => "paratif", "type" => "text"))?>
-							</td>
-							<td>
-								<?=Form::input('t_paratif', '',array("class" => "form-control", "name" => "t_paratif", "type" => "text"))?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								паратиф С
-							</td>
-							<td>
-								<?=Form::input('paratif_c', '',array("class" => "form-control", "name" => "paratif_c", "type" => "text"))?>
-							</td>
-							<td>
-								<?=Form::input('t_paratif_c', '',array("class" => "form-control", "name" => "t_paratif_c", "type" => "text"))?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								паратиф неуточненный
-							</td>
-							<td>
-								<?=Form::input('paratif_n', '',array("class" => "form-control", "name" => "paratif_n", "type" => "text"))?>
-							</td>
-							<td>
-								<?=Form::input('t_paratif_n', '',array("class" => "form-control", "name" => "t_paratif_n", "type" => "text"))?>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<b>Носительство возбудителей брюшного тифа, паратифов</b>
-							</td>
-							<td>
-								<?=Form::input('nosit_paratif', '',array("class" => "form-control", "name" => "nosit_paratif", "type" => "text"))?>
-							</td>
-							<td>
-								<?=Form::input('t_nosit_paratif', '',array("class" => "form-control", "name" => "t_nosit_paratif", "type" => "text"))?>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3" class="text-right">
-								<?=Form::button('button', 'Сохранить',array("id" => "send_infect_illness", "class" => "btn btn-primary"))?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			<?=Form::close()?>
-	</div>
-	<div id="panel2" class="tab-pane fade">
-		<h3>Инф служба </h3>
-	</div>
-	<div id="panel3" class="tab-pane fade">
-		<h3>Стац помощь</h3>
-	</div>
-	<div id="panel4" class="tab-pane fade">
-		<h3>СПИД-центры</h3>
-	</div>
-	<div id="panel5" class="tab-pane fade">
-		<h3>Амбулат помощь</h3>
-	</div>
-	<div id="panel6" class="tab-pane fade">
-		<h3>КДЦ</h3>
-	</div>
-	<div id="panel7" class="tab-pane fade">
-		<h3>Вирусные гепатиты</h3>
-	</div>
+	<?=$panel1?>
+	<?=$panel2?>
+	<?=$panel3?>
+	<?=$panel4?>
+	<?=$panel5?>
+	<?=$panel6?>
+	<?=$panel7?>
 </div>
 
 <script>
+    $('.class').change(function{
+        $.ajax({
+            type: "POST",
+            url: "/ajax/change_year",
+            dataType: "json",
+            data: {
+                action: 'change_district',
+                district_id: district_id
+            },
+            success: function(data){
+                $('#subject').html(data.result);
+            }
+        });
+    });
+
 	/*$('#infect').click(function(){
 		$('infect').submit();
 	});*/

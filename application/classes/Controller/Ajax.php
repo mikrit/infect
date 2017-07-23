@@ -24,4 +24,13 @@ class Controller_Ajax extends Controller {
 
         echo json_encode(array('result' => $select));
     }
+
+    public function  action_change_year()
+    {
+        $infect_O = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
+
+        $data = array();
+
+        echo json_encode(array('result' => $data));
+    }
 }
