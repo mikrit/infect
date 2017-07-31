@@ -20,10 +20,20 @@
 </ul>
 
 <?=Form::open('data', array('method'=>'post', 'name' => 'year_1', 'class' => 'year', 'id' => 'panel_1'))?>
-<div class="form-group">
-    <label>Год:</label>
-    <?=Form::select('year', $years, $year_now, array('class' => 'form-control'));?>
-</div>
+	<div class="form-group">
+		<label>Год:</label>
+		<?=Form::select('year', $years, $year_now, array('class' => 'form-control'));?>
+
+		<?if(0){?>
+			<label>Округ РФ:</label>
+			<?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'id' => 'district'));?>
+
+			<label>Субъект РФ:</label>
+			<div id="subject">
+				<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control'));?>
+			</div>
+		<?}?>
+	</div>
 <?=Form::close()?>
 
 <div class="tab-content">
@@ -37,19 +47,21 @@
 </div>
 
 <script>
-    $('.class').change(function{
-        $.ajax({
-            type: "POST",
-            url: "/ajax/change_year",
-            dataType: "json",
-            data: {
-                action: 'change_district',
-                district_id: district_id
-            },
-            success: function(data){
-                $('#subject').html(data.result);
-            }
-        });
+    $("#district").change(function(){
+	    var district_id = $(this).val();
+
+	    $.ajax({
+		    type: "POST",
+		    url: "/ajax/change_district2",
+		    dataType: "json",
+		    data: {
+			    action: 'change_district',
+			    district_id: district_id
+		    },
+		    success: function(data){
+			    $('#subject').html(data.result);
+		    }
+	    });
     });
 
 	/*$('#infect').click(function(){

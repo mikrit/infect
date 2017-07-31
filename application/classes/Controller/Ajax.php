@@ -4,7 +4,6 @@ class Controller_Ajax extends Controller {
 
     public function action_change_district()
     {
-
         if($_POST['district_id'] != 0)
         {
             $subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
@@ -24,6 +23,20 @@ class Controller_Ajax extends Controller {
 
         echo json_encode(array('result' => $select));
     }
+
+	public function action_change_district2()
+	{
+		$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
+
+		foreach($subjects_o as $subject)
+		{
+			$subjects[$subject->id] = $subject->title;
+		}
+
+		$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
+
+		echo json_encode(array('result' => $select));
+	}
 
     public function  action_change_year()
     {

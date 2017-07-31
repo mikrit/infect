@@ -29,11 +29,11 @@
                 <?=Form::input('email', $data['email'], array('class' => 'form-control', 'type' => 'email'));?>
             </div>
             <div class="form-group">
-                <label>Округ:</label>
+                <label>Округ РФ:</label>
                 <?=Form::select('district_id', $districts, $data['district_id'], array('class' => 'form-control', 'id' => 'district', 'autocomplete' => 'off'));?>
             </div>
             <div class="form-group">
-                <label>Субъект:</label>
+                <label>Субъект РФ:</label>
                 <div id="subject">
                     <?=Form::select('subject_id', $subjects, $data['subject_id'], array('class' => 'form-control'));?>
                 </div>
@@ -56,7 +56,7 @@
 <script>
     $("#district").change(function(){
 
-        var district_id = $('#district').val();
+        var district_id = $(this).val();
 
         $.ajax({
             type: "POST",
