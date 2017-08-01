@@ -1,5 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
+<?=HTML::style('media/css/select2/select2.min.css')?>
+<?=HTML::script('media/js/select2/select2.min.js')?>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#myTab a").click(function(e){
@@ -24,10 +27,11 @@
 		<label>Год:</label>
 		<?=Form::select('year', $years, $year_now, array('class' => 'form-control'));?>
 
-		<?if(0){?>
+		<?if($district_id == 0){?>
 			<label>Округ РФ:</label>
 			<?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'id' => 'district'));?>
-
+		<?}?>
+		<?if($subject_id == 0){?>
 			<label>Субъект РФ:</label>
 			<div id="subject">
 				<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control'));?>
@@ -47,6 +51,11 @@
 </div>
 
 <script>
+	$('select').select2({
+		language: "ru",
+		width: '100%'
+	});
+
     $("#district").change(function(){
 	    var district_id = $(this).val();
 

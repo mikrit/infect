@@ -5,10 +5,10 @@ class Controller_Data extends Controller_Base
 	public function action_index()
 	{
 		$user = Auth::instance()->get_user();
+		$user_district = $user->district_id;
+		$user_subject = $user->subject_id;
 
 		$year_now = date('Y');
-		$district_id = 1;
-		$subject_id = 18;
 
 		$years = array();
 		for($i = 2015; $i <= $year_now; $i++)
@@ -26,17 +26,14 @@ class Controller_Data extends Controller_Base
 
 		$view = View::factory('data/index');
 
-		$view->user_district = $user->district_id;
-		$view->user_subject = $user->subject_id;
-
 		$view->year_now = $year_now;
 		$view->years = $years;
 
 		$view->districts = $districts;
-		$view->district_id = $district_id;
+		$view->district_id = $user_district;
 
 		$view->subjects = $subjects;
-		$view->subject_id = $subject_id;
+		$view->subject_id = $user_subject;
 
 		$view_panel1 = View::factory('data/tabs/panel1');
 
