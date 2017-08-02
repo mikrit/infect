@@ -27,11 +27,11 @@
 		<label>Год:</label>
 		<?=Form::select('year', $years, $year_now, array('class' => 'form-control'));?>
 
-		<?if($district_id == 0){?>
+		<?if($user_district == 0){?>
 			<label>Округ РФ:</label>
 			<?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'id' => 'district'));?>
 		<?}?>
-		<?if($subject_id == 0){?>
+		<?if($user_subject == 0){?>
 			<label>Субъект РФ:</label>
 			<div id="subject">
 				<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control'));?>
@@ -72,8 +72,4 @@
 		    }
 	    });
     });
-
-	/*$('#infect').click(function(){
-		$('infect').submit();
-	});*/
 </script>

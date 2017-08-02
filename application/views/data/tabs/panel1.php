@@ -27,10 +27,10 @@
 							<?}?>
 						</td>
 						<td>
-							<?=Form::input($elem->input, '', array("class" => "form-control", "type" => "text"))?>
+							<?=Form::input($elem->input, isset($data[$elem->input][0]) ? $data[$elem->input][0] : '', array("class" => "form-control value", "type" => "text", "id" => $elem->input))?>
 						</td>
 						<td>
-							<?=Form::input('t_'.$elem->input, '', array("class" => "form-control", "type" => "text"))?>
+							<?=Form::input('t_'.$elem->input, isset($data[$elem->input][1]) ? $data[$elem->input][1] : '', array("class" => "form-control value", "type" => "text", "id" => $elem->input))?>
 						</td>
 					</tr>
 				<?}?>
@@ -41,5 +41,28 @@
 				</tr>
 			</tbody>
 		</table>
+	<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
+	<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
 	<?=Form::close()?>
 </div>
+
+<script>
+	$(".value").change(function(){
+		var district_id = $('#district').val();
+		var subject_id = $('#subject').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/change_data_infect",
+			dataType: "json",
+			data: {
+				action: 'change_data_infect',
+				district_id: district_id,
+				subject_id: subject_id
+			},
+			success: function(data){
+				$('#subject').html(data.result);
+			}
+		});
+	});
+</script>
