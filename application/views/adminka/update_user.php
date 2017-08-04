@@ -77,7 +77,6 @@
             url: "/ajax/change_district",
             dataType: "json",
             data: {
-                action: 'change_district',
                 district_id: district_id
             },
             success: function(data){

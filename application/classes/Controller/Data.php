@@ -37,7 +37,7 @@ class Controller_Data extends Controller_Base
 		$data = array();
 		foreach($data_O as $elem)
 		{
-			$data[$elem->infect_title] = array($elem->value, $elem->value_100);
+			$data[$elem->infect_id] = array($elem->value, $elem->value_100);
 		}
 
 		if(count($_POST))
@@ -64,6 +64,10 @@ class Controller_Data extends Controller_Base
 
 		$view_panel1->inputs = $inputs;
 		$view_panel1->data = $data;
+
+		$view_panel1->year_now = $year_now;
+		$view_panel1->district_id = $district_id;
+		$view_panel1->subject_id = $subject_id;
 
 		$view_panel2 = View::factory('data/tabs/panel2');
 		$view_panel3 = View::factory('data/tabs/panel3');

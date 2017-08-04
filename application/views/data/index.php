@@ -33,7 +33,7 @@
 		<?}?>
 		<?if($user_subject == 0){?>
 			<label>Субъект РФ:</label>
-			<div id="subject">
+			<div id="subjects">
 				<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control'));?>
 			</div>
 		<?}?>
@@ -64,11 +64,10 @@
 		    url: "/ajax/change_district2",
 		    dataType: "json",
 		    data: {
-			    action: 'change_district',
 			    district_id: district_id
 		    },
 		    success: function(data){
-			    $('#subject').html(data.result);
+			    $('#subjects').html(data.result);
 		    }
 	    });
     });

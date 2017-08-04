@@ -46,4 +46,26 @@ class Controller_Ajax extends Controller {
 
         echo json_encode(array('result' => $data));
     }
+
+	public function  action_add_infect_element()
+	{
+		$datainfect = ORM::factory('datainfect');
+
+		$datainfect->infect_title = $_POST['infect_title'];
+
+		if($_POST['type'] == 0)
+		{
+			$datainfect->value = $_POST['value'];
+		}
+		else
+		{
+			$datainfect->value_100 = $_POST['value'];
+		}
+
+		$datainfect->year = $_POST['year'];
+		$datainfect->district_id = $_POST['district_id'];
+		$datainfect->subject_id = $_POST['subject_id'];
+
+		$datainfect->save();
+	}
 }

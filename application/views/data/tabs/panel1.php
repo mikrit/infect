@@ -2,7 +2,7 @@
 	<h3>Инфекционная заболеваемость</h3>
 
 	<?=Form::open('data', array('method'=>'post', 'name' => 'infect'))?>
-		<table class="table">
+		<table class="table" id="panel1">
 			<thead>
 				<tr>
 					<th>
@@ -17,20 +17,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?foreach($inputs as $elem){?>
+				<?foreach($inputs as $input){?>
 					<tr>
 						<td>
-							<?if($elem->bold == 1){?>
-								<b><?=$elem->title?></b>
+							<?if($input->bold == 1){?>
+								<b><?=$input->title?></b>
 							<?}else{?>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$elem->title?>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$input->title?>
 							<?}?>
 						</td>
 						<td>
-							<?=Form::input($elem->input, isset($data[$elem->input][0]) ? $data[$elem->input][0] : '', array("class" => "form-control value", "type" => "text", "id" => $elem->input))?>
+							<?=Form::input('elem_'.$input->id, isset($data[$input->id][0]) ? $data[$input->id][0] : '', array("class" => "form-control value", "type" => "text", "data-id" => $input->id, "data-type" => 0))?>
 						</td>
 						<td>
-							<?=Form::input('t_'.$elem->input, isset($data[$elem->input][1]) ? $data[$elem->input][1] : '', array("class" => "form-control value", "type" => "text", "id" => $elem->input))?>
+							<?=Form::input('t_elem_'.$input->id, isset($data[$input->id][1]) ? $data[$input->id][1] : '', array("class" => "form-control value", "type" => "text", "data-id" => $input->id, "data-type" => 1))?>
 						</td>
 					</tr>
 				<?}?>
@@ -41,6 +41,7 @@
 				</tr>
 			</tbody>
 		</table>
+	<?=Form::hidden('year', $year_now, array("id" => "year"));?>
 	<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
 	<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
 	<?=Form::close()?>
@@ -48,21 +49,38 @@
 
 <script>
 	$(".value").change(function(){
+		var year = $('#year').val();
 		var district_id = $('#district').val();
 		var subject_id = $('#subject').val();
 
-		$.ajax({
-			type: "POST",
-			url: "/ajax/change_data_infect",
-			dataType: "json",
-			data: {
-				action: 'change_data_infect',
-				district_id: district_id,
-				subject_id: subject_id
-			},
-			success: function(data){
-				$('#subject').html(data.result);
-			}
-		});
+		var elem_id = $(this).attr('id');
+		var imput_id = $(this).data('id');
+		var type = $(this).data('type');
+
+		if(isNaN($(this).val()))
+		{
+			$('#'+elem_id).css('border-color', 'red');
+		}
+		else
+		{
+			$('#'+elem_id).css('border-color', '');
+
+			$.ajax({
+				type: "POST",
+				url: "/ajax/add_infect_element",
+				dataType: "json",
+				data: {
+					imput_id: imput_id,
+					value: $('#'+elem_id).val(),
+					year: year,
+					district_id: district_id,
+					subject_id: subject_id,
+					type: type
+				},
+				success: function(data){
+					$('#subject').html(data.result);
+				}
+			});
+		}
 	});
 </script>
