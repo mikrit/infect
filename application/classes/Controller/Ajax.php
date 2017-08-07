@@ -49,23 +49,29 @@ class Controller_Ajax extends Controller {
 
 	public function  action_add_infect_element()
 	{
-		$datainfect = ORM::factory('datainfect');
-
-		$datainfect->infect_title = $_POST['infect_title'];
+		$infect = ORM::factory('datainfect', array(
+			'infect_id' => $_POST['infect_id'],
+			'district_id' => $_POST['district_id'],
+			'subject_id' =>$_POST['subject_id'],
+			'year' => $_POST['year']));
 
 		if($_POST['type'] == 0)
 		{
-			$datainfect->value = $_POST['value'];
+			$infect->value = $_POST['value'];
 		}
 		else
 		{
-			$datainfect->value_100 = $_POST['value'];
+			$infect->value_100 = $_POST['value'];
 		}
 
-		$datainfect->year = $_POST['year'];
-		$datainfect->district_id = $_POST['district_id'];
-		$datainfect->subject_id = $_POST['subject_id'];
+		if($infect->id == NULL)
+		{
+			$infect->infect_id = $_POST['infect_id'];
+			$infect->year = $_POST['year'];
+			$infect->district_id = $_POST['district_id'];
+			$infect->subject_id = $_POST['subject_id'];
+		}
 
-		$datainfect->save();
+		$infect->save();
 	}
 }

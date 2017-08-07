@@ -17,20 +17,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?foreach($inputs as $input){?>
+				<?foreach($infects as $infect){?>
 					<tr>
 						<td>
-							<?if($input->bold == 1){?>
-								<b><?=$input->title?></b>
+							<?if($infect->bold == 1){?>
+								<b><?=$infect->title?></b>
 							<?}else{?>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$input->title?>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$infect->title?>
 							<?}?>
 						</td>
 						<td>
-							<?=Form::input('elem_'.$input->id, isset($data[$input->id][0]) ? $data[$input->id][0] : '', array("class" => "form-control value", "type" => "text", "data-id" => $input->id, "data-type" => 0))?>
+							<?=Form::input('elem_'.$infect->id, isset($data[$infect->id][0]) ? $data[$infect->id][0] : '', array("class" => "form-control value", "id" => "elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 0))?>
 						</td>
 						<td>
-							<?=Form::input('t_elem_'.$input->id, isset($data[$input->id][1]) ? $data[$input->id][1] : '', array("class" => "form-control value", "type" => "text", "data-id" => $input->id, "data-type" => 1))?>
+							<?=Form::input('t_elem_'.$infect->id, isset($data[$infect->id][1]) ? $data[$infect->id][1] : '', array("class" => "form-control value", "id" => "t_elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 1))?>
 						</td>
 					</tr>
 				<?}?>
@@ -54,7 +54,7 @@
 		var subject_id = $('#subject').val();
 
 		var elem_id = $(this).attr('id');
-		var imput_id = $(this).data('id');
+		var infect_id = $(this).data('id');
 		var type = $(this).data('type');
 
 		if(isNaN($(this).val()))
@@ -70,7 +70,7 @@
 				url: "/ajax/add_infect_element",
 				dataType: "json",
 				data: {
-					imput_id: imput_id,
+					infect_id: infect_id,
 					value: $('#'+elem_id).val(),
 					year: year,
 					district_id: district_id,

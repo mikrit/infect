@@ -7,7 +7,7 @@ class Controller_Data extends Controller_Base
 		$year_now = date('Y');
 
 		$years = array();
-		for($i = 2015; $i <= $year_now; $i++)
+		for($i = 2016; $i <= $year_now; $i++)
 		{
 			$years[$i] = $i;
 		}
@@ -60,9 +60,9 @@ class Controller_Data extends Controller_Base
 
 		$view_panel1 = View::factory('data/tabs/panel1');
 
-		$inputs = ORM::factory('infect')->find_all();
+		$infects = ORM::factory('infect')->find_all();
 
-		$view_panel1->inputs = $inputs;
+		$view_panel1->infects = $infects;
 		$view_panel1->data = $data;
 
 		$view_panel1->year_now = $year_now;
