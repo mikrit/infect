@@ -38,7 +38,31 @@ class Controller_Ajax extends Controller {
 		echo json_encode(array('result' => $select));
 	}
 
-    public function  action_change_year()
+	public function action_change_data_year()
+	{
+		$data_O = ORM::factory('datainfect')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
+
+		$data = array();
+		foreach($data_O as $elem)
+		{
+			$data[$elem->infect_id] = array($elem->value, $elem->value_100);
+		}
+
+		$view_panel1 = View::factory('data/tabs/panel1');
+
+		$infects = ORM::factory('infect')->find_all();
+
+		$view_panel1->infects = $infects;
+		$view_panel1->data = $data;
+
+		$view_panel1->year_now = $_POST['year'];
+		$view_panel1->district_id = $_POST['district_id'];
+		$view_panel1->subject_id = $_POST['subject_id'];
+
+		echo json_encode(array('panel1' => $view_panel1->render()));
+	}
+
+    public function  action_change_data()
     {
         $infect_O = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
 
@@ -47,7 +71,7 @@ class Controller_Ajax extends Controller {
         echo json_encode(array('result' => $data));
     }
 
-	public function  action_add_infect_element()
+	public function  action_infect_element()
 	{
 		$infect = ORM::factory('datainfect', array(
 			'infect_id' => $_POST['infect_id'],

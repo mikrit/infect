@@ -1,3 +1,3 @@
-<div id="panel6" class="tab-pane fade">
-    <h3>КДЦ</h3>
-</div>
+<?php defined('SYSPATH') or die('No direct script access.');?>
+
+<h3>КДЦ</h3>
