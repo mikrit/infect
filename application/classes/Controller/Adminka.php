@@ -119,42 +119,42 @@ class Controller_Adminka extends Controller_Base
 		
 		if($_POST)
 		{
-            if($_POST['prov'] == 1)
-            {
-                $post = Model_User::validation_up1($_POST);
-            }
-            elseif($_POST['prov'] == 2)
-            {
-                $post = Model_User::validation_up2($_POST);
-            }
+         if($_POST['prov'] == 1)
+         {
+             $post = Model_User::validation_up1($_POST);
+         }
+         elseif($_POST['prov'] == 2)
+         {
+             $post = Model_User::validation_up2($_POST);
+         }
 
-            if (!$post->check())
-            {
-                $errors = $post->errors('projects/mes');
-            }
-            else
-            {
-                $user->values($_POST)->update($post);
-            }
+         if (!$post->check())
+         {
+             $errors = $post->errors('projects/mes');
+         }
+         else
+         {
+             $user->values($_POST)->update($post);
+         }
 
-            if(isset($_POST['admin']))
-            {
-                if($_POST['admin'])
-                {
-                    if(!$admin)
-                    {
-                        $user->add('roles', ORM::factory('role', 2));
-                        $admin = 1;
-                    }
-                }
-                else
-                {
-                    $user->remove('roles', ORM::factory('role', 2));
-                    $admin = 0;
-                }
-            }
+         if(isset($_POST['admin']))
+         {
+             if($_POST['admin'])
+             {
+                 if(!$admin)
+                 {
+                     $user->add('roles', ORM::factory('role', 2));
+                     $admin = 1;
+                 }
+             }
+             else
+             {
+                 $user->remove('roles', ORM::factory('role', 2));
+                 $admin = 0;
+             }
+         }
 
-            $this->redirect('adminka/update_user/'.$id);
+         $this->redirect('adminka/update_user/'.$id);
 		}
 
 		$view_profile = View::factory('adminka/update_user');
