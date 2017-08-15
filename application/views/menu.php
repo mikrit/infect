@@ -4,36 +4,36 @@
 
 <ul class="nav navbar-nav">
 	<li <?if($request[0] == '' || $request[0] == 'main'){echo 'class="active"';}?>>
-        <?=HTML::anchor('/', '<span class="glyphicon glyphicon-home"></span>');?>
-    </li>
+		<?=HTML::anchor('/', '<span class="glyphicon glyphicon-home"></span>');?>
+	</li>
 	<li <?if($request[0] == 'data'){echo 'class="active"';}?>>
-        <?=HTML::anchor('data', 'Форма заполнения');?>
-    </li>
+		<?=HTML::anchor('data', 'Форма заполнения');?>
+	</li>
 	<li <?if($request[0] == 'report'){echo 'class="active"';}?>>
-        <?=HTML::anchor('report', 'Отчёт');?>
-    </li>
-    <?if($admin){?>
-        <li <?if($request[0] == 'user'){echo 'class="active"';}?>>
-            <?HTML::anchor('user', 'Пользователи');?>
-        </li>
+		<?=HTML::anchor('report', 'Отчёт');?>
+	</li>
+	<?if($admin){?>
+		<li <?if($request[0] == 'user'){echo 'class="active"';}?>>
+			<?HTML::anchor('user', 'Пользователи'); //!!!!!!!!!!НЕ СДЕЛАНО?>
+		</li>
 
-        <?$active = '';if($request[0] == 'adminka'){$active = ' active';}?>
+		<?$active = '';if($request[0] == 'adminka'){$active = ' active';}?>
 
-        <li class="dropdown<?=$active?>">
-            <?=HTML::anchor('#', 'Админка', array("data-toggle" => "dropdown", "class" => "dropdown-toggle"));?>
-            <ul class="dropdown-menu">
-                <li>
-                    <?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
-                </li>
-                <li>
-                    <?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
-                </li>
-                <li>
-                    <?=HTML::anchor('adminka/logs', 'Логирование'); ?>
-                </li>
-            </ul>
-        </li>
-    <?}?>
+		<li class="dropdown<?=$active?>">
+			<?=HTML::anchor('#', 'Админка', array("data-toggle" => "dropdown", "class" => "dropdown-toggle"));?>
+			<ul class="dropdown-menu">
+				<li>
+					<?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
+				</li>
+				<li>
+					<?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
+				</li>
+				<li>
+					<?=HTML::anchor('adminka/logs', 'Логирование'); ?>
+				</li>
+			</ul>
+		</li>
+	<?}?>
 </ul>
 
 <? if(Auth::instance()->logged_in()){?>

@@ -23,7 +23,6 @@ class Controller_Base extends Controller_Template
 	{
 		parent::before();
 		$this->template->content = '';
-		$this->template->foot = 'foot';
 		
 		$user_id = Auth::instance()->get_user()->id;
 		$admin = ORM::factory('user', $user_id)->roles->where('name', '=', 'admin')->find();
