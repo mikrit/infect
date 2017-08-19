@@ -16,66 +16,27 @@ class Controller_Data extends Controller_Base
 
 		$user_district = $user->district_id;
 		$district_id = $user->district_id;
-
-		$districts = ORM::factory('district')->find_all()->as_array('id', 'title');
-		if($user_district == 0)
-		{
-			$district_id = 1;
-		}
-
-		$user_subject = $user->subject_id;
-		$subject_id = $user->subject_id;
-		$subjects = ORM::factory('subject')->where('district_id', '=', $district_id)->find_all()->as_array('id', 'title');
-		if($user_subject == 0)
-		{
-			$subject_id = 18;
-		}
-
-		$view = View::factory('data/index');
-
-		$view->districts = $districts;
-		$view->district_id = $district_id;
-		$view->user_district = $user_district;
-
-		$view->subjects = $subjects;
-		$view->subject_id = $subject_id;
-		$view->user_subject = $user_subject;
-
-		$view->year_now = $year_now;
-		$view->years = $years;
-
-		$this->template->content = $view->render();
-	}
-
-	public function action_index_tmp()
-	{
-		$year_now = date('Y');
-
-		$years = array();
-		for($i = 2016; $i <= $year_now; $i++)
-		{
-			$years[$i] = $i;
-		}
-
-		$user = Auth::instance()->get_user();
-
-		$user_district = $user->district_id;
-		$district_id = $user->district_id;
-		$districts = array();
 		if($user_district == 0)
 		{
 			$districts = ORM::factory('district')->find_all()->as_array('id', 'title');
 			$district_id = 1;
 		}
+        else
+        {
+            $districts = ORM::factory('district')->where('id', '=', $user_district)->find_all()->as_array('id', 'title');
+        }
 
 		$user_subject = $user->subject_id;
 		$subject_id = $user->subject_id;
-		$subjects = array();
 		if($user_subject == 0)
 		{
 			$subjects = ORM::factory('subject')->where('district_id', '=', 1)->find_all()->as_array('id', 'title');
 			$subject_id = 18;
 		}
+        else
+        {
+            $subjects = ORM::factory('subject')->where('district_id', '=', $user_district)->find_all()->as_array('id', 'title');
+        }
 
 		$data_O = ORM::factory('datainfect')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->find_all();
 
@@ -90,7 +51,7 @@ class Controller_Data extends Controller_Base
 			var_dump($_POST);die;
 		}
 
-		$view = View::factory('data/index_tmp');
+		$view = View::factory('data/index');
 
 		$view->year_now = $year_now;
 		$view->years = $years;

@@ -3,16 +3,16 @@
 <h3>Инфекционная заболеваемость</h3>
 
 <?=Form::open('data', array('method'=>'post', 'name' => 'infect'))?>
-	<table class="table" id="panel1">
+	<table class="table" width="100%">
 		<thead>
 			<tr>
-				<th>
+				<th width="60%">
 					Инфекционная и паразитарная заболеваемость
 				</th>
-				<th>
+				<th width="20%">
 					Абс.
 				</th>
-				<th>
+				<th width="20%">
 					На 100 тыс. населения
 				</th>
 			</tr>

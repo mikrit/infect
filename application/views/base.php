@@ -39,24 +39,7 @@
         </nav>
 
         <div class="container">
-            <div class="row">
-					<div id="sidebar-left" class="col-2 col-lg-2">
-						<ul>
-							<li>
-								<?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
-							</li>
-							<li>
-								<?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
-							</li>
-							<li>
-								<?=HTML::anchor('adminka/logs', 'Логирование'); ?>
-							</li>
-						</ul>
-					</div>
-					<div id="content-right" class="col-lg-10 container" >
-						<?=$content?>
-					</div>
-            </div>
+            <?=$content?>
         </div>
 
         <footer class="footer">
