@@ -9,22 +9,22 @@
             <?=Form::open('data', array('method'=>'post', 'name' => 'form'))?>
             <div class="form-group">
                 <label>Год:</label>
-                <?=Form::select('year', $years, $year_now, array('class' => 'form-control', 'id' => 'year'));?>
+                <?=Form::select('year', $years, $year_now, array('class' => 'form-control', 'id' => 'year', 'autocomplete' => 'off'));?>
 
                 <label>Округ РФ:</label>
                 <?if($user_district == 0){?>
-                    <?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'id' => 'district'));?>
+                    <?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'id' => 'district', 'autocomplete' => 'off'));?>
                 <?}else{?>
-                    <?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'disabled' => ''));?>
+                    <?=Form::select('district', $districts, $district_id, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));?>
                 <?}?>
 
                 <label>Субъект РФ:</label>
                 <?if($user_subject == 0){?>
                     <div id="subjects">
-                        <?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'id' => 'subject'));?>
+                        <?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'id' => 'subject', 'autocomplete' => 'off'));?>
                     </div>
                 <?}else{?>
-                    <?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'disabled' => ''));?>
+                    <?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));?>
                 <?}?>
             </div>
             <?=Form::close()?>
@@ -65,30 +65,15 @@
         width: '100%'
     });
 
-    $("#district").change(function(){
-        var district_id = $(this).val();
-
-        $.ajax({
-            type: "POST",
-            url: "/ajax/change_district2",
-            dataType: "json",
-            data: {
-                district_id: district_id
-            },
-            success: function(data){
-                $('#subjects').html(data.result);
-            }
-        });
-    });
-
-    $("#f_1").on('change', '#year', function(){
-        var year = $(this).val();
+    $("#f_1").on('change', '#year, #subject', function()
+    {
+        var year = $('#year').val();
         var district_id = $('#district').val();
         var subject_id = $('#subject').val();
 
         $.ajax({
             type: "POST",
-            url: "/ajax/change_data_year",
+            url: "/ajax/change_datainfect",
             dataType: "json",
             data: {
                 year: year,
@@ -101,22 +86,36 @@
         });
     });
 
-    $("#test").on('change', '.change', function(){
+    $("#f_1").on('change', '#district', function()
+    {
         var year = $('#year').val();
         var district_id = $('#district').val();
-        var subject_id = $('#subject').val();
 
         $.ajax({
             type: "POST",
-            url: "/ajax/change_data",
+            url: "/ajax/change_district2",
             dataType: "json",
             data: {
-                year: year,
-                district_id: district_id,
-                subject_id: subject_id
+                district_id: district_id
             },
             success: function(data){
+                $('#subjects').html(data.result);
 
+                var subject_id = $('#subject').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ajax/change_datainfect",
+                    dataType: "json",
+                    data: {
+                        year: year,
+                        district_id: district_id,
+                        subject_id: subject_id
+                    },
+                    success: function(data){
+                        $('#panel').html(data.panel1);
+                    }
+                });
             }
         });
     });

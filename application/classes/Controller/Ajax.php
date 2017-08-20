@@ -35,10 +35,45 @@ class Controller_Ajax extends Controller {
 
 		$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
 
+        $select .= "<script>
+                        $('select').select2({
+                            language: 'ru',
+                            width: '100%'
+                        });
+                    </script>";
+
 		echo json_encode(array('result' => $select));
 	}
 
-	public function action_change_data_year()
+    public function action_infect_element()
+    {
+        $infect = ORM::factory('datainfect', array(
+            'infect_id' => $_POST['infect_id'],
+            'district_id' => $_POST['district_id'],
+            'subject_id' =>$_POST['subject_id'],
+            'year' => $_POST['year']));
+
+        if($_POST['type'] == 0)
+        {
+            $infect->value = $_POST['value'];
+        }
+        else
+        {
+            $infect->value_100 = $_POST['value'];
+        }
+
+        if($infect->id == NULL)
+        {
+            $infect->infect_id = $_POST['infect_id'];
+            $infect->year = $_POST['year'];
+            $infect->district_id = $_POST['district_id'];
+            $infect->subject_id = $_POST['subject_id'];
+        }
+
+        $infect->save();
+    }
+
+	public function action_change_datainfect()
 	{
 		$data_O = ORM::factory('datainfect')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 
@@ -60,42 +95,5 @@ class Controller_Ajax extends Controller {
 		$view_panel1->subject_id = $_POST['subject_id'];
 
 		echo json_encode(array('panel1' => $view_panel1->render()));
-	}
-
-    public function  action_change_data()
-    {
-        $infect_O = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
-
-        $data = array();
-
-        echo json_encode(array('result' => $data));
-    }
-
-	public function  action_infect_element()
-	{
-		$infect = ORM::factory('datainfect', array(
-			'infect_id' => $_POST['infect_id'],
-			'district_id' => $_POST['district_id'],
-			'subject_id' =>$_POST['subject_id'],
-			'year' => $_POST['year']));
-
-		if($_POST['type'] == 0)
-		{
-			$infect->value = $_POST['value'];
-		}
-		else
-		{
-			$infect->value_100 = $_POST['value'];
-		}
-
-		if($infect->id == NULL)
-		{
-			$infect->infect_id = $_POST['infect_id'];
-			$infect->year = $_POST['year'];
-			$infect->district_id = $_POST['district_id'];
-			$infect->subject_id = $_POST['subject_id'];
-		}
-
-		$infect->save();
 	}
 }

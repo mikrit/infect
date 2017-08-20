@@ -31,7 +31,7 @@ class Controller_Data extends Controller_Base
 		if($user_subject == 0)
 		{
 			$subjects = ORM::factory('subject')->where('district_id', '=', 1)->find_all()->as_array('id', 'title');
-			$subject_id = 18;
+			$subject_id = 1;
 		}
         else
         {
@@ -76,32 +76,8 @@ class Controller_Data extends Controller_Base
 		$view_panel1->district_id = $district_id;
 		$view_panel1->subject_id = $subject_id;
 
-		//------- panel2 -------------
-		$view_panel2 = View::factory('data/tabs/panel2');
-
-		$infects = ORM::factory('infect')->find_all();
-
-		$view_panel2->infects = $infects;
-		$view_panel2->data = $data;
-
-		$view_panel2->year_now = $year_now;
-		$view_panel2->district_id = $district_id;
-		$view_panel2->subject_id = $subject_id;
-
-		//------- panel3 -------------
-		$view_panel3 = View::factory('data/tabs/panel3');
-		$view_panel4 = View::factory('data/tabs/panel4');
-		$view_panel5 = View::factory('data/tabs/panel5');
-		$view_panel6 = View::factory('data/tabs/panel6');
-		$view_panel7 = View::factory('data/tabs/panel7');
-
 		$view->panel1 = $view_panel1->render();
-		$view->panel2 = $view_panel2->render();
-		$view->panel3 = $view_panel3->render();
-		$view->panel4 = $view_panel4->render();
-		$view->panel5 = $view_panel5->render();
-		$view->panel6 = $view_panel6->render();
-		$view->panel7 = $view_panel7->render();
+
 
 		$this->template->content = $view->render();
 	}
