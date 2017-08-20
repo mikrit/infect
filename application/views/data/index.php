@@ -32,25 +32,25 @@
 
         <ul class="nav navmenu-nav">
             <li class="active">
-                <?=HTML::anchor('#', 'Инфекционная заболеваемость');?>
+                <?=HTML::anchor('#', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Инф служба', array('id' => ''));?>
+                <?=HTML::anchor('#', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Стац помощь', array('id' => ''));?>
+                <?=HTML::anchor('#', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'СПИД-центры', array('id' => ''));?>
+                <?=HTML::anchor('#', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Амбулат помощь', array('id' => ''));?>
+                <?=HTML::anchor('#', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'КДЦ', array('id' => ''));?>
+                <?=HTML::anchor('#', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Вирусные гепатиты', array('id' => ''));?>
+                <?=HTML::anchor('#', 'Вирусные гепатиты', array('class' => 'tabs', 'id' => 'gepatid'));?>
             </li>
         </ul>
     </div>
@@ -63,6 +63,28 @@
     $('select').select2({
         language: "ru",
         width: '100%'
+    });
+
+    $('.tabs').click(function (){
+        var table = $(this).attr('id');
+        var year = $('#year').val();
+        var district_id = $('#district').val();
+        var subject_id = $('#subject').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/ajax/change_data",
+            dataType: "json",
+            data: {
+                table: table,
+                year: year,
+                district_id: district_id,
+                subject_id: subject_id
+            },
+            success: function(data){
+                $('#panel').html(data.panel);
+            }
+        });
     });
 
     $("#f_1").on('change', '#year, #subject', function()

@@ -96,4 +96,39 @@ class Controller_Ajax extends Controller {
 
 		echo json_encode(array('panel1' => $view_panel1->render()));
 	}
+
+    public function action_change_data()
+    {
+        $tabs = array(
+            'infect' => 'panel1',
+            'info' => 'panel1',
+            'stachelp' => 'panel1',
+            'spid' => 'panel1',
+            'ambulathelp' => 'panel1',
+            'kdc' => 'panel1',
+            'gepatid' => 'panel1',
+        );
+
+
+        $data_O = ORM::factory('data'.$_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
+
+        $data = array();
+        foreach($data_O as $elem)
+        {
+            $data[$elem->infect_id] = array($elem->value, $elem->value_100);
+        }
+
+        $view_panel = View::factory('data/tabs/'.$tabs[$_POST['table']]);
+
+        $infects = ORM::factory('infect')->find_all();
+
+        $view_panel->infects = $infects;
+        $view_panel->data = $data;
+
+        $view_panel->year_now = $_POST['year'];
+        $view_panel->district_id = $_POST['district_id'];
+        $view_panel->subject_id = $_POST['subject_id'];
+
+        echo json_encode(array('panel' => $view_panel->render()));
+    }
 }
