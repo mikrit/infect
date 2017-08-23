@@ -28,10 +28,10 @@
 						<?}?>
 					</td>
 					<td>
-						<?=Form::input('elem_'.$infect->id, isset($data[$infect->id][0]) ? $data[$infect->id][0] : '', array("class" => "form-control infect", "id" => "elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 0))?>
+						<?=Form::input('elem_'.$infect->id, isset($data[$infect->id][0]) ? $data[$infect->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 0))?>
 					</td>
 					<td>
-						<?=Form::input('t_elem_'.$infect->id, isset($data[$infect->id][1]) ? $data[$infect->id][1] : '', array("class" => "form-control infect", "id" => "t_elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 1))?>
+						<?=Form::input('t_elem_'.$infect->id, isset($data[$infect->id][1]) ? $data[$infect->id][1] : '', array("class" => "form-control add_element", "id" => "t_elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 1))?>
 					</td>
 				</tr>
 			<?}?>
@@ -42,6 +42,7 @@
 			</tr>
 		</tbody>
 	</table>
+<?=Form::hidden('table', $table, array("id" => "table"));?>
 <?=Form::hidden('year', $year_now, array("id" => "year"));?>
 <?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
 <?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>

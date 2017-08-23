@@ -45,10 +45,12 @@ class Controller_Ajax extends Controller {
 		echo json_encode(array('result' => $select));
 	}
 
-    public function action_infect_element()
+    public function action_add_element()
     {
-        $infect = ORM::factory('datainfect', array(
-            'infect_id' => $_POST['infect_id'],
+        $table = $_POST['table'];
+
+        $infect = ORM::factory('data'.$table, array(
+            'elem_id' => $_POST['elem_id'],
             'district_id' => $_POST['district_id'],
             'subject_id' =>$_POST['subject_id'],
             'year' => $_POST['year']));
@@ -64,7 +66,7 @@ class Controller_Ajax extends Controller {
 
         if($infect->id == NULL)
         {
-            $infect->infect_id = $_POST['infect_id'];
+            $infect->elem_id = $_POST['elem_id'];
             $infect->year = $_POST['year'];
             $infect->district_id = $_POST['district_id'];
             $infect->subject_id = $_POST['subject_id'];
@@ -73,49 +75,24 @@ class Controller_Ajax extends Controller {
         $infect->save();
     }
 
-	public function action_change_datainfect()
-	{
-		$data_O = ORM::factory('datainfect')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
-
-		$data = array();
-		foreach($data_O as $elem)
-		{
-			$data[$elem->infect_id] = array($elem->value, $elem->value_100);
-		}
-
-		$view_panel1 = View::factory('data/tabs/panel1');
-
-		$infects = ORM::factory('infect')->find_all();
-
-		$view_panel1->infects = $infects;
-		$view_panel1->data = $data;
-
-		$view_panel1->year_now = $_POST['year'];
-		$view_panel1->district_id = $_POST['district_id'];
-		$view_panel1->subject_id = $_POST['subject_id'];
-
-		echo json_encode(array('panel1' => $view_panel1->render()));
-	}
-
     public function action_change_data()
     {
         $tabs = array(
             'infect' => 'panel1',
-            'info' => 'panel1',
-            'stachelp' => 'panel1',
-            'spid' => 'panel1',
-            'ambulathelp' => 'panel1',
-            'kdc' => 'panel1',
-            'gepatid' => 'panel1',
+            'info' => 'panel2',
+            'stachelp' => 'panel3',
+            'spid' => 'panel4',
+            'ambulathelp' => 'panel5',
+            'kdc' => 'panel6',
+            'gepatid' => 'panel7',
         );
-
 
         $data_O = ORM::factory('data'.$_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 
         $data = array();
-        foreach($data_O as $elem)
+        foreach($data_O as $el_data)
         {
-            $data[$elem->infect_id] = array($elem->value, $elem->value_100);
+            $data[$el_data->elem_id] = array($el_data->value, $el_data->value_100);
         }
 
         $view_panel = View::factory('data/tabs/'.$tabs[$_POST['table']]);
@@ -125,6 +102,7 @@ class Controller_Ajax extends Controller {
         $view_panel->infects = $infects;
         $view_panel->data = $data;
 
+        $view_panel->table = $_POST['table'];
         $view_panel->year_now = $_POST['year'];
         $view_panel->district_id = $_POST['district_id'];
         $view_panel->subject_id = $_POST['subject_id'];

@@ -55,7 +55,7 @@
         </ul>
     </div>
     <div id="panel" class="col-sm-6 col-md-8 col-lg-8 container" >
-        <?=$panel1?>
+        <?=$panel?>
     </div>
 </div>
 
@@ -89,27 +89,30 @@
 
     $("#f_1").on('change', '#year, #subject', function()
     {
+        var table = $('#table').val();
         var year = $('#year').val();
         var district_id = $('#district').val();
         var subject_id = $('#subject').val();
 
         $.ajax({
             type: "POST",
-            url: "/ajax/change_datainfect",
+            url: "/ajax/change_data",
             dataType: "json",
             data: {
+                table: table,
                 year: year,
                 district_id: district_id,
                 subject_id: subject_id
             },
             success: function(data){
-                $('#panel').html(data.panel1);
+                $('#panel').html(data.panel);
             }
         });
     });
 
     $("#f_1").on('change', '#district', function()
     {
+        var table = $('#table').val();
         var year = $('#year').val();
         var district_id = $('#district').val();
 
@@ -127,52 +130,53 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/ajax/change_datainfect",
+                    url: "/ajax/change_data",
                     dataType: "json",
                     data: {
+                        table: table,
                         year: year,
                         district_id: district_id,
                         subject_id: subject_id
                     },
                     success: function(data){
-                        $('#panel').html(data.panel1);
+                        $('#panel').html(data.panel);
                     }
                 });
             }
         });
     });
 
-    $("#panel").on('change', '.infect', function(){
+    $("#panel").on('change', '.add_element', function()
+    {
+        var table = $('#table').val();
         var year = $('#year').val();
         var district_id = $('#district').val();
         var subject_id = $('#subject').val();
 
-        var elem_id = $(this).attr('id');
-        var infect_id = $(this).data('id');
+        var val_id = $(this).attr('id');
+        var elem_id = $(this).data('id');
         var type = $(this).data('type');
 
         if(isNaN($(this).val()))
         {
-            $('#'+elem_id).css('border-color', 'red');
+            $('#'+val_id).css('border-color', 'red');
         }
         else
         {
-            $('#'+elem_id).css('border-color', '');
+            $('#'+val_id).css('border-color', '');
 
             $.ajax({
                 type: "POST",
-                url: "/ajax/infect_element",
+                url: "/ajax/add_element",
                 dataType: "json",
                 data: {
-                    infect_id: infect_id,
-                    value: $('#'+elem_id).val(),
+                    elem_id: elem_id,
+                    value: $('#'+val_id).val(),
+                    table: table,
                     year: year,
                     district_id: district_id,
                     subject_id: subject_id,
                     type: type
-                },
-                success: function(data){
-                    $('#subject').html(data.result);
                 }
             });
         }

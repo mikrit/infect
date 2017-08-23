@@ -43,12 +43,7 @@ class Controller_Data extends Controller_Base
 		$data = array();
 		foreach($data_O as $elem)
 		{
-			$data[$elem->infect_id] = array($elem->value, $elem->value_100);
-		}
-
-		if(count($_POST))
-		{
-			var_dump($_POST);die;
+			$data[$elem->elem_id] = array($elem->value, $elem->value_100);
 		}
 
 		$view = View::factory('data/index');
@@ -64,20 +59,19 @@ class Controller_Data extends Controller_Base
 		$view->subject_id = $subject_id;
 		$view->user_subject = $user_subject;
 
-		//------- panel1 -------------
-		$view_panel1 = View::factory('data/tabs/panel1');
+		$view_panel = View::factory('data/tabs/panel1');
 
 		$infects = ORM::factory('infect')->find_all();
 
-		$view_panel1->infects = $infects;
-		$view_panel1->data = $data;
+		$view_panel->infects = $infects;
+		$view_panel->data = $data;
 
-		$view_panel1->year_now = $year_now;
-		$view_panel1->district_id = $district_id;
-		$view_panel1->subject_id = $subject_id;
+        $view_panel->table = 'infect';
+        $view_panel->year_now = $year_now;
+		$view_panel->district_id = $district_id;
+		$view_panel->subject_id = $subject_id;
 
-		$view->panel1 = $view_panel1->render();
-
+		$view->panel = $view_panel->render();
 
 		$this->template->content = $view->render();
 	}
