@@ -18,20 +18,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?foreach($infects as $infect){?>
+			<?foreach($titles as $title){?>
 				<tr>
 					<td>
-						<?if($infect->bold == 1){?>
-							<b><?=$infect->title?></b>
+						<?if($title->bold == 1){?>
+							<b><?=$title->title?></b>
 						<?}else{?>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$infect->title?>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$title->title?>
 						<?}?>
 					</td>
 					<td>
-						<?=Form::input('elem_'.$infect->id, isset($data[$infect->id][0]) ? $data[$infect->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 0))?>
+						<?=Form::input('elem_'.$title->id, isset($data[$title->id][0]) ? $data[$title->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-type" => 0))?>
 					</td>
 					<td>
-						<?=Form::input('t_elem_'.$infect->id, isset($data[$infect->id][1]) ? $data[$infect->id][1] : '', array("class" => "form-control add_element", "id" => "t_elem_".$infect->id, "type" => "text", "data-id" => $infect->id, "data-type" => 1))?>
+						<?=Form::input('t_elem_'.$title->id, isset($data[$title->id][1]) ? $data[$title->id][1] : '', array("class" => "form-control add_element", "id" => "t_elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-type" => 1))?>
 					</td>
 				</tr>
 			<?}?>

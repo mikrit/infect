@@ -61,9 +61,9 @@ class Controller_Data extends Controller_Base
 
 		$view_panel = View::factory('data/tabs/panel1');
 
-		$infects = ORM::factory('infect')->find_all();
+		$titles = ORM::factory('infect')->find_all();
 
-		$view_panel->infects = $infects;
+		$view_panel->titles = $titles;
 		$view_panel->data = $data;
 
         $view_panel->table = 'infect';

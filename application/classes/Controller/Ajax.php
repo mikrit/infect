@@ -78,8 +78,8 @@ class Controller_Ajax extends Controller {
     public function action_change_data()
     {
         $tabs = array(
-            'infect' => 'panel1',
-            'info' => 'panel2',
+            'infect' => 'Инфекционная заболеваемость',
+            'info' => 'Инф служба',
             'stachelp' => 'panel3',
             'spid' => 'panel4',
             'ambulathelp' => 'panel5',
@@ -95,12 +95,14 @@ class Controller_Ajax extends Controller {
             $data[$el_data->elem_id] = array($el_data->value, $el_data->value_100);
         }
 
-        $view_panel = View::factory('data/tabs/'.$tabs[$_POST['table']]);
+        $view_panel = View::factory('data/panel');
 
-        $infects = ORM::factory('infect')->find_all();
+        $titles = ORM::factory($_POST['table'])->find_all();
 
-        $view_panel->infects = $infects;
+        $view_panel->titles = $titles;
         $view_panel->data = $data;
+
+        $view_panel->title = $tabs[$_POST['table']];
 
         $view_panel->table = $_POST['table'];
         $view_panel->year_now = $_POST['year'];
