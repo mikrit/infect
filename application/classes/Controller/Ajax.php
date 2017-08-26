@@ -80,11 +80,11 @@ class Controller_Ajax extends Controller {
         $tabs = array(
             'infect' => 'Инфекционная заболеваемость',
             'info' => 'Инф служба',
-            'stachelp' => 'panel3',
-            'spid' => 'panel4',
-            'ambulathelp' => 'panel5',
-            'kdc' => 'panel6',
-            'gepatid' => 'panel7',
+            'stachelp' => 'Стац помощь',
+            'spid' => 'СПИД-центры',
+            'ambulathelp' => 'Амбулат помощь',
+            'kdc' => 'КДЦ',
+            'gepatid' => 'Вирусные гепатиты',
         );
 
         $data_O = ORM::factory('data'.$_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
@@ -92,7 +92,14 @@ class Controller_Ajax extends Controller {
         $data = array();
         foreach($data_O as $el_data)
         {
-            $data[$el_data->elem_id] = array($el_data->value, $el_data->value_100);
+            if($_POST['table'] == 'infect')
+            {
+                $data[$el_data->elem_id] = array($el_data->value, $el_data->value_100);
+            }
+            else
+            {
+                $data[$el_data->elem_id] = array($el_data->value);
+            }
         }
 
         $view_panel = View::factory('data/panel');
