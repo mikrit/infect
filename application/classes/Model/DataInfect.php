@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Model_DataInfect extends ORM
+class Model_Datainfect extends ORM
 {
 	protected $_belongs_to = array(
 		'district'	=> array(
