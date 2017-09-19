@@ -41,11 +41,6 @@
                     <?}?>
 				</tr>
 			<?}?>
-			<tr>
-			<td colspan="3" class="text-right">
-				<?=Form::button('button', 'Сохранить', array("id" => "send_infect_illness", "class" => "btn btn-primary"))?>
-			</td>
-			</tr>
 		</tbody>
 	</table>
 <?=Form::hidden('table', $table, array("id" => "table"));?>

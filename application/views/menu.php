@@ -25,6 +25,9 @@
 				<li>
 					<?=HTML::anchor('adminka/list_users', 'Сотрудники'); ?>
 				</li>
+                <li>
+					<?=HTML::anchor('adminka/list_infects', 'Списки инфекций'); ?>
+				</li>
 				<li>
 					<?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
 				</li>

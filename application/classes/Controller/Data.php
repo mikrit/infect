@@ -59,15 +59,16 @@ class Controller_Data extends Controller_Base
 		$view->subject_id = $subject_id;
 		$view->user_subject = $user_subject;
 
-		$view_panel = View::factory('data/tabs/panel1');
+		$view_panel = View::factory('data/panel');
 
 		$titles = ORM::factory('infect')->find_all();
 
 		$view_panel->titles = $titles;
 		$view_panel->data = $data;
 
-        $view_panel->table = 'infect';
-        $view_panel->year_now = $year_now;
+		$view_panel->table = 'infect';
+		$view_panel->title = 'Инфекционная заболеваемость';
+		$view_panel->year_now = $year_now;
 		$view_panel->district_id = $district_id;
 		$view_panel->subject_id = $subject_id;
 

@@ -185,6 +185,24 @@ class Controller_Adminka extends Controller_Base
         $this->template->content = $view->render();
     }
 
+    public function action_list_infects()
+	{
+		$view = View::factory('adminka/list_infects');
+
+		$view_panel = View::factory('adminka/panel');
+
+		$titles = ORM::factory('infect')->find_all();
+
+		$view_panel->titles = $titles;
+
+		$view_panel->table = 'infect';
+		$view_panel->title = 'Инфекционная заболеваемость';
+
+		$view->panel = $view_panel->render();
+
+		$this->template->content = $view->render();
+	}
+
     public function action_logs()
     {
         $view = View::factory('adminka/logs');
