@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
 <div class="row">
-	<div id="sidebar-left" class="col-lg-3">
+	<div id="sidebar-left" class="col-lg-2">
 		<ul class="nav navmenu-nav">
 			<li class="active">
 				<?=HTML::anchor('#', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
@@ -26,7 +26,7 @@
 			</li>
 		</ul>
 	</div>
-	<div id="panel" class="col-lg-9 container">
+	<div id="panel" class="col-lg-10 container">
 		<?=$panel?>
 	</div>
 </div>
