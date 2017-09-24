@@ -30,3 +30,77 @@
 		<?=$panel?>
 	</div>
 </div>
+
+<script>
+	$('.edit_title').on('change', function(){
+		var elem_id = $(this).attr('id');
+		var title = $(this).val();
+
+		var table = $('#table').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/edit_elem_title",
+			dataType: "json",
+			data: {
+				elem_id: elem_id,
+				title: title,
+				table: table
+			}
+		});
+	});
+
+	$('.edit_bold').on('change', function(){
+		var elem_id = $(this).attr('id');
+		var value = $(this).val();
+
+		var table = $('#table').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/edit_elem_bold",
+			dataType: "json",
+			data: {
+				elem_id: elem_id,
+				value: value,
+				table: table
+			}
+		});
+	});
+
+	$('.edit_subtitle').on('change', function(){
+		var elem_id = $(this).attr('id');
+		var value = $(this).val();
+
+		var table = $('#table').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/edit_edit_subtitle",
+			dataType: "json",
+			data: {
+				elem_id: elem_id,
+				value: value,
+				table: table
+			}
+		});
+	});
+
+	$('.edit_formula').on('change', function(){
+		var elem_id = $(this).attr('id');
+		var formula = $(this).val();
+
+		var table = $('#table').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/edit_elem_formula",
+			dataType: "json",
+			data: {
+				elem_id: elem_id,
+				formula: formula,
+				table: table
+			}
+		});
+	});
+</script>

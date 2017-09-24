@@ -49,7 +49,7 @@ class Controller_Ajax extends Controller {
     {
         $table = $_POST['table'];
 
-        $infect = ORM::factory('data'.$table, array(
+        $elem = ORM::factory('data'.$table, array(
             'elem_id' => $_POST['elem_id'],
             'district_id' => $_POST['district_id'],
             'subject_id' =>$_POST['subject_id'],
@@ -57,22 +57,22 @@ class Controller_Ajax extends Controller {
 
         if($_POST['type'] == 0)
         {
-            $infect->value = $_POST['value'];
+			$elem->value = $_POST['value'];
         }
         else
         {
-            $infect->value_100 = $_POST['value'];
+			$elem->value_100 = $_POST['value'];
         }
 
-        if($infect->id == NULL)
+        if($elem->id == NULL)
         {
-            $infect->elem_id = $_POST['elem_id'];
-            $infect->year = $_POST['year'];
-            $infect->district_id = $_POST['district_id'];
-            $infect->subject_id = $_POST['subject_id'];
+			$elem->elem_id = $_POST['elem_id'];
+			$elem->year = $_POST['year'];
+			$elem->district_id = $_POST['district_id'];
+			$elem->subject_id = $_POST['subject_id'];
         }
 
-        $infect->save();
+		$elem->save();
     }
 
     public function action_change_data()
@@ -118,4 +118,44 @@ class Controller_Ajax extends Controller {
 
         echo json_encode(array('panel' => $view_panel->render()));
     }
+
+	public function action_edit_elem_title()
+	{
+		$table = $_POST['table'];
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
+
+		$elem->title = $_POST['title'];
+		$elem->save();
+	}
+
+	public function action_edit_elem_bold()
+	{
+		$table = $_POST['table'];
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
+
+		$elem->bold = $_POST['value'];
+		$elem->save();
+	}
+
+	public function action_edit_elem_subtitle()
+	{
+		$table = $_POST['table'];
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
+
+		$elem->subtitle = $_POST['value'];
+		$elem->save();
+	}
+
+	public function action_edit_elem_formula()
+	{
+		$table = $_POST['table'];
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
+
+		$elem->formula = $_POST['formula'];
+		$elem->save();
+	}
 }
