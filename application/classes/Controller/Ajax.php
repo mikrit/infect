@@ -158,4 +158,25 @@ class Controller_Ajax extends Controller {
 		$elem->formula = $_POST['formula'];
 		$elem->save();
 	}
+
+	public function action_change_tab()
+	{
+		$tabs = array(
+			'infect' => 'Инфекционная заболеваемость',
+			'info' => 'Инф служба',
+			'stachelp' => 'Стац помощь',
+			'spid' => 'СПИД-центры',
+			'ambulathelp' => 'Амбулат помощь',
+			'kdc' => 'КДЦ',
+			'gepatid' => 'Вирусные гепатиты',
+		);
+
+		$titles = ORM::factory($_POST['table'])->find_all();
+
+		$view_panel = View::factory('adminka/panel');
+		$view_panel->titles = $titles;
+		$view_panel->title = $tabs[$_POST['table']];
+
+		echo json_encode(array('panel' => $view_panel->render()));
+	}
 }

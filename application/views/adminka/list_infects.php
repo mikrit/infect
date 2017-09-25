@@ -32,6 +32,24 @@
 </div>
 
 <script>
+	$('.tabs').click(function (){
+		var table = $(this).attr('id');
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/change_tab",
+			dataType: "json",
+			data: {
+				table: table
+			},
+			success: function(data){
+				$('#panel').html(data.panel);
+			}
+		});
+	});
+</script>
+
+<script>
 	$('.edit_title').on('change', function(){
 		var elem_id = $(this).attr('id');
 		var title = $(this).val();

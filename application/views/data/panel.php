@@ -6,17 +6,12 @@
 	<table class="table" width="100%">
 		<thead>
 			<tr>
-				<th width="60%">
-                    <?=$table == 'infect' ? 'Инфекционная и паразитарная заболеваемость' : ''?>
+				<th width="80%">
+					Название
 				</th>
 				<th width="20%">
-					<?=$table == 'infect' ? 'Абс.' : 'Показатели'?>
+					Показатели
 				</th>
-                <?if($table == 'infect'){?>
-                    <th width="20%">
-                        На 100 тыс. населения
-                    </th>
-                <?}?>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,11 +29,6 @@
 						    <?=Form::input('elem_'.$title->id, isset($data[$title->id][0]) ? $data[$title->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-type" => 0))?>
 					    <?}?>
                     </td>
-                    <?if($table == 'infect'){?>
-                        <td>
-                            <?=Form::input('t_elem_'.$title->id, isset($data[$title->id][1]) ? $data[$title->id][1] : '', array("class" => "form-control add_element", "id" => "t_elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-type" => 1))?>
-                        </td>
-                    <?}?>
 				</tr>
 			<?}?>
 		</tbody>

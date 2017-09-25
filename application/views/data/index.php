@@ -4,7 +4,7 @@
 <?=HTML::script('media/js/select2/select2.min.js')?>
 
 <div class="row">
-    <div id="sidebar-left" class="col-sm-6 col-md-4 col-lg-4">
+    <div id="sidebar-left" class="col-sm-5 col-md-4 col-lg-4">
         <div id="f_1">
             <?=Form::open('data', array('method'=>'post', 'name' => 'form'))?>
             <div class="form-group">
@@ -54,7 +54,7 @@
             </li>
         </ul>
     </div>
-    <div id="panel" class="col-sm-6 col-md-8 col-lg-8 container" >
+    <div id="panel" class="col-sm-7 col-md-8 col-lg-8 container" >
         <?=$panel?>
     </div>
 </div>

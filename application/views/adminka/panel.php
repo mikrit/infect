@@ -45,5 +45,4 @@
 			<?}?>
 		</tbody>
 	</table>
-	<?=Form::hidden('table', $table, array("id" => "table"));?>
 <?=Form::close()?>
