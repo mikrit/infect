@@ -26,15 +26,15 @@
 					</td>
 					<td>
                         <?if($title->subtitle == 0){?>
-						    <?=Form::input('elem_'.$title->id, isset($data[$title->id][0]) ? $data[$title->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-type" => 0))?>
+						    <?=Form::input('elem_'.$title->id, isset($data[$title->id][0]) ? $data[$title->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
 					    <?}?>
                     </td>
 				</tr>
 			<?}?>
 		</tbody>
 	</table>
-<?=Form::hidden('table', $table, array("id" => "table"));?>
-<?=Form::hidden('year', $year_now, array("id" => "year"));?>
-<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
-<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
+	<?=Form::hidden('table', $table, array("id" => "table"));?>
+	<?=Form::hidden('year', $year_now, array("id" => "year"));?>
+	<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
+	<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
 <?=Form::close()?>

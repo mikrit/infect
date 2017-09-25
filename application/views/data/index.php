@@ -155,7 +155,6 @@
 
         var val_id = $(this).attr('id');
         var elem_id = $(this).data('id');
-        var type = $(this).data('type');
 
         if(isNaN($(this).val()))
         {
@@ -175,8 +174,7 @@
                     table: table,
                     year: year,
                     district_id: district_id,
-                    subject_id: subject_id,
-                    type: type
+                    subject_id: subject_id
                 }
             });
         }

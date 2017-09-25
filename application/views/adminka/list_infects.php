@@ -47,9 +47,7 @@
 			}
 		});
 	});
-</script>
 
-<script>
 	$('.edit_title').on('change', function(){
 		var elem_id = $(this).attr('id');
 		var title = $(this).val();
