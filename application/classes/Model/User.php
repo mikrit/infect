@@ -32,6 +32,12 @@ class Model_User extends Model_Auth_User
             ->rule('password_confirm',  'matches', array(':validation', 'password_confirm', 'password'));
 	}
 
+    public static function validation_prof($values)
+    {
+        return Validation::factory($values)
+            ->rule('fio', 'not_empty');
+    }
+
     public static function validation_up1($values)
     {
         return Validation::factory($values)

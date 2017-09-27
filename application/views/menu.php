@@ -14,7 +14,7 @@
 	</li>
 	<?if($admin){?>
 		<li <?if($request[0] == 'user'){echo 'class="active"';}?>>
-			<?HTML::anchor('user', 'Пользователи'); //!!!!!!!!!!НЕ СДЕЛАНО?>
+			<?=HTML::anchor('user', 'Настройки'); //!!!!!!!!!!НЕ СДЕЛАНО?>
 		</li>
 
 		<?$active = '';if($request[0] == 'adminka'){$active = ' active';}?>
