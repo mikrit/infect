@@ -28,9 +28,7 @@
                         <?if($title->subtitle == 0){?>
 						    <?=Form::input('elem_'.$title->id, isset($data[$title->id]) ? $data[$title->id] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
 					    <?}else{?>
-                            <div id="elem_<?=$title->id?>">
-                                1
-                            </div>
+                            <div class="formula" id="elem_<?=$title->id?>"><?=$title->formula?></div>
                         <?}?>
                     </td>
 				</tr>
@@ -44,5 +42,11 @@
 <?=Form::close()?>
 
 <script>
+    $('.formula').each(function(){
 
+        var reg = /[+-/*]/;
+        var txt = $(this).html();
+
+        console.log(txt.split(reg));
+    });
 </script>
