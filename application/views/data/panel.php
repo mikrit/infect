@@ -26,8 +26,12 @@
 					</td>
 					<td>
                         <?if($title->subtitle == 0){?>
-						    <?=Form::input('elem_'.$title->id, isset($data[$title->id][0]) ? $data[$title->id][0] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
-					    <?}?>
+						    <?=Form::input('elem_'.$title->id, isset($data[$title->id]) ? $data[$title->id] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
+					    <?}else{?>
+                            <div id="elem_<?=$title->id?>">
+                                1
+                            </div>
+                        <?}?>
                     </td>
 				</tr>
 			<?}?>
