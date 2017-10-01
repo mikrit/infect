@@ -38,3 +38,7 @@
 	<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
 	<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
 <?=Form::close()?>
+
+<script>
+
+</script>

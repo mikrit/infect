@@ -48,12 +48,14 @@ class Controller_Ajax extends Controller
 			'elem_id' => $_POST['elem_id'],
 			'district_id' => $_POST['district_id'],
 			'subject_id' => $_POST['subject_id'],
-			'year' => $_POST['year'],
-			'value' => $_POST['value'])
+			'year' => $_POST['year'])
 		);
+
+        $elem->value = $_POST['value'];
 
 		if ($elem->id == NULL) {
 			$elem->elem_id = $_POST['elem_id'];
+			$elem->value = $_POST['value'];
 			$elem->year = $_POST['year'];
 			$elem->district_id = $_POST['district_id'];
 			$elem->subject_id = $_POST['subject_id'];
