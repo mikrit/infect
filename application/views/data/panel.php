@@ -15,22 +15,22 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?foreach($titles as $title){?>
+			<?$sub=0;foreach($titles as $title){?>
 				<tr>
 					<td>
-						<?if($title->bold == 1){?>
+						<?if($title->bold == 1){$sub=0;?>
 							<b><?=$title->title?></b>
 						<?}else{?>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$title->title?>
 						<?}?>
 					</td>
 					<td>
-                        <?if($title->subtitle == 0){?>
-						    <?=Form::input('elem_'.$title->id, isset($data[$title->id]) ? $data[$title->id] : '', array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
-					    <?}else{?>
-                            <div class="formula" id="elem_<?=$title->id?>"><?=$title->formula?></div>
-                        <?}?>
-                    </td>
+						<?if($title->subtitle == 0){?>
+							<?=Form::input('elem_'.$title->id, isset($data[$title->id]) ? $data[$title->id] : '', array("class" => "form-control add_element par_".$sub, "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-par" => $sub))?>
+						<?}else{$sub = $title->id;?>
+							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>">0</div>
+						<?}?>
+					</td>
 				</tr>
 			<?}?>
 		</tbody>
@@ -42,11 +42,43 @@
 <?=Form::close()?>
 
 <script>
-    $('.formula').each(function(){
+	var arr = {};
+	<?foreach($data as $key => $val){?>
+		arr.<?='id'.$key?> = <?=$val?>;
+	<?}?>
 
-        var reg = /[+-/*]/;
-        var txt = $(this).html();
+	$('.formula').each(function()
+	{
+		var elem_id = $(this).attr('id');
+		var reg = /id\d+/g;
+		var txt = $(this).data('formula');
 
-        console.log(txt.split(reg));
-    });
+		txt.match(reg).map(function(elem)
+		{
+			if(arr[elem] != undefined)
+			{
+				txt = txt.replace(elem, arr[elem]);
+			}
+			else
+			{
+				txt = txt.replace(elem, 0);
+			}
+		});
+
+		$('#'+elem_id).html(eval(txt));
+	});
+
+	$('.add_element').change(function(){
+		var parent = $(this).data('par');
+
+		var sum = 0;
+		$('.par_'+parent).map(function(){
+			if($(this).val() != '')
+			{
+				sum += Number($(this).val());
+			}
+		});
+
+		$('#elem_'+parent).html(sum);
+	});
 </script>

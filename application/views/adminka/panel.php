@@ -7,7 +7,7 @@
 		<thead>
 			<tr>
 				<th width="2%">
-					#
+					id
 				</th>
 				<th width="44%">
 					Название
@@ -19,7 +19,7 @@
 					Подзаголовок
 				</th>
 				<th width="24%">
-					Формула
+					Формула (Пример: id3+id4)
 				</th>
 			</tr>
 		</thead>
@@ -45,4 +45,5 @@
 			<?}?>
 		</tbody>
 	</table>
+	<?=Form::hidden('table', $table, array("id" => "table"));?>
 <?=Form::close()?>

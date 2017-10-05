@@ -92,7 +92,7 @@
 
 		$.ajax({
 			type: "POST",
-			url: "/ajax/edit_edit_subtitle",
+			url: "/ajax/edit_elem_subtitle",
 			dataType: "json",
 			data: {
 				elem_id: elem_id,
