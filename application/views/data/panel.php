@@ -15,10 +15,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?$sub=0;foreach($titles as $title){?>
+			<?foreach($titles as $title){?>
 				<tr>
 					<td>
-						<?if($title->bold == 1){$sub=0;?>
+						<?if($title->bold == 1){?>
 							<b><?=$title->title?></b>
 						<?}else{?>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$title->title?>
@@ -26,8 +26,8 @@
 					</td>
 					<td>
 						<?if($title->subtitle == 0){?>
-							<?=Form::input('elem_'.$title->id, isset($data[$title->id]) ? $data[$title->id] : '', array("class" => "form-control add_element par_".$sub, "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id, "data-par" => $sub))?>
-						<?}else{$sub = $title->id;?>
+							<?=Form::input('elem_'.$title->id, (isset($data[$title->id]) ? $data[$title->id] : ''), array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
+						<?}else{?>
 							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>">0</div>
 						<?}?>
 					</td>

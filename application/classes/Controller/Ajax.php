@@ -80,11 +80,7 @@ class Controller_Ajax extends Controller
 
 		$data = array();
 		foreach ($data_O as $el_data) {
-			if ($_POST['table'] == 'infect') {
-				$data[$el_data->elem_id] = array($el_data->value, $el_data->value_100);
-			} else {
-				$data[$el_data->elem_id] = array($el_data->value);
-			}
+			$data[$el_data->elem_id] = $el_data->value;
 		}
 
 		$view_panel = View::factory('data/panel');
@@ -161,6 +157,8 @@ class Controller_Ajax extends Controller
 		$view_panel = View::factory('adminka/panel');
 		$view_panel->titles = $titles;
 		$view_panel->title = $tabs[$_POST['table']];
+
+		$view_panel->table = $_POST['table'];
 
 		echo json_encode(array('panel' => $view_panel->render()));
 	}

@@ -48,7 +48,7 @@
 		});
 	});
 
-	$('.edit_title').on('change', function(){
+    $("#panel").on('change', '.edit_title', function(){
 		var elem_id = $(this).attr('id');
 		var title = $(this).val();
 
@@ -66,7 +66,7 @@
 		});
 	});
 
-	$('.edit_bold').on('change', function(){
+    $("#panel").on('change', '.edit_bold', function(){
 		var elem_id = $(this).attr('id');
 		var value = $(this).val();
 
@@ -84,7 +84,7 @@
 		});
 	});
 
-	$('.edit_subtitle').on('change', function(){
+	$("#panel").on('change', '.edit_subtitle', function(){
 		var elem_id = $(this).attr('id');
 		var value = $(this).val();
 
@@ -102,9 +102,13 @@
 		});
 	});
 
-	$('.edit_formula').on('change', function(){
+    $("#panel").on('change', '.edit_formula', function(){
 		var elem_id = $(this).attr('id');
 		var formula = $(this).val();
+
+        console.log(formula);
+
+        return;
 
 		var table = $('#table').val();
 
