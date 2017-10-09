@@ -48,10 +48,9 @@
 		});
 	});
 
-    $("#panel").on('change', '.edit_title', function(){
-		var elem_id = $(this).attr('id');
+	$("#panel").on('change', '.edit_title', function(){
+		var elem_id = $(this).data('id');
 		var title = $(this).val();
-
 		var table = $('#table').val();
 
 		$.ajax({
@@ -66,10 +65,9 @@
 		});
 	});
 
-    $("#panel").on('change', '.edit_bold', function(){
-		var elem_id = $(this).attr('id');
+	$("#panel").on('change', '.edit_bold', function(){
+		var elem_id = $(this).data('id');
 		var value = $(this).val();
-
 		var table = $('#table').val();
 
 		$.ajax({
@@ -85,9 +83,8 @@
 	});
 
 	$("#panel").on('change', '.edit_subtitle', function(){
-		var elem_id = $(this).attr('id');
+		var elem_id = $(this).data('id');
 		var value = $(this).val();
-
 		var table = $('#table').val();
 
 		$.ajax({
@@ -102,13 +99,15 @@
 		});
 	});
 
-    $("#panel").on('change', '.edit_formula', function(){
-		var elem_id = $(this).attr('id');
+	$("#panel").on('change', '.edit_formula', function(){
+		var elem_id = $(this).data('id');
 		var formula = $(this).val();
 
-        console.log(formula);
+		var cicle = incicle(formula);
 
-        return;
+		console.log(cicle);
+
+		return;
 
 		var table = $('#table').val();
 
@@ -123,4 +122,35 @@
 			}
 		});
 	});
+
+	var ids = [];
+	function incicle(data){
+		var isin = false;
+
+		var reg = /\d+/g;
+		var arr = data.match(reg);
+
+		arr.map(function(id){
+			var formula = $('#elem_'+id+' .edit_formula').val();
+
+			if(formula != '')
+			{
+				if(ids.indexOf(id) != -1) // есть
+				{
+					return true;
+				}
+				else
+				{
+					ids.push(id);
+					isin = incicle(formula);
+				}
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+		return isin;
+	}
 </script>

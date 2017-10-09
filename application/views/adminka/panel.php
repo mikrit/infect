@@ -25,21 +25,21 @@
 		</thead>
 		<tbody>
 			<?foreach($titles as $title){?>
-				<tr>
+				<tr id="elem_<?=$title->id?>">
 					<td>
 						<?=$title->id?>
 					</td>
 					<td>
-						<?=Form::input('title', $title->title, array('class' => 'form-control edit_title', 'id' => $title->id))?>
+						<?=Form::input('title', $title->title, array('class' => 'form-control edit_title', 'data-id' => $title->id))?>
 					</td>
 					<td>
-						<?=Form::select('bold', array(0 => 'Нет', 1 => 'Да'), $title->bold, array('class' => 'form-control edit_bold', 'id' => $title->id))?>
+						<?=Form::select('bold', array(0 => 'Нет', 1 => 'Да'), $title->bold, array('class' => 'form-control edit_bold', 'data-id' => $title->id))?>
 					</td>
 					<td>
-						<?=Form::select('subtitle', array(0 => 'Нет', 1 => 'Да'), $title->subtitle, array('class' => 'form-control edit_subtitle', 'id' => $title->id))?>
+						<?=Form::select('subtitle', array(0 => 'Нет', 1 => 'Да'), $title->subtitle, array('class' => 'form-control edit_subtitle', 'data-id' => $title->id))?>
 					</td>
 					<td>
-						<?=Form::input('formula', $title->formula, array('class' => 'form-control edit_formula', 'id' => $title->id))?>
+						<?=Form::input('formula', $title->formula, array('class' => 'form-control edit_formula', 'data-id' => $title->id))?>
 					</td>
 				</tr>
 			<?}?>
