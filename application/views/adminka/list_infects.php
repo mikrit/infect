@@ -103,6 +103,14 @@
 		var elem_id = $(this).data('id');
 		var formula = $(this).val();
 
+		var reg = /(\(*\d+[+-/*])+((\(*\d+|\d+\)*)[+-/*])*\d+\)*/g;
+
+		var result = formula.match(reg);
+
+		console.log(result)
+
+		return;
+
 		var cicle = incicle(formula);
 
 		console.log(cicle);
