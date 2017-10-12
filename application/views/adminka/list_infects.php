@@ -99,65 +99,93 @@
 		});
 	});
 
+	function is_formula(formula)
+	{
+		var is = false;
+
+		var reg = /(\(*(id\d+|\d+)[+-/*])+((\(*(id\d+|\d+)|(id\d+|\d+)\)*)[+-/*])*(id\d+|\d+)\)*/g;
+		var rformula = formula.match(reg)
+		var reg_formula = rformula == null ? 0 : rformula[0].length;
+
+		var ropen = formula.match(/\(/g);
+		var rclose = formula.match(/\)/g);
+		var open_s = ropen == null ? 0 : ropen.length;
+		var close_s = rclose == null ? 0 : rclose.length;
+
+		if(formula.length == reg_formula || open_s == close_s)
+		{
+			is = true;
+		}
+
+		return is;
+	}
+
+	var ids = [];
 	$("#panel").on('change', '.edit_formula', function(){
 		var elem_id = $(this).data('id');
 		var formula = $(this).val();
-
-		var reg = /(\(*\d+[+-/*])+((\(*\d+|\d+\)*)[+-/*])*\d+\)*/g;
-
-		var result = formula.match(reg);
-
-		console.log(result)
-
-		return;
-
-		var cicle = incicle(formula);
-
-		console.log(cicle);
-
-		return;
-
 		var table = $('#table').val();
 
-		$.ajax({
-			type: "POST",
-			url: "/ajax/edit_elem_formula",
-			dataType: "json",
-			data: {
-				elem_id: elem_id,
-				formula: formula,
-				table: table
-			}
-		});
-	});
+		ids.push(elem_id);
 
-	var ids = [];
-	function incicle(data){
-		var isin = false;
+		if(is_formula(formula))
+		{
+			var cicle = incicle(formula);
 
-		var reg = /\d+/g;
-		var arr = data.match(reg);
+			//console.log(cicle);
+			return;
 
-		arr.map(function(id){
-			var formula = $('#elem_'+id+' .edit_formula').val();
-
-			if(formula != '')
+			if(cicle == false)
 			{
-				if(ids.indexOf(id) != -1) // есть
-				{
-					return true;
-				}
-				else
-				{
-					ids.push(id);
-					isin = incicle(formula);
-				}
+
 			}
 			else
 			{
-				return false;
+				$.ajax({
+					type: "POST",
+					url: "/ajax/edit_elem_formula",
+					dataType: "json",
+					data: {
+						elem_id: elem_id,
+						formula: formula,
+						table: table
+					}
+				});
 			}
-		});
+		}
+		else
+		{
+			return;
+		}
+	});
+
+	function incicle(data){
+		var isin = true;
+		var arr = data.match(/id\d+/g);
+
+		if(arr != null)
+		{
+			arr.map(function(id){
+				var ff_id = id.match(/\d+/g);
+				var formula = $('#elem_'+ff_id+' .edit_formula').val();
+
+				console.log(isin);
+
+				if(ids.indexOf(ff_id[0]) != -1)
+				{
+					return false
+				}
+				else
+				{
+					ids.push(ff_id[0]);
+
+					if(is_formula(formula))
+					{
+						isin = incicle(formula);
+					}
+				}
+			});
+		}
 
 		return isin;
 	}
