@@ -63,8 +63,17 @@ class Controller_Data extends Controller_Base
 
 		$titles = ORM::factory('infect')->find_all();
 
+		$formuls_O = ORM::factory('infect')->where('formula', 'IS NOT', NULL)->and_where('formula', '<>', '')->find_all();
+
+		$formuls = array();
+		foreach($formuls_O as $formula)
+		{
+			$formuls[$formula->id] = $formula->formula;
+		}
+
 		$view_panel->titles = $titles;
 		$view_panel->data = $data;
+		$view_panel->formuls = $formuls;
 
 		$view_panel->table = 'infect';
 		$view_panel->title = 'Инфекционная заболеваемость';

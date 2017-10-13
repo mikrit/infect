@@ -47,6 +47,11 @@
 		arr.<?='id'.$key?> = <?=$val?>;
 	<?}?>
 
+	var formuls = {};
+	<?foreach($formuls as $key => $val){?>
+		formuls[<?=$key?>] = '<?=$val?>';
+	<?}?>
+
 	$('.formula').each(function()
 	{
 		var elem_id = $(this).attr('id');
@@ -69,16 +74,10 @@
 	});
 
 	$('.add_element').change(function(){
-		var parent = $(this).data('par');
+		var elem_id = $(this).data('id');
 
-		var sum = 0;
-		$('.par_'+parent).map(function(){
-			if($(this).val() != '')
-			{
-				sum += Number($(this).val());
-			}
-		});
+		console.log(elem_id, formuls);
 
-		$('#elem_'+parent).html(sum);
+		console.log(formuls[elem_id]);
 	});
 </script>
