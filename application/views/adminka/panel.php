@@ -39,6 +39,9 @@
 						<?=Form::select('subtitle', array(0 => 'Нет', 1 => 'Да'), $title->subtitle, array('class' => 'form-control edit_subtitle', 'data-id' => $title->id))?>
 					</td>
 					<td>
+						<div class="alert alert-danger fade in" id="error_<?=$title->id?>" style="display: none;">
+							<strong>Ошибка!</strong> Циклическая формула
+						</div>
 						<?=Form::input('formula', $title->formula, array('class' => 'form-control edit_formula', 'data-id' => $title->id))?>
 					</td>
 				</tr>

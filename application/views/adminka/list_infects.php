@@ -112,7 +112,7 @@
 		var open_s = ropen == null ? 0 : ropen.length;
 		var close_s = rclose == null ? 0 : rclose.length;
 
-		if(formula.length == reg_formula || open_s == close_s)
+		if(formula != '' && formula.length == reg_formula && open_s == close_s)
 		{
 			is = true;
 		}
@@ -122,25 +122,29 @@
 
 	var ids = [];
 	$("#panel").on('change', '.edit_formula', function(){
+		ids = [];
 		var elem_id = $(this).data('id');
 		var formula = $(this).val();
 		var table = $('#table').val();
 
 		ids.push(elem_id);
 
-		if(is_formula(formula))
+		if(is_formula(formula) || formula == '')
 		{
-			var cicle = incicle(formula);
-
-			//console.log(cicle);
-			return;
-
-			if(cicle == false)
+			cicle = false;
+			if(formula != '')
 			{
+				var cicle = incicle(formula, false);
+			}
 
+			if(cicle == true)
+			{
+				$('#error_'+elem_id).css('padding', '0');
+				$('#error_'+elem_id).show();
 			}
 			else
 			{
+				$('#error_'+elem_id).hide();
 				$.ajax({
 					type: "POST",
 					url: "/ajax/edit_elem_formula",
@@ -159,29 +163,24 @@
 		}
 	});
 
-	function incicle(data){
-		var isin = true;
+	function incicle(data, isin){
 		var arr = data.match(/id\d+/g);
-
 		if(arr != null)
 		{
 			arr.map(function(id){
-				var ff_id = id.match(/\d+/g);
+				var ff_id = Number(id.match(/\d+/g)[0]);
 				var formula = $('#elem_'+ff_id+' .edit_formula').val();
 
-				console.log(isin);
-
-				if(ids.indexOf(ff_id[0]) != -1)
+				if(ids.indexOf(ff_id) != -1)
 				{
-					return false
+					isin = true;
 				}
 				else
 				{
-					ids.push(ff_id[0]);
-
-					if(is_formula(formula))
+					if(is_formula(formula) && isin == false)
 					{
-						isin = incicle(formula);
+						ids.push(Number(ff_id));
+						isin = incicle(formula, isin);
 					}
 				}
 			});
