@@ -28,7 +28,7 @@
 						<?if($title->subtitle == 0){?>
 							<?=Form::input('elem_'.$title->id, (isset($data[$title->id]) ? $data[$title->id] : ''), array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
 						<?}else{?>
-							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>">0</div>
+							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]) ? $data[$title->id] : 0)?></div>
 						<?}?>
 					</td>
 				</tr>
@@ -40,44 +40,3 @@
 	<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
 	<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>
 <?=Form::close()?>
-
-<script>
-	var arr = {};
-	<?foreach($data as $key => $val){?>
-		arr.<?='id'.$key?> = <?=$val?>;
-	<?}?>
-
-	var formuls = {};
-	<?foreach($formuls as $key => $val){?>
-		formuls[<?=$key?>] = '<?=$val?>';
-	<?}?>
-
-	$('.formula').each(function()
-	{
-		var elem_id = $(this).attr('id');
-		var reg = /id\d+/g;
-		var txt = $(this).data('formula');
-
-		txt.match(reg).map(function(elem)
-		{
-			if(arr[elem] != undefined)
-			{
-				txt = txt.replace(elem, arr[elem]);
-			}
-			else
-			{
-				txt = txt.replace(elem, 0);
-			}
-		});
-
-		$('#'+elem_id).html(eval(txt));
-	});
-
-	$('.add_element').change(function(){
-		var elem_id = $(this).data('id');
-
-		console.log(elem_id, formuls);
-
-		console.log(formuls[elem_id]);
-	});
-</script>

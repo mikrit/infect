@@ -146,37 +146,40 @@
         });
     });
 
-    $("#panel").on('change', '.add_element', function()
-    {
-        var table = $('#table').val();
-        var year = $('#year').val();
-        var district_id = $('#district').val();
-        var subject_id = $('#subject').val();
+	$("#panel").on('change', '.add_element', function()
+	{
+		var table = $('#table').val();
+		var year = $('#year').val();
+		var district_id = $('#district').val();
+		var subject_id = $('#subject').val();
 
-        var val_id = $(this).attr('id');
-        var elem_id = $(this).data('id');
+		var val_id = $(this).attr('id');
+		var elem_id = $(this).data('id');
 
-        if(isNaN($(this).val()))
-        {
-            $('#'+val_id).css('border-color', 'red');
-        }
-        else
-        {
-            $('#'+val_id).css('border-color', '');
+		if(isNaN($(this).val()))
+		{
+			$('#'+val_id).css('border-color', 'red');
+		}
+		else
+		{
+			$('#'+val_id).css('border-color', '');
 
-            $.ajax({
-                type: "POST",
-                url: "/ajax/add_element",
-                dataType: "json",
-                data: {
-                    elem_id: elem_id,
-                    value: $('#'+val_id).val(),
-                    table: table,
-                    year: year,
-                    district_id: district_id,
-                    subject_id: subject_id
-                }
-            });
-        }
-    });
+			$.ajax({
+				type: "POST",
+				url: "/ajax/add_element",
+				dataType: "json",
+				data: {
+					elem_id: elem_id,
+					value: $('#'+val_id).val(),
+					table: table,
+					year: year,
+					district_id: district_id,
+					subject_id: subject_id
+				},
+				success: function(data){
+				$('#panel').html(data.panel);
+				}
+			});
+		}
+	});
 </script>
