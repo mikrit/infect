@@ -28,7 +28,7 @@
 						<?if($title->subtitle == 0){?>
 							<?=Form::input('elem_'.$title->id, (isset($data[$title->id]) ? $data[$title->id] : ''), array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
 						<?}else{?>
-							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]) ? $data[$title->id] : 0)?></div>
+							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]) ? number_format($data[$title->id], 2, '.', ' ') : 0)?></div>
 						<?}?>
 					</td>
 				</tr>

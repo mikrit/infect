@@ -185,7 +185,7 @@ class Controller_Ajax extends Controller
 
 		echo json_encode(array('panel' => $view_panel->render()));
 	}
-	
+
 	public function action_change_district()
 	{
 		if ($_POST['district_id'] != 0) {
