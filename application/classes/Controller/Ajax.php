@@ -97,7 +97,7 @@ class Controller_Ajax extends Controller
 			)
 		);
 
-		$elem->value = $post['value'];
+		$elem->value = $post['value'] == '' ? NULL : $post['value'];
 
 		if ($elem->id == NULL) {
 			$elem->elem_id = $post['elem_id'];
