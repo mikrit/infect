@@ -6,11 +6,6 @@ class Controller_Ajax extends Controller
 
 	public function action_change_data()
 	{
-		echo $this->get_change_data();
-	}
-
-	public function get_change_data()
-	{
 		$tabs = array(
 			'infect' => 'Инфекционная заболеваемость',
 			'info' => 'Инф служба',
@@ -40,7 +35,7 @@ class Controller_Ajax extends Controller
 		$view_panel->district_id = $_POST['district_id'];
 		$view_panel->subject_id = $_POST['subject_id'];
 
-		return json_encode(array('panel' => $view_panel->render()));
+		echo json_encode(array('panel' => $view_panel->render()));
 	}
 
 	public function action_change_district2()
@@ -80,9 +75,16 @@ class Controller_Ajax extends Controller
 			'subject_id' => $_POST['subject_id'],
 			'year' => $_POST['year']
 		);
+
 		$this->calc($table, $_POST['elem_id'], $data, $arr_data);
 
-		echo $this->get_change_data();
+		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
+		$data = array();
+		foreach ($data_O as $el_data) {
+			$data[$el_data->elem_id] = $el_data->value;
+		}
+
+		echo json_encode(array('result' => $data));
 	}
 
 	public function elem_add_or_edit($post, $table)

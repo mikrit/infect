@@ -177,7 +177,16 @@
 					subject_id: subject_id
 				},
 				success: function(data){
-				$('#panel').html(data.panel);
+					$.each(data.result, function(index, value){
+						if($('#elem_'+index).attr('class') == 'formula')
+						{
+							$('#elem_'+index).html(value);
+						}
+						else
+						{
+							$('#elem_'+index).val(value);
+						}
+					});
 				}
 			});
 		}
