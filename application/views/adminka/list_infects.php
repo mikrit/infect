@@ -99,6 +99,23 @@
 		});
 	});
 
+	$("#panel").on('change', '.edit_yesno', function(){
+		var elem_id = $(this).data('id');
+		var value = $(this).val();
+		var table = $('#table').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/edit_elem_yesno",
+			dataType: "json",
+			data: {
+				elem_id: elem_id,
+				value: value,
+				table: table
+			}
+		});
+	});
+
 	function is_formula(formula)
 	{
 		var is = false;
