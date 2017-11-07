@@ -33,7 +33,7 @@
 							<?}?>
 						<?}else{?>
 							<?if($title->formula != ''){?>
-								<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]) ? number_format($data[$title->id], 2, '.', ' ') : 0)?></div>
+								<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]['value']) ? number_format($data[$title->id]['value'], 2, '.', ' ') : 0)?></div>
 							<?}?>
 						<?}?>
 					</td>
