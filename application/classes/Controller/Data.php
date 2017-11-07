@@ -43,7 +43,8 @@ class Controller_Data extends Controller_Base
 		$data = array();
 		foreach($data_O as $elem)
 		{
-			$data[$elem->elem_id] = $elem->value;
+			$data[$elem->elem_id]['value'] = $elem->value;
+			$data[$elem->elem_id]['yesno'] = $elem->yesno;
 		}
 
 		$view = View::factory('data/index');

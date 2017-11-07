@@ -20,7 +20,8 @@ class Controller_Ajax extends Controller
 
 		$data = array();
 		foreach ($data_O as $el_data) {
-			$data[$el_data->elem_id] = $el_data->value;
+			$data[$el_data->elem_id]['value'] = $el_data->value;
+			$data[$el_data->elem_id]['yesno'] = $el_data->yesno;
 		}
 
 		$view_panel = View::factory('data/panel');
@@ -235,6 +236,16 @@ class Controller_Ajax extends Controller
 		$elem = ORM::factory($table, $_POST['elem_id']);
 
 		$elem->subtitle = $_POST['value'];
+		$elem->save();
+	}
+
+	public function action_edit_elem_yesno()
+	{
+		$table = $_POST['table'];
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
+
+		$elem->yesno = $_POST['value'];
 		$elem->save();
 	}
 

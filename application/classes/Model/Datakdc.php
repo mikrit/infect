@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Model_Dataspid extends ORM
+class Model_Datakdc extends ORM
 {
 	protected $_belongs_to = array(
 		'district'	=> array(
