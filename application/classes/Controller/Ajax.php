@@ -153,6 +153,8 @@ class Controller_Ajax extends Controller
 				$arr_data['elem_id'] = $id;
 				$arr_data['value'] = $result;
 
+				$data['id'.$id] = $result;
+
 				$this->elem_add_or_edit($arr_data, $table);
 
 				$this->calc($table, $id, $data, $arr_data);

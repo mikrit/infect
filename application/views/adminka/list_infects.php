@@ -104,7 +104,7 @@
 		var is = false;
 
 		var reg = /(\(*(id\d+|\d+)[+-/*])+((\(*(id\d+|\d+)|(id\d+|\d+)\)*)[+-/*])*(id\d+|\d+)\)*/g;
-		var rformula = formula.match(reg)
+		var rformula = formula.match(reg);
 		var reg_formula = rformula == null ? 0 : rformula[0].length;
 
 		var ropen = formula.match(/\(/g);
@@ -145,6 +145,14 @@
 			else
 			{
 				$('#error_'+elem_id).hide();
+
+				formula.match(/id\d+/g).map(function(el){
+					var el_id = el.match(/\d+/)[0];
+
+
+					//console.log(el, elem_id, el.match(/\d+/)[0], $('#use_'+el_id).data('use'));
+				});
+
 				$.ajax({
 					type: "POST",
 					url: "/ajax/edit_elem_formula",
@@ -163,11 +171,14 @@
 		}
 	});
 
-	function incicle(data, isin){
+	function incicle(data, isin)
+	{
 		var arr = data.match(/id\d+/g);
+
 		if(arr != null)
 		{
-			arr.map(function(id){
+			arr.map(function(id)
+			{
 				var ff_id = Number(id.match(/\d+/g)[0]);
 				var formula = $('#elem_'+ff_id+' .edit_formula').val();
 

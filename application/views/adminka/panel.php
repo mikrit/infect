@@ -43,6 +43,7 @@
 							<strong>Ошибка!</strong> Циклическая формула
 						</div>
 						<?=Form::input('formula', $title->formula, array('class' => 'form-control edit_formula', 'data-id' => $title->id))?>
+						<div id="use_<?=$title->id?>" style="display: none" data-use="<?=$title->use?>"></div>
 					</td>
 				</tr>
 			<?}?>
