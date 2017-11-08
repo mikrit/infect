@@ -34,25 +34,25 @@
 
         <ul class="nav navmenu-nav">
             <li class="active">
-                <?=HTML::anchor('#', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
+                <?=HTML::anchor('', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
+                <?=HTML::anchor('', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
+                <?=HTML::anchor('', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
+                <?=HTML::anchor('', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
+                <?=HTML::anchor('', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
+                <?=HTML::anchor('', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
             </li>
             <li>
-                <?=HTML::anchor('#', 'Вирусные гепатиты', array('class' => 'tabs', 'id' => 'gepatid'));?>
+                <?=HTML::anchor('', 'Вирусные гепатиты', array('class' => 'tabs', 'id' => 'gepatid'));?>
             </li>
         </ul>
     </div>
@@ -87,6 +87,8 @@
                 $('#panel').html(data.panel);
             }
         });
+
+	    return false;
     });
 
     $("#f_1").on('change', '#year, #subject', function()

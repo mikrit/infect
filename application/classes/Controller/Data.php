@@ -21,22 +21,22 @@ class Controller_Data extends Controller_Base
 			$districts = ORM::factory('district')->find_all()->as_array('id', 'title');
 			$district_id = 1;
 		}
-        else
-        {
-            $districts = ORM::factory('district')->where('id', '=', $user_district)->find_all()->as_array('id', 'title');
-        }
+		else
+		{
+			$districts = ORM::factory('district')->where('id', '=', $district_id)->find_all()->as_array('id', 'title');
+		}
 
 		$user_subject = $user->subject_id;
 		$subject_id = $user->subject_id;
 		if($user_subject == 0)
 		{
-			$subjects = ORM::factory('subject')->where('district_id', '=', 1)->find_all()->as_array('id', 'title');
+			$subjects = ORM::factory('subject')->where('district_id', '=', $district_id)->find_all()->as_array('id', 'title');
 			$subject_id = 1;
 		}
-        else
-        {
-            $subjects = ORM::factory('subject')->where('district_id', '=', $user_district)->find_all()->as_array('id', 'title');
-        }
+		else
+		{
+			$subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
+		}
 
 		$data_O = ORM::factory('datainfect')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->find_all();
 
