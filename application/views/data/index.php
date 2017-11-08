@@ -3,6 +3,8 @@
 <?=HTML::style('media/css/select2/select2.min.css')?>
 <?=HTML::script('media/js/select2/select2.min.js')?>
 
+<?=HTML::script('media/js/number.min.js')?>
+
 <div class="row">
     <div id="sidebar-left" class="col-sm-5 col-md-4 col-lg-4">
         <div id="f_1">
@@ -180,7 +182,14 @@
 					$.each(data.result, function(index, value){
 						if($('#elem_'+index).attr('class') == 'formula')
 						{
-							$('#elem_'+index).html(value);
+							if(Number.isInteger(Number(value)))
+							{
+								$('#elem_'+index).html($.number(value, 0, '.', ' '));
+							}
+							else
+							{
+								$('#elem_'+index).html($.number(value, 2, '.', ' '));
+							}
 						}
 						else
 						{

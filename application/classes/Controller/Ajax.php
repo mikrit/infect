@@ -151,6 +151,11 @@ class Controller_Ajax extends Controller
 					$result = 0;
 				}
 
+				if($result == INF)
+				{
+					$result = 0;
+				}
+
 				$arr_data['elem_id'] = $id;
 				$arr_data['value'] = $result;
 
