@@ -44,21 +44,32 @@ class Controller_Main extends Controller_Base
 			$subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
 		}
 
+
 		if($district_id == 0)
 		{
-			$list = ORM::factory('datainfect')->where('year', '=', $year_now)->find_all();
+            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->from('datainfects')->group_by('elem_id')->execute();
+            //$data_O = ORM::factory('datainfect')->where('year', '=', $year_now)->find_all();
 		}
 		else
 		{
 			if($subject_id == 0)
 			{
-				$list = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('year', '=', $year_now)->find_all();
+                $data_O = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('year', '=', $year_now)->find_all();
 			}
 			else
 			{
-				$list = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('subject_id', '=', $subject_id)->andwhere('year', '=', $year_now)->find_all();
+                $data_O = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('subject_id', '=', $subject_id)->andwhere('year', '=', $year_now)->find_all();
 			}
 		}
+
+        $data = array();
+        foreach($data_O as $elem)
+        {
+            $data[$elem['elem_id']]['value'] = $elem['value'];
+            $data[$elem['elem_id']]['yesno'] = $elem['yesno'];
+        }
+
+        $titles = ORM::factory('infect')->find_all();
 
 		$view = View::factory('main/index');
 
@@ -74,7 +85,8 @@ class Controller_Main extends Controller_Base
 		$view->user_subject = $user_subject;
 
 		$view_list = View::factory('main/list');
-		$view_list->list = $list;
+		$view_list->titles = $titles;
+		$view_list->data = $data;
 
 		$view->list = $view_list->render();
 

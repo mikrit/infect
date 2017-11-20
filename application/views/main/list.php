@@ -1,4 +1,4 @@
-
+<?php defined('SYSPATH') or die('No direct script access.');?>
 
 <table class="table" width="100%">
 	<thead>

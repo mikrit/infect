@@ -1,7 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
-<?php defined('SYSPATH') or die('No direct script access.');?>
-
 <?=HTML::style('media/css/select2/select2.min.css')?>
 <?=HTML::script('media/js/select2/select2.min.js')?>
 
