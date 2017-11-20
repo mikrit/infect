@@ -44,6 +44,22 @@ class Controller_Main extends Controller_Base
 			$subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
 		}
 
+		if($district_id == 0)
+		{
+			$list = ORM::factory('datainfect')->where('year', '=', $year_now)->find_all();
+		}
+		else
+		{
+			if($subject_id == 0)
+			{
+				$list = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('year', '=', $year_now)->find_all();
+			}
+			else
+			{
+				$list = ORM::factory('datainfect')->where('district_id', '=', $district_id)->andwhere('subject_id', '=', $subject_id)->andwhere('year', '=', $year_now)->find_all();
+			}
+		}
+
 		$view = View::factory('main/index');
 
 		$view->year_now = $year_now;
@@ -56,6 +72,11 @@ class Controller_Main extends Controller_Base
 		$view->subjects = $subjects;
 		$view->subject_id = $subject_id;
 		$view->user_subject = $user_subject;
+
+		$view_list = View::factory('main/list');
+		$view_list->list = $list;
+
+		$view->list = $view_list->render();
 
 		$this->template->content = $view->render();
 	}

@@ -68,6 +68,6 @@
 		</ul>
 	</div>
 	<div id="panel" class="col-sm-7 col-md-8 col-lg-8 container" >
-
+		<?=$list?>
 	</div>
 </div>
