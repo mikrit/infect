@@ -69,3 +69,34 @@
 		<?=$list?>
 	</div>
 </div>
+
+<script>
+    $('select').select2({
+        language: "ru",
+        width: '100%'
+    });
+
+    $('.tabs').click(function (){
+        var table = $(this).attr('id');
+        var year = $('#year').val();
+        var district_id = $('#district').val();
+        var subject_id = $('#subject').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/ajax/change_data_main",
+            dataType: "json",
+            data: {
+                table: table,
+                year: year,
+                district_id: district_id,
+                subject_id: subject_id
+            },
+            success: function(data){
+                $('#panel').html(data.panel);
+            }
+        });
+
+        return false;
+    });
+</script>
