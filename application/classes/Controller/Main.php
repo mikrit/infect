@@ -47,17 +47,17 @@ class Controller_Main extends Controller_Base
 
 		if($district_id == 0)
 		{
-            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', '=', $year_now)->from('datainfects')->group_by('elem_id')->execute();
+            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', '=', $year_now)->from('datainfect')->group_by('elem_id')->execute();
 		}
 		else
 		{
 			if($subject_id == 0)
 			{
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('year', '=', $year_now)->from('datainfects')->group_by('elem_id')->execute();
+                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('year', '=', $year_now)->from('datainfect')->group_by('elem_id')->execute();
 			}
 			else
 			{
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->from('datainfects')->group_by('elem_id')->execute();
+                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->from('datainfect')->group_by('elem_id')->execute();
 			}
 		}
 
