@@ -25,19 +25,19 @@ class Controller_Ajax extends Controller
             $_POST['subject_id'] = 0;
         }
 
-        if(!isset($_POST['district_id']) || $_POST['district_id'] == 0)
+        if($_POST['district_id'] == 0)
         {
-            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', '=', $_POST['year'])->from('datainfects')->group_by('elem_id')->execute();
+            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
         }
         else
         {
-            if(!isset($_POST['subject_id']) || $_POST['subject_id'] == 0)
+            if($_POST['subject_id'] == 0)
             {
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('year', '=', $_POST['year'])->from('datainfects')->group_by('elem_id')->execute();
+                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
             }
             else
             {
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->from('datainfects')->group_by('elem_id')->execute();
+                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
             }
         }
 
