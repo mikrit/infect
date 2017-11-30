@@ -22,16 +22,10 @@
 					<?}?>
 				</td>
 				<td>
-					<?if($title->subtitle == 0){?>
-						<?if($title->yesno == 0){?>
-							<?=Form::input('elem_'.$title->id, (isset($data[$title->id]['value']) ? $data[$title->id]['value'] : ''), array("class" => "form-control add_element", "id" => "elem_".$title->id, "type" => "text", "data-id" => $title->id))?>
-						<?}else{?>
-							<?=Form::select('elem_'.$title->id, array(0 => '', 1 => 'Нет', 2 => 'Да'), (isset($data[$title->id]['yesno']) ? $data[$title->id]['yesno'] : 0), array('class' => 'form-control edit_yesno', 'data-id' => $title->id))?>
-						<?}?>
+					<?if($title->yesno == 0){?>
+						<?=isset($data[$title->id]['value']) ? $data[$title->id]['value'] : ''?>
 					<?}else{?>
-						<?if($title->formula != ''){?>
-							<div class="formula" id="elem_<?=$title->id?>" data-formula="<?=$title->formula?>"><?=(isset($data[$title->id]['value']) ? number_format($data[$title->id]['value'], 2, '.', ' ') : 0)?></div>
-						<?}?>
+						<?=$data[$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
 					<?}?>
 				</td>
 			</tr>

@@ -163,12 +163,11 @@
 			{
 				$('#error_'+elem_id).hide();
 
-				formula.match(/id\d+/g).map(function(el){
+				/*formula.match(/id\d+/g).map(function(el){
 					var el_id = el.match(/\d+/)[0];
 
-
 					//console.log(el, elem_id, el.match(/\d+/)[0], $('#use_'+el_id).data('use'));
-				});
+				});*/
 
 				$.ajax({
 					type: "POST",

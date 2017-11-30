@@ -4,19 +4,18 @@
 <?=HTML::script('media/js/select2/select2.min.js')?>
 
 <?=HTML::script('media/js/number.min.js')?>
-
 <div class="row">
 	<div id="sidebar-left" class="col-sm-5 col-md-4 col-lg-4">
 		<div id="f_1">
 			<?=Form::open('data', array('method'=>'post', 'name' => 'form'))?>
 				<div class="form-group col-lg-6" style="padding-left: 0px;">
 					<label>Года с:</label>
-					<?=Form::select('year', $years, $year_now, array('class' => 'form-control', 'id' => 'year'));?>
+					<?=Form::select('year', $years, $r_year_begin, array('class' => 'form-control', 'id' => 'year_begin'));?>
 				</div>
 
 				<div class="form-group col-lg-6" style="padding-left: 0px;">
 					<label>по:</label>
-					<?=Form::select('year', $years, $year_now, array('class' => 'form-control', 'id' => 'year'));?>
+					<?=Form::select('year', $years, $r_year_end, array('class' => 'form-control', 'id' => 'year_end'));?>
 				</div>
 
 				<div class="form-group">
@@ -75,6 +74,9 @@
         language: "ru",
         width: '100%'
     });
+
+    $('#year_begin').val('<?=$r_year_begin?>').trigger('change');
+    $('#year_end').val('<?=$r_year_end?>').trigger('change');
 
     $('.tabs').click(function (){
         var table = $(this).attr('id');
