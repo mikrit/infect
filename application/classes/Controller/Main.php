@@ -49,8 +49,7 @@ class Controller_Main extends Controller_Base
         {
             $subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
         }
-
-
+	    
         if($district_id == 0)
         {
             $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
