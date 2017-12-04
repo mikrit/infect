@@ -148,10 +148,10 @@
 
 		if(is_formula(formula) || formula == '')
 		{
-			cicle = false;
+			var cicle = false;
 			if(formula != '')
 			{
-				var cicle = incicle(formula, false);
+				cicle = incicle(formula, false);
 			}
 
 			if(cicle == true)
@@ -197,6 +197,8 @@
 			{
 				var ff_id = Number(id.match(/\d+/g)[0]);
 				var formula = $('#elem_'+ff_id+' .edit_formula').val();
+
+				//console.log(ids, ff_id);
 
 				if(ids.indexOf(ff_id) != -1)
 				{

@@ -66,12 +66,12 @@ class Controller_Adminka extends Controller_Base
 				$user->add('roles', ORM::factory('role', 1));
 				
 				/*$mess = 'Вас добавили в систему "Инфекционной службы"<br/>
-				
-Ваш логин: '.$_POST['username'].'<br/>
-Ваш пароль: '.$_POST['password'].'<br/>
 
-Приятной работы.';
-*/				
+				Ваш логин: '.$_POST['username'].'<br/>
+				Ваш пароль: '.$_POST['password'].'<br/>
+
+				Приятной работы.';
+				*/
 				//Http::send_letter($_POST['email'], 'Registration user', $mess);
 
 				//Нужна переброска на Form если пришли от туда и сохранять данные

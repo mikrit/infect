@@ -7,40 +7,40 @@ class Controller_Ajax extends Controller
 	public function action_change_data_main()
 	{
 		$tabs = array(
-			'infect' => 'Инфекционная заболеваемость',
-			'info' => 'Инф служба',
-			'stachelp' => 'Стац помощь',
-			'spid' => 'СПИД-центры',
+			'infect'      => 'Инфекционная заболеваемость',
+			'info'        => 'Инф служба',
+			'stachelp'    => 'Стац помощь',
+			'spid'        => 'СПИД-центры',
 			'ambulathelp' => 'Амбулат помощь',
-			'kdc' => 'КДЦ',
-			'gepatid' => 'Вирусные гепатиты',
+			'kdc'         => 'КДЦ',
+			'gepatid'     => 'Вирусные гепатиты',
 		);
 
 		$r_year_begin = $_POST['year_begin'];
 		$r_year_end = $_POST['year_end'];
 
-        if(!isset($_POST['district_id']))
-        {
-            $_POST['district_id'] = 0;
-        }
-        elseif(!isset($_POST['subject_id']))
-        {
-            $_POST['subject_id'] = 0;
-        }
+		if(!isset($_POST['district_id']))
+		{
+			$_POST['district_id'] = 0;
+		}
+		elseif(!isset($_POST['subject_id']))
+		{
+			$_POST['subject_id'] = 0;
+		}
 
 		if($_POST['district_id'] == 0)
 		{
-			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 		}
 		else
 		{
 			if($_POST['subject_id'] == 0)
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE district_id = '.$_POST['district_id'].' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 			else
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE district_id = '.$_POST['district_id'].' AND subject_id = '.$_POST['subject_id'].' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND subject_id = ' . $_POST['subject_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 		}
 
@@ -71,17 +71,25 @@ class Controller_Ajax extends Controller
 	{
 		if($_POST['district_id'] == 0)
 		{
-			$select = Form::select('subject', array(0 => 'Все'), 0, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));
+			$select = Form::select('subject', array(0 => 'Все'), 0, array(
+					'class'        => 'form-control',
+					'disabled'     => '',
+					'autocomplete' => 'off'
+				));
 		}
 		else
 		{
 			$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
 
-			foreach ($subjects_o as $subject) {
+			foreach($subjects_o as $subject)
+			{
 				$subjects[$subject->id] = $subject->title;
 			}
 
-			$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
+			$select = Form::select('subject_id', $subjects, 0, array(
+					'class' => 'form-control',
+					'id'    => 'subject'
+				));
 		}
 
 		$select .= "<script>
@@ -94,50 +102,55 @@ class Controller_Ajax extends Controller
 		echo json_encode(array('result' => $select));
 	}
 
-    public function action_change_data()
-    {
-        $tabs = array(
-            'infect' => 'Инфекционная заболеваемость',
-            'info' => 'Инф служба',
-            'stachelp' => 'Стац помощь',
-            'spid' => 'СПИД-центры',
-            'ambulathelp' => 'Амбулат помощь',
-            'kdc' => 'КДЦ',
-            'gepatid' => 'Вирусные гепатиты',
-        );
+	public function action_change_data()
+	{
+		$tabs = array(
+			'infect'      => 'Инфекционная заболеваемость',
+			'info'        => 'Инф служба',
+			'stachelp'    => 'Стац помощь',
+			'spid'        => 'СПИД-центры',
+			'ambulathelp' => 'Амбулат помощь',
+			'kdc'         => 'КДЦ',
+			'gepatid'     => 'Вирусные гепатиты',
+		);
 
-        $data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
+		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 
-        $data = array();
-        foreach ($data_O as $el_data) {
-            $data[$el_data->elem_id]['value'] = $el_data->value;
-            $data[$el_data->elem_id]['yesno'] = $el_data->yesno;
-        }
+		$data = array();
+		foreach($data_O as $el_data)
+		{
+			$data[$el_data->elem_id]['value'] = $el_data->value;
+			$data[$el_data->elem_id]['yesno'] = $el_data->yesno;
+		}
 
-        $view_panel = View::factory('data/panel');
+		$view_panel = View::factory('data/panel');
 
-        $titles = ORM::factory($_POST['table'])->find_all();
+		$titles = ORM::factory($_POST['table'])->find_all();
 
-        $view_panel->titles = $titles;
-        $view_panel->data = $data;
-        $view_panel->title = $tabs[$_POST['table']];
-        $view_panel->table = $_POST['table'];
-        $view_panel->year_now = $_POST['year'];
-        $view_panel->district_id = $_POST['district_id'];
-        $view_panel->subject_id = $_POST['subject_id'];
+		$view_panel->titles = $titles;
+		$view_panel->data = $data;
+		$view_panel->title = $tabs[$_POST['table']];
+		$view_panel->table = $_POST['table'];
+		$view_panel->year_now = $_POST['year'];
+		$view_panel->district_id = $_POST['district_id'];
+		$view_panel->subject_id = $_POST['subject_id'];
 
-        echo json_encode(array('panel' => $view_panel->render()));
-    }
+		echo json_encode(array('panel' => $view_panel->render()));
+	}
 
 	public function action_change_district2()
 	{
 		$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
 
-		foreach ($subjects_o as $subject) {
+		foreach($subjects_o as $subject)
+		{
 			$subjects[$subject->id] = $subject->title;
 		}
 
-		$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
+		$select = Form::select('subject_id', $subjects, 0, array(
+				'class' => 'form-control',
+				'id'    => 'subject'
+			));
 
 		$select .= "<script>
                         $('select').select2({
@@ -157,21 +170,23 @@ class Controller_Ajax extends Controller
 
 		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 		$data = array();
-		foreach ($data_O as $el_data) {
-			$data['id'.$el_data->elem_id] = $el_data->value;
+		foreach($data_O as $el_data)
+		{
+			$data['id' . $el_data->elem_id] = $el_data->value;
 		}
 
 		$arr_data = array(
 			'district_id' => $_POST['district_id'],
-			'subject_id' => $_POST['subject_id'],
-			'year' => $_POST['year']
+			'subject_id'  => $_POST['subject_id'],
+			'year'        => $_POST['year']
 		);
 
 		$this->calc($table, $_POST['elem_id'], $data, $arr_data);
 
 		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 		$data = array();
-		foreach ($data_O as $el_data) {
+		foreach($data_O as $el_data)
+		{
 			$data[$el_data->elem_id] = $el_data->value;
 		}
 
@@ -180,17 +195,17 @@ class Controller_Ajax extends Controller
 
 	public function elem_add_or_edit($post, $table)
 	{
-		$elem = ORM::factory('data'.$table, array(
-			'elem_id' => $post['elem_id'],
+		$elem = ORM::factory('data' . $table, array(
+			'elem_id'     => $post['elem_id'],
 			'district_id' => $post['district_id'],
-			'subject_id' => $post['subject_id'],
-			'year' => $post['year']
-			)
-		);
+			'subject_id'  => $post['subject_id'],
+			'year'        => $post['year']
+		));
 
 		$elem->value = $post['value'] == '' ? NULL : $post['value'];
 
-		if ($elem->id == NULL) {
+		if($elem->id == NULL)
+		{
 			$elem->elem_id = $post['elem_id'];
 			$elem->value = $post['value'];
 			$elem->year = $post['year'];
@@ -237,7 +252,8 @@ class Controller_Ajax extends Controller
 					}
 				}
 
-				if(@eval("\$result = $formula;")===FALSE){
+				if(@eval("\$result = $formula;") === FALSE)
+				{
 					$result = 0;
 				}
 
@@ -249,7 +265,7 @@ class Controller_Ajax extends Controller
 				$arr_data['elem_id'] = $id;
 				$arr_data['value'] = $result;
 
-				$data['id'.$id] = $result;
+				$data['id' . $id] = $result;
 
 				$this->elem_add_or_edit($arr_data, $table);
 
@@ -260,19 +276,18 @@ class Controller_Ajax extends Controller
 
 	/** ---------- End Data ---------- */
 
-
 	/** ---------- Begin Adminka ---------- */
 
 	public function action_change_tab()
 	{
 		$tabs = array(
-			'infect' => 'Инфекционная заболеваемость',
-			'info' => 'Инф служба',
-			'stachelp' => 'Стац помощь',
-			'spid' => 'СПИД-центры',
+			'infect'      => 'Инфекционная заболеваемость',
+			'info'        => 'Инф служба',
+			'stachelp'    => 'Стац помощь',
+			'spid'        => 'СПИД-центры',
 			'ambulathelp' => 'Амбулат помощь',
-			'kdc' => 'КДЦ',
-			'gepatid' => 'Вирусные гепатиты',
+			'kdc'         => 'КДЦ',
+			'gepatid'     => 'Вирусные гепатиты',
 		);
 
 		$titles = ORM::factory($_POST['table'])->find_all();
@@ -288,17 +303,27 @@ class Controller_Ajax extends Controller
 
 	public function action_change_district()
 	{
-		if ($_POST['district_id'] != 0) {
+		if($_POST['district_id'] != 0)
+		{
 			$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
 
 			$subjects = array(0 => 'Нет');
-			foreach ($subjects_o as $subject) {
+			foreach($subjects_o as $subject)
+			{
 				$subjects[$subject->id] = $subject->title;
 			}
 
-			$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
-		} else {
-			$select = Form::select('subject_id', array(0 => 'Нет'), 0, array('class' => 'form-control', 'id' => 'subject'));
+			$select = Form::select('subject_id', $subjects, 0, array(
+					'class' => 'form-control',
+					'id'    => 'subject'
+				));
+		}
+		else
+		{
+			$select = Form::select('subject_id', array(0 => 'Нет'), 0, array(
+					'class' => 'form-control',
+					'id'    => 'subject'
+				));
 		}
 
 		echo json_encode(array('result' => $select));
@@ -348,8 +373,30 @@ class Controller_Ajax extends Controller
 	{
 		$table = $_POST['table'];
 
-		$elem = ORM::factory($table, $_POST['elem_id']);
+		preg_match_all('/id\d+/', $_POST['formula'], $arr);
 
+		foreach($arr as $ids)
+		{
+			foreach($ids as $id)
+			{
+				preg_match_all('/\d+/', $id, $elem);
+
+				$elem = ORM::factory($table, $elem[0][0]);
+
+				if($elem->use == NULL)
+				{
+					$elem->use = $_POST['elem_id'];
+				}
+				else
+				{
+					$elem->use .= ';'.$_POST['elem_id'];
+				}
+
+				$elem->save();
+			}
+		}
+
+		$elem = ORM::factory($table, $_POST['elem_id']);
 		$elem->formula = $_POST['formula'];
 		$elem->save();
 	}
