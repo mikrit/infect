@@ -10,12 +10,12 @@
 			<?=Form::open('data', array('method'=>'post', 'name' => 'form'))?>
 				<div class="form-group col-lg-6" style="padding-left: 0px;">
 					<label>Года с:</label>
-					<?=Form::select('year', $years, $r_year_begin, array('class' => 'form-control', 'id' => 'year_begin'));?>
+					<?=Form::select('year_begin', $years, $r_year_begin, array('class' => 'form-control', 'id' => 'year_begin'));?>
 				</div>
 
 				<div class="form-group col-lg-6" style="padding-left: 0px;">
 					<label>по:</label>
-					<?=Form::select('year', $years, $r_year_end, array('class' => 'form-control', 'id' => 'year_end'));?>
+					<?=Form::select('year_end', $years, $r_year_end, array('class' => 'form-control', 'id' => 'year_end'));?>
 				</div>
 
 				<div class="form-group">
@@ -34,7 +34,9 @@
 							<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'id' => 'subject', 'autocomplete' => 'off'));?>
 						</div>
 					<?}else{?>
-						<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));?>
+						<div id="subjects">
+							<?=Form::select('subject', $subjects, $subject_id, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));?>
+						</div>
 					<?}?>
 				</div>
 			<?=Form::close()?>
@@ -80,7 +82,8 @@
 
     $('.tabs').click(function (){
         var table = $(this).attr('id');
-        var year = $('#year').val();
+        var year_begin = $('#year_begin').val();
+        var year_end = $('#year_end').val();
         var district_id = $('#district').val();
         var subject_id = $('#subject').val();
 
@@ -90,7 +93,8 @@
             dataType: "json",
             data: {
                 table: table,
-                year: year,
+				year_begin: year_begin,
+				year_end: year_end,
                 district_id: district_id,
                 subject_id: subject_id
             },
@@ -101,4 +105,67 @@
 
         return false;
     });
+
+	$("#f_1").on('change', '#year_begin, #year_end, #subject', function()
+	{
+		var table = $('#table').val();
+		var year_begin = $('#year_begin').val();
+		var year_end = $('#year_end').val();
+		var district_id = $('#district').val();
+		var subject_id = $('#subject').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/change_data_main",
+			dataType: "json",
+			data: {
+				table: table,
+				year_begin: year_begin,
+				year_end: year_end,
+				district_id: district_id,
+				subject_id: subject_id
+			},
+			success: function(data){
+				$('#panel').html(data.panel);
+			}
+		});
+	});
+
+	$("#f_1").on('change', '#district', function()
+	{
+		var table = $('#table').val();
+		var year_begin = $('#year_begin').val();
+		var year_end = $('#year_end').val();
+		var district_id = $('#district').val();
+
+		$.ajax({
+			type: "POST",
+			url: "/ajax/change_district3",
+			dataType: "json",
+			data: {
+				district_id: district_id
+			},
+			success: function(data){
+				$('#subjects').html(data.result);
+
+				var subject_id = $('#subject').val();
+
+				$.ajax({
+					type: "POST",
+					url: "/ajax/change_data_main",
+					dataType: "json",
+					data: {
+						table: table,
+						year_begin: year_begin,
+						year_end: year_end,
+						district_id: district_id,
+						subject_id: subject_id
+					},
+					success: function(data){
+						$('#panel').html(data.panel);
+					}
+				});
+			}
+		});
+	});
 </script>

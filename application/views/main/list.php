@@ -1,13 +1,22 @@
 <?php defined('SYSPATH') or die('No direct script access.');?>
 
+<h3><?=$title?></h3>
+
 <table class="table" width="100%">
 	<thead>
 	<tr>
-		<th width="80%">
+		<th width="65%">
 			Название
 		</th>
-		<th width="20%">
-			Показатели
+		<th width="8%">
+			<?=$r_year_begin?>
+		</th>
+		<th width="8%">
+			<?=$r_year_end?>
+		</th>
+		<th width="17%">
+			Прирост +% или<br/>
+			Снижение -%
 		</th>
 	</tr>
 	</thead>
@@ -21,14 +30,33 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$title->title?>
 					<?}?>
 				</td>
-				<td>
+				<td style="white-space: nowrap">
 					<?if($title->yesno == 0){?>
-						<?=isset($data[$title->id]['value']) ? $data[$title->id]['value'] : ''?>
+						<?=$begin = isset($data[$r_year_begin][$title->id]['value']) ? number_format($data[$r_year_begin][$title->id]['value'], 2, '.', ' ') : ''?>
 					<?}else{?>
-						<?=$data[$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
+						<?=$data[$r_year_begin][$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
+					<?}?>
+				</td>
+				<td style="white-space: nowrap">
+					<?if($title->yesno == 0){?>
+						<?=$end = isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : ''?>
+					<?}else{?>
+						<?=$data[$r_year_end][$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
+					<?}?>
+				</td>
+				<td>
+					<?if($title->yesno == 0 && $begin != '' && $end != ''){?>
+						<?=number_format($end/$begin*100-100, 2, '.', ' ')?>%
+					<?}elseif($begin != '' || $end != ''){?>
+						<?=number_format(0, 2, '.', ' ')?>%
 					<?}?>
 				</td>
 			</tr>
 		<?}?>
 	</tbody>
 </table>
+<?=Form::hidden('table', $table, array("id" => "table"));?>
+<?=Form::hidden('year_begin', $r_year_begin, array("id" => "year"));?>
+<?=Form::hidden('year_end', $r_year_end, array("id" => "year"));?>
+<?=Form::hidden('district_id', $district_id, array("id" => "district"));?>
+<?=Form::hidden('subject_id', $subject_id, array("id" => "subject"));?>

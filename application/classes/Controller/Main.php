@@ -4,7 +4,7 @@ class Controller_Main extends Controller_Base
 {
     public function action_index()
     {
-        $today_p = new DateTime();
+        $today_p = new DateTime('01.04.2018');
         $date = $today_p->modify('-3 month')->format('Y');
 
         $r_year_begin = $date - 2;
@@ -52,26 +52,31 @@ class Controller_Main extends Controller_Base
 	    
         if($district_id == 0)
         {
-            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
-        }
+            //$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM datainfects WHERE year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+		}
         else
         {
             if($subject_id == 0)
             {
-               $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
-            }
+               //$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM datainfects WHERE district_id = '.$district_id.' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+			}
             else
             {
-               $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
-            }
+               //$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM datainfects WHERE district_id = '.$district_id.' AND subject_id = '.$subject_id.' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+			}
         }
 
         $data = array();
         foreach($data_O as $elem)
         {
-            $data[$elem['elem_id']]['value'] = $elem['value'];
-            $data[$elem['elem_id']]['yesno'] = $elem['yesno'];
+            $data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+            $data[$elem['year']][$elem['elem_id']]['yesno'] = $elem['yesno'];
         }
+
+		//var_dump($data);die;
 
         $titles = ORM::factory('infect')->find_all();
 
@@ -92,6 +97,12 @@ class Controller_Main extends Controller_Base
         $view_list = View::factory('main/list');
         $view_list->titles = $titles;
         $view_list->data = $data;
+        $view_list->table = 'infect';
+		$view_list->title = 'Инфекционная заболеваемость';
+		$view_list->r_year_begin = $r_year_begin;
+		$view_list->r_year_end = $r_year_end;
+		$view_list->district_id = $district_id;
+		$view_list->subject_id = $subject_id;
 
         $view->list = $view_list->render();
 

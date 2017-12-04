@@ -16,6 +16,9 @@ class Controller_Ajax extends Controller
 			'gepatid' => 'Вирусные гепатиты',
 		);
 
+		$r_year_begin = $_POST['year_begin'];
+		$r_year_end = $_POST['year_end'];
+
         if(!isset($_POST['district_id']))
         {
             $_POST['district_id'] = 0;
@@ -25,28 +28,28 @@ class Controller_Ajax extends Controller
             $_POST['subject_id'] = 0;
         }
 
-        if($_POST['district_id'] == 0)
-        {
-            $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
-        }
-        else
-        {
-            if($_POST['subject_id'] == 0)
-            {
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
-            }
-            else
-            {
-                $data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->from('data' . $_POST['table'])->group_by('elem_id')->execute();
-            }
-        }
+		if($_POST['district_id'] == 0)
+		{
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+		}
+		else
+		{
+			if($_POST['subject_id'] == 0)
+			{
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE district_id = '.$_POST['district_id'].' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+			}
+			else
+			{
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data'.$_POST['table'].'s WHERE district_id = '.$_POST['district_id'].' AND subject_id = '.$_POST['subject_id'].' AND year BETWEEN '.$r_year_begin.' AND '.$r_year_end.' GROUP BY year, elem_id');
+			}
+		}
 
-        $data = array();
-        foreach($data_O as $elem)
-        {
-            $data[$elem['elem_id']]['value'] = $elem['value'];
-            $data[$elem['elem_id']]['yesno'] = $elem['yesno'];
-        }
+		$data = array();
+		foreach($data_O as $elem)
+		{
+			$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+			$data[$elem['year']][$elem['elem_id']]['yesno'] = $elem['yesno'];
+		}
 
 		$view_panel = View::factory('main/list');
 
@@ -56,11 +59,39 @@ class Controller_Ajax extends Controller
 		$view_panel->data = $data;
 		$view_panel->title = $tabs[$_POST['table']];
 		$view_panel->table = $_POST['table'];
-		$view_panel->year_now = $_POST['year'];
+		$view_panel->r_year_begin = $r_year_begin;
+		$view_panel->r_year_end = $r_year_end;
 		$view_panel->district_id = $_POST['district_id'];
 		$view_panel->subject_id = $_POST['subject_id'];
 
 		echo json_encode(array('panel' => $view_panel->render()));
+	}
+
+	public function action_change_district3()
+	{
+		if($_POST['district_id'] == 0)
+		{
+			$select = Form::select('subject', array(0 => 'Все'), 0, array('class' => 'form-control', 'disabled' => '', 'autocomplete' => 'off'));
+		}
+		else
+		{
+			$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
+
+			foreach ($subjects_o as $subject) {
+				$subjects[$subject->id] = $subject->title;
+			}
+
+			$select = Form::select('subject_id', $subjects, 0, array('class' => 'form-control', 'id' => 'subject'));
+		}
+
+		$select .= "<script>
+                        $('select').select2({
+                            language: 'ru',
+                            width: '100%'
+                        });
+                    </script>";
+
+		echo json_encode(array('result' => $select));
 	}
 
     public function action_change_data()
