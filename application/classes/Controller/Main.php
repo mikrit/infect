@@ -4,7 +4,7 @@ class Controller_Main extends Controller_Base
 {
     public function action_index()
     {
-        $today_p = new DateTime('01.04.2018');
+        $today_p = new DateTime();
         $date = $today_p->modify('-3 month')->format('Y');
 
         $r_year_begin = $date - 2;
