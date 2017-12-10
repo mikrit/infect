@@ -29,6 +29,7 @@ class Controller_Base extends Controller_Template
 		
 		$view_menu = View::factory('menu');
 		$view_menu->admin = $admin->loaded();
+		$view_menu->username = Auth::instance()->get_user()->username;
 		$this->template->menu = $view_menu->render();
 	}
 		

@@ -235,6 +235,12 @@ class Controller_Ajax extends Controller
 
 				$formula = $f->formula;
 
+
+
+
+
+
+
 				preg_match_all('/id\d+/', $formula, $arr);
 
 				foreach($arr as $elem)
