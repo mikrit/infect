@@ -183,6 +183,8 @@ class Controller_Ajax extends Controller
 
 		$this->calc($table, $_POST['elem_id'], $data, $arr_data);
 
+		die;
+
 		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 		$data = array();
 		foreach($data_O as $el_data)
@@ -240,8 +242,15 @@ class Controller_Ajax extends Controller
 				foreach($arr[0] as $elem)
 				{
 					$massiv = explode('_', $elem);
-					$data = ORM::factory('data'.$massiv[0], $massiv[1]);
-					$formula = str_replace($elem, $data->value, $formula);
+					$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $arr_data['district_id'])->and_where('subject_id', '=', $arr_data['subject_id'])->and_where('year', '=', $arr_data['year'])->and_where('elem_id', '=', (int)$massiv[1])->find_all();
+
+					$value = 0;
+					if($dataO[0]->value != NULL)
+					{
+						$value = $dataO[0]->value;
+					}
+
+					$formula = str_replace($elem, $value, $formula);
 				}
 
 				preg_match_all('/id\d+/', $formula, $arr);

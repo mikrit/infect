@@ -120,7 +120,8 @@
 	{
 		var is = false;
 
-		var reg = /(\(*(id\d+|\d+)[+-/*])+((\(*(id\d+|\d+)|(id\d+|\d+)\)*)[+-/*])*(id\d+|\d+)\)*/g;
+		//var reg = /(\(*(id\d+|\d+)[+-/*])+((\(*(id\d+|\d+)|(id\d+|\d+)\)*)[+-/*])*(id\d+|\d+)\)*/g;
+		var reg = /(\(*(id\d+|\d+|infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+)[+-/*])+((\(*(id\d+|\d+|infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+)|(id\d+|\d+|infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+)\)*)[+-/*])*(id\d+|\d+|infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+)\)*/g;
 		var rformula = formula.match(reg);
 		var reg_formula = rformula == null ? 0 : rformula[0].length;
 
@@ -145,6 +146,8 @@
 		var table = $('#table').val();
 
 		ids.push(elem_id);
+
+		console.log(is_formula(formula));
 
 		if(is_formula(formula) || formula == '')
 		{
