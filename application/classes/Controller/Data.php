@@ -4,14 +4,6 @@ class Controller_Data extends Controller_Base
 {
 	public function action_index()
 	{
-
-        $formula = 'id8+3/infect_6-infect_56*stachelp_4';
-
-        preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
-
-        //foreach($arr )
-
-        //die;
 		$year_now = date('Y');
 
 		$years = array();

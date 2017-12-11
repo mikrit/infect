@@ -235,11 +235,14 @@ class Controller_Ajax extends Controller
 
 				$formula = $f->formula;
 
+				preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
 
-
-
-
-
+				foreach($arr[0] as $elem)
+				{
+					$massiv = explode('_', $elem);
+					$data = ORM::factory('data'.$massiv[0], $massiv[1]);
+					$formula = str_replace($elem, $data->value, $formula);
+				}
 
 				preg_match_all('/id\d+/', $formula, $arr);
 
