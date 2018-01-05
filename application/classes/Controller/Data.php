@@ -38,7 +38,7 @@ class Controller_Data extends Controller_Base
 			$subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
 		}
 
-		$data_O = ORM::factory('datainfect')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->find_all();
+		$data_O = ORM::factory('datainfo')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year_now)->find_all();
 
 		$data = array();
 		foreach($data_O as $elem)
@@ -62,12 +62,12 @@ class Controller_Data extends Controller_Base
 
 		$view_panel = View::factory('data/panel');
 
-		$titles = ORM::factory('infect')->find_all();
+		$titles = ORM::factory('info')->find_all();
 
 		$view_panel->titles = $titles;
 		$view_panel->data = $data;
-		$view_panel->table = 'infect';
-		$view_panel->title = 'Инфекционная заболеваемость';
+		$view_panel->table = 'info';
+		$view_panel->title = 'Инф служба';
 		$view_panel->year_now = $year_now;
 		$view_panel->district_id = $district_id;
 		$view_panel->subject_id = $subject_id;

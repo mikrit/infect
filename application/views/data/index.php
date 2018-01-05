@@ -33,9 +33,9 @@
         </div>
 
         <ul class="nav navmenu-nav">
-            <li class="active">
-                <?=HTML::anchor('', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
-            </li>
+            <!--li class="active">
+                <?HTML::anchor('', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
+            </li-->
             <li>
                 <?=HTML::anchor('', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
             </li>
