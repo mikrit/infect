@@ -194,6 +194,8 @@
 	{
 		var arr = data.match(/id\d+/g);
 
+		console.log(arr);
+
 		if(arr != null)
 		{
 			arr.map(function(id)
