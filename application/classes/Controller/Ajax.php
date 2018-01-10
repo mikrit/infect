@@ -7,7 +7,7 @@ class Controller_Ajax extends Controller
 	public function action_change_data_main()
 	{
 		$tabs = array(
-			'infect'      => 'Инфекционная заболеваемость',
+			//'infect'      => 'Инфекционная заболеваемость',
 			'info'        => 'Инф служба',
 			'stachelp'    => 'Стац помощь',
 			'spid'        => 'СПИД-центры',
@@ -105,7 +105,7 @@ class Controller_Ajax extends Controller
 	public function action_change_data()
 	{
 		$tabs = array(
-			'infect'      => 'Инфекционная заболеваемость',
+			//'infect'      => 'Инфекционная заболеваемость',
 			'info'        => 'Инф служба',
 			'stachelp'    => 'Стац помощь',
 			'spid'        => 'СПИД-центры',
@@ -299,7 +299,7 @@ class Controller_Ajax extends Controller
 	public function action_change_tab()
 	{
 		$tabs = array(
-			'infect'      => 'Инфекционная заболеваемость',
+			//'infect'      => 'Инфекционная заболеваемость',
 			'info'        => 'Инф служба',
 			'stachelp'    => 'Стац помощь',
 			'spid'        => 'СПИД-центры',

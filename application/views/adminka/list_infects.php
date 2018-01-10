@@ -3,26 +3,26 @@
 <div class="row">
 	<div id="sidebar-left" class="col-lg-2">
 		<ul class="nav navmenu-nav">
-			<li class="active">
-				<?=HTML::anchor('#', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
+			<!--li class="active">
+				<?HTML::anchor('', 'Инфекционная заболеваемость', array('class' => 'tabs', 'id' => 'infect'));?>
+			</li-->
+			<li>
+				<?=HTML::anchor('', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('#', 'Инф служба', array('class' => 'tabs', 'id' => 'info'));?>
+				<?=HTML::anchor('', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('#', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
+				<?=HTML::anchor('', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('#', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
+				<?=HTML::anchor('', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('#', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
+				<?=HTML::anchor('', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('#', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
-			</li>
-			<li>
-				<?=HTML::anchor('#', 'Вирусные гепатиты', array('class' => 'tabs', 'id' => 'gepatid'));?>
+				<?=HTML::anchor('', 'Вирусные гепатиты', array('class' => 'tabs', 'id' => 'gepatid'));?>
 			</li>
 		</ul>
 	</div>
@@ -46,6 +46,8 @@
 				$('#panel').html(data.panel);
 			}
 		});
+
+        return false;
 	});
 
 	$("#panel").on('change', '.edit_title', function(){
@@ -157,6 +159,7 @@
 				cicle = incicle(formula, false);
 			}
 
+            var cicle = false;
 			if(cicle == true)
 			{
 				$('#error_'+elem_id).css('padding', '0');

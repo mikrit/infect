@@ -187,15 +187,15 @@ class Controller_Adminka extends Controller_Base
 
     public function action_list_infects()
 	{
-		$titles = ORM::factory('infect')->find_all();
+		$titles = ORM::factory('info')->find_all();
 
 		$view = View::factory('adminka/list_infects');
 
 		$view_panel = View::factory('adminka/panel');
 		$view_panel->titles = $titles;
 
-		$view_panel->table = 'infect';
-		$view_panel->title = 'Инфекционная заболеваемость';
+		$view_panel->table = 'info';
+		$view_panel->title = 'Инф служба';
 
 		$view->panel = $view_panel->render();
 
