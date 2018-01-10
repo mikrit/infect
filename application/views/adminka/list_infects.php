@@ -159,6 +159,7 @@
 				cicle = incicle(formula, false);
 			}
 
+            var cicle = false;
 			if(cicle == true)
 			{
 				$('#error_'+elem_id).css('padding', '0');
