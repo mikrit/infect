@@ -13,10 +13,10 @@
 				<?=HTML::anchor('', 'Стац помощь', array('class' => 'tabs', 'id' => 'stachelp'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
+				<?=HTML::anchor('', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
 			</li>
 			<li>
-				<?=HTML::anchor('', 'Амбулат помощь', array('class' => 'tabs', 'id' => 'ambulathelp'));?>
+				<?=HTML::anchor('', 'СПИД-центры', array('class' => 'tabs', 'id' => 'spid'));?>
 			</li>
 			<li>
 				<?=HTML::anchor('', 'КДЦ', array('class' => 'tabs', 'id' => 'kdc'));?>
@@ -140,26 +140,19 @@
 		return is;
 	}
 
-	var ids = [];
 	$("#panel").on('change', '.edit_formula', function(){
-		ids = [];
 		var elem_id = $(this).data('id');
 		var formula = $(this).val();
 		var table = $('#table').val();
-
-		ids.push(elem_id);
-
-		console.log(is_formula(formula));
 
 		if(is_formula(formula) || formula == '')
 		{
 			var cicle = false;
 			if(formula != '')
 			{
-				cicle = incicle(formula, false);
+				cicle = incicle(formula, elem_id, false);
 			}
 
-            var cicle = false;
 			if(cicle == true)
 			{
 				$('#error_'+elem_id).css('padding', '0');
@@ -193,7 +186,7 @@
 		}
 	});
 
-	function incicle(data, isin)
+	function incicle(data, elem_id, isin)
 	{
 		var arr = data.match(/id\d+/g);
 
@@ -206,9 +199,7 @@
 				var ff_id = Number(id.match(/\d+/g)[0]);
 				var formula = $('#elem_'+ff_id+' .edit_formula').val();
 
-				//console.log(ids, ff_id);
-
-				if(ids.indexOf(ff_id) != -1)
+				if(ff_id == elem_id)
 				{
 					isin = true;
 				}
@@ -216,8 +207,7 @@
 				{
 					if(is_formula(formula) && isin == false)
 					{
-						ids.push(Number(ff_id));
-						isin = incicle(formula, isin);
+						isin = incicle(formula, elem_id, isin);
 					}
 				}
 			});
