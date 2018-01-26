@@ -183,8 +183,6 @@ class Controller_Ajax extends Controller
 
 		$this->calc($table, $_POST['elem_id'], $data, $arr_data);
 
-		die;
-
 		$data_O = ORM::factory('data' . $_POST['table'])->where('district_id', '=', $_POST['district_id'])->and_where('subject_id', '=', $_POST['subject_id'])->and_where('year', '=', $_POST['year'])->find_all();
 		$data = array();
 		foreach($data_O as $el_data)
@@ -220,6 +218,7 @@ class Controller_Ajax extends Controller
 
 	public function calc($table, $elem_id, $data, $arr_data)
 	{
+		$formula = 0;
 		$calc = ORM::factory($table, $elem_id);
 		$txt = $calc->use;
 
@@ -233,6 +232,13 @@ class Controller_Ajax extends Controller
 
 			foreach($use as $id)
 			{
+				$tt = explode('_', $id);
+				if(count($tt) == 2)
+				{
+					$table = $tt[0];
+					$id = $tt[1];
+				}
+
 				$f = ORM::factory($table, $id);
 
 				$formula = $f->formula;
@@ -242,10 +248,11 @@ class Controller_Ajax extends Controller
 				foreach($arr[0] as $elem)
 				{
 					$massiv = explode('_', $elem);
+
 					$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $arr_data['district_id'])->and_where('subject_id', '=', $arr_data['subject_id'])->and_where('year', '=', $arr_data['year'])->and_where('elem_id', '=', (int)$massiv[1])->find_all();
 
 					$value = 0;
-					if($dataO[0]->value != NULL)
+					if(isset($dataO[0]->value) && $dataO[0]->value != NULL)
 					{
 						$value = $dataO[0]->value;
 					}
@@ -259,6 +266,16 @@ class Controller_Ajax extends Controller
 				{
 					foreach($elem as $el)
 					{
+						if(count($tt) == 2)
+						{
+							$data_O = ORM::factory('data' . $table)->where('district_id', '=', $arr_data['district_id'])->and_where('subject_id', '=', $arr_data['subject_id'])->and_where('year', '=', $arr_data['year'])->find_all();
+							$data = array();
+							foreach($data_O as $el_data)
+							{
+								$data['id' . $el_data->elem_id] = $el_data->value;
+							}
+						}
+
 						if(isset($data[$el]))
 						{
 							$formula = str_replace($el, $data[$el], $formula);
