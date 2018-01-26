@@ -237,6 +237,13 @@ class Controller_Ajax extends Controller
 				{
 					$table = $tt[0];
 					$id = $tt[1];
+
+					$data_O = ORM::factory('data' . $table)->where('district_id', '=', $arr_data['district_id'])->and_where('subject_id', '=', $arr_data['subject_id'])->and_where('year', '=', $arr_data['year'])->find_all();
+					$data = array();
+					foreach($data_O as $el_data)
+					{
+						$data['id' . $el_data->elem_id] = $el_data->value;
+					}
 				}
 
 				$f = ORM::factory($table, $id);
@@ -266,16 +273,6 @@ class Controller_Ajax extends Controller
 				{
 					foreach($elem as $el)
 					{
-						if(count($tt) == 2)
-						{
-							$data_O = ORM::factory('data' . $table)->where('district_id', '=', $arr_data['district_id'])->and_where('subject_id', '=', $arr_data['subject_id'])->and_where('year', '=', $arr_data['year'])->find_all();
-							$data = array();
-							foreach($data_O as $el_data)
-							{
-								$data['id' . $el_data->elem_id] = $el_data->value;
-							}
-						}
-
 						if(isset($data[$el]))
 						{
 							$formula = str_replace($el, $data[$el], $formula);
