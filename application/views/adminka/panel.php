@@ -9,7 +9,7 @@
 				<th width="2%">
 					id
 				</th>
-				<th width="42%">
+				<th width="47%">
 					Название
 				</th>
 				<th width="11%">
@@ -18,11 +18,8 @@
 				<th width="10%">
 					Подзаголовок
 				</th>
-				<th width="24%">
+				<th width="30%">
 					Формула (Пример: id3/100)
-				</th>
-				<th width="11%">
-					Да/Нет
 				</th>
 			</tr>
 		</thead>
@@ -47,9 +44,6 @@
 						</div>
 						<?=Form::input('formula', $title->formula, array('class' => 'form-control edit_formula', 'data-id' => $title->id))?>
 						<div id="use_<?=$title->id?>" style="display: none" data-use="<?=$title->use?>"></div>
-					</td>
-					<td>
-						<?=Form::select('yesno', array(0 => 'Выкл', 1 => 'Вкл'), $title->yesno, array('class' => 'form-control edit_yesno', 'data-id' => $title->id))?>
 					</td>
 				</tr>
 			<?}?>

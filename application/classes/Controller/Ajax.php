@@ -30,17 +30,17 @@ class Controller_Ajax extends Controller
 
 		if($_POST['district_id'] == 0)
 		{
-			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 		}
 		else
 		{
 			if($_POST['subject_id'] == 0)
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 			else
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value, yesno FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND subject_id = ' . $_POST['subject_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND subject_id = ' . $_POST['subject_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 		}
 
@@ -48,7 +48,6 @@ class Controller_Ajax extends Controller
 		foreach($data_O as $elem)
 		{
 			$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
-			$data[$elem['year']][$elem['elem_id']]['yesno'] = $elem['yesno'];
 		}
 
 		$view_panel = View::factory('main/list');
@@ -120,7 +119,6 @@ class Controller_Ajax extends Controller
 		foreach($data_O as $el_data)
 		{
 			$data[$el_data->elem_id]['value'] = $el_data->value;
-			$data[$el_data->elem_id]['yesno'] = $el_data->yesno;
 		}
 
 		$view_panel = View::factory('data/panel');
@@ -388,16 +386,6 @@ class Controller_Ajax extends Controller
 		$elem = ORM::factory($table, $_POST['elem_id']);
 
 		$elem->subtitle = $_POST['value'];
-		$elem->save();
-	}
-
-	public function action_edit_elem_yesno()
-	{
-		$table = $_POST['table'];
-
-		$elem = ORM::factory($table, $_POST['elem_id']);
-
-		$elem->yesno = $_POST['value'];
 		$elem->save();
 	}
 

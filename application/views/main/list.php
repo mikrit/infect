@@ -31,21 +31,13 @@
 					<?}?>
 				</td>
 				<td style="white-space: nowrap">
-					<?if($title->yesno == 0){?>
-						<?=$begin = isset($data[$r_year_begin][$title->id]['value']) ? number_format($data[$r_year_begin][$title->id]['value'], 2, '.', ' ') : ''?>
-					<?}else{?>
-						<?=$data[$r_year_begin][$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
-					<?}?>
+					<?=$begin = isset($data[$r_year_begin][$title->id]['value']) ? number_format($data[$r_year_begin][$title->id]['value'], 2, '.', ' ') : ''?>
 				</td>
 				<td style="white-space: nowrap">
-					<?if($title->yesno == 0){?>
-						<?=$end = isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : ''?>
-					<?}else{?>
-						<?=$data[$r_year_end][$title->id]['yesno'] == 0 ? 'Нет' : 'Да'?>
-					<?}?>
+					<?=$end = isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : ''?>
 				</td>
 				<td>
-					<?if($title->yesno == 0 && $begin != '' && $end != ''){?>
+					<?if($begin != '' && $end != ''){?>
 						<?=number_format($end/$begin*100-100, 2, '.', ' ')?>%
 					<?}elseif($begin != '' || $end != ''){?>
 						<?=number_format(0, 2, '.', ' ')?>%
