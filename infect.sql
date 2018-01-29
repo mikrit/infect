@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Янв 10 2018 г., 10:28
+-- Время создания: Янв 29 2018 г., 11:24
 -- Версия сервера: 5.1.54-community
--- Версия PHP: 5.5.30
+-- Версия PHP: 7.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Структура таблицы `ambulathelps`
 --
 
-DROP TABLE IF EXISTS `ambulathelps`;
 CREATE TABLE IF NOT EXISTS `ambulathelps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -36,7 +35,21 @@ CREATE TABLE IF NOT EXISTS `ambulathelps` (
   `use` text,
   `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Дамп данных таблицы `ambulathelps`
+--
+
+INSERT INTO `ambulathelps` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno`) VALUES
+(1, 'Обслужено КИЗ пациентов всего', 1, 1, 'id2+id3', '4', 0),
+(2, 'первично', 0, 0, '', '1', 0),
+(3, 'повторно', 0, 0, '', '1', 0),
+(4, 'Число посещений на 1 тыс. жителей в год', 1, 1, 'id1*1000/info_1', '', 0),
+(5, 'взрослых', 0, 0, '', '', 0),
+(6, 'детей', 0, 0, '', '', 0),
+(7, 'Количество физических лиц врачей, работающих в КИЗ*', 1, 1, 'info_39', '8', 0),
+(8, 'Количество обслуживаемого населения на 1 врача КИЗ', 1, 1, 'info_1/id7', '', 0);
 
 -- --------------------------------------------------------
 
@@ -44,7 +57,6 @@ CREATE TABLE IF NOT EXISTS `ambulathelps` (
 -- Структура таблицы `dataambulathelps`
 --
 
-DROP TABLE IF EXISTS `dataambulathelps`;
 CREATE TABLE IF NOT EXISTS `dataambulathelps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -52,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `dataambulathelps` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -62,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `dataambulathelps` (
 -- Структура таблицы `datagepatids`
 --
 
-DROP TABLE IF EXISTS `datagepatids`;
 CREATE TABLE IF NOT EXISTS `datagepatids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -70,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `datagepatids` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -80,7 +89,6 @@ CREATE TABLE IF NOT EXISTS `datagepatids` (
 -- Структура таблицы `datainfects`
 --
 
-DROP TABLE IF EXISTS `datainfects`;
 CREATE TABLE IF NOT EXISTS `datainfects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -88,7 +96,6 @@ CREATE TABLE IF NOT EXISTS `datainfects` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -98,7 +105,6 @@ CREATE TABLE IF NOT EXISTS `datainfects` (
 -- Структура таблицы `datainfos`
 --
 
-DROP TABLE IF EXISTS `datainfos`;
 CREATE TABLE IF NOT EXISTS `datainfos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -106,7 +112,6 @@ CREATE TABLE IF NOT EXISTS `datainfos` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -116,7 +121,6 @@ CREATE TABLE IF NOT EXISTS `datainfos` (
 -- Структура таблицы `datakdcs`
 --
 
-DROP TABLE IF EXISTS `datakdcs`;
 CREATE TABLE IF NOT EXISTS `datakdcs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -124,7 +128,6 @@ CREATE TABLE IF NOT EXISTS `datakdcs` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -134,7 +137,6 @@ CREATE TABLE IF NOT EXISTS `datakdcs` (
 -- Структура таблицы `dataspids`
 --
 
-DROP TABLE IF EXISTS `dataspids`;
 CREATE TABLE IF NOT EXISTS `dataspids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -142,7 +144,6 @@ CREATE TABLE IF NOT EXISTS `dataspids` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -152,7 +153,6 @@ CREATE TABLE IF NOT EXISTS `dataspids` (
 -- Структура таблицы `datastachelps`
 --
 
-DROP TABLE IF EXISTS `datastachelps`;
 CREATE TABLE IF NOT EXISTS `datastachelps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `elem_id` int(11) NOT NULL,
@@ -160,7 +160,6 @@ CREATE TABLE IF NOT EXISTS `datastachelps` (
   `year` int(4) NOT NULL,
   `district_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -170,7 +169,6 @@ CREATE TABLE IF NOT EXISTS `datastachelps` (
 -- Структура таблицы `districts`
 --
 
-DROP TABLE IF EXISTS `districts`;
 CREATE TABLE IF NOT EXISTS `districts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) NOT NULL,
@@ -197,7 +195,6 @@ INSERT INTO `districts` (`id`, `title`) VALUES
 -- Структура таблицы `gepatids`
 --
 
-DROP TABLE IF EXISTS `gepatids`;
 CREATE TABLE IF NOT EXISTS `gepatids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -207,7 +204,59 @@ CREATE TABLE IF NOT EXISTS `gepatids` (
   `use` text,
   `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
+
+--
+-- Дамп данных таблицы `gepatids`
+--
+
+INSERT INTO `gepatids` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno`) VALUES
+(1, 'Количество больных ХВГ, носителей HBsAg и антител к ВГС, состоящих на учете в КИЗ', 1, 1, 'id2+id3', '', 0),
+(2, 'взрослые', 0, 0, '', '1', 0),
+(3, 'дети', 0, 0, '', '1', 0),
+(4, 'Количество больных хроническим гепатитом  В', 1, 0, '', '', 0),
+(5, 'из них, диагноз подтвержден методом ПЦР', 0, 0, '', '', 0),
+(6, 'Количество носителей HBsAg', 1, 0, '', '', 0),
+(7, 'из них, проведено ПЦР-исследование', 0, 0, '', '', 0),
+(8, 'Количество больных хроническим гепатитом  С', 1, 0, '', '', 0),
+(9, 'из них, диагноз подтвержден методом ПЦР', 0, 0, '', '', 0),
+(10, 'Количество больных хроническими микст-гепатитами', 1, 0, '', '', 0),
+(11, 'из них, диагноз подтвержден методом ПЦР', 0, 0, '', '', 0),
+(12, 'Количество "носителей  анти-ВГС"', 1, 0, '', '', 0),
+(13, 'из них, проведено ПЦР-исследование', 0, 0, '', '', 0),
+(14, 'Количество больных с признаками цирроза печени, из них', 1, 1, 'id15+id16+id17+id18', '', 0),
+(15, 'в исходе хронического гепатита С', 0, 0, '', '14', 0),
+(16, 'в исходе хронического гепатита В', 0, 0, '', '14', 0),
+(17, 'в исходе хронического гепатита В+D', 0, 0, '', '14', 0),
+(18, 'в исходе хронического гепатита В+С', 0, 0, '', '14', 0),
+(19, 'Количество пациентов из семейных очагов', 1, 0, '', '', 0),
+(20, 'Длительность диспансеризации условиях КИЗ (количество пациентов):', 1, 1, 'id21+id22', '', 0),
+(21, '< 2 лет', 0, 0, '', '20', 0),
+(22, '>5 лет', 0, 0, '', '20', 0),
+(23, 'Количество пациентов, состоящих в региональном реестре (регистре) ХВГ, из них: ', 1, 1, 'id24+id25+id26+id27', '', 0),
+(24, 'количество больных вирусным гепатитом  С', 0, 0, '', '23', 0),
+(25, 'количество больных хроническим гепатитом  В', 0, 0, '', '23', 0),
+(26, 'количество больных вирусными микст-гепатитами', 0, 0, '', '23', 0),
+(27, 'количество носителей HBsAg', 0, 0, '', '23', 0),
+(28, 'Кол-во больных ХВГ, обследованных методом эластометрии (фиброскан)', 1, 1, 'id29+id30+id31+id32+di33', '', 0),
+(29, 'F0', 0, 0, '', '28', 0),
+(30, 'F1', 0, 0, '', '28', 0),
+(31, 'F2', 0, 0, '', '28', 0),
+(32, 'F3', 0, 0, '', '28', 0),
+(33, 'F4', 0, 0, '', '28', 0),
+(34, 'Проведено генотипирование + определена вирусная нагрузка (кол-во больных)', 0, 0, '', '', 0),
+(35, 'Количество больных ХВГ, получавших (или получающих) ПВТ', 1, 1, 'id36+id37', '', 0),
+(36, 'ИНФ-содержащие схемы ', 0, 0, '', '35', 0),
+(37, 'безинтерфероновые схемы', 0, 0, '', '35', 0),
+(38, 'Источник финансирования (количество пациентов)', 1, 1, 'id39+id40+id41+id42', '', 0),
+(39, 'за счет средств ОМС', 0, 0, '', '38', 0),
+(40, 'региональных программ', 0, 0, '', '38', 0),
+(41, 'личных средств', 0, 0, '', '38', 0),
+(42, 'ОНЛС', 0, 0, '', '38', 0),
+(43, 'Показания к ПВТ', 1, 1, '', '', 0),
+(44, 'ПВТ у наивных (количество пациентов)', 0, 0, '', '', 0),
+(45, 'Результаты ПВТ', 1, 1, '', '', 0),
+(46, 'УВО (количество пациентов)', 0, 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -215,7 +264,6 @@ CREATE TABLE IF NOT EXISTS `gepatids` (
 -- Структура таблицы `infects`
 --
 
-DROP TABLE IF EXISTS `infects`;
 CREATE TABLE IF NOT EXISTS `infects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -233,7 +281,6 @@ CREATE TABLE IF NOT EXISTS `infects` (
 -- Структура таблицы `infos`
 --
 
-DROP TABLE IF EXISTS `infos`;
 CREATE TABLE IF NOT EXISTS `infos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -250,9 +297,9 @@ CREATE TABLE IF NOT EXISTS `infos` (
 --
 
 INSERT INTO `infos` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno`) VALUES
-(1, 'Обслуживаемое население:', 1, 1, 'id2+id3', '7', 0),
-(2, 'взрослые', 0, 0, '', '1;8', 0),
-(3, 'дети (0-17)', 0, 0, '', '1;9', 0),
+(1, 'Обслуживаемое население:', 1, 1, 'id2+id3', '7;stachelp_34;stachelp_37;stachelp_40;ambulathelp_4;ambulathelp_8;spid_1', 0),
+(2, 'взрослые', 0, 0, '', '1;8;stachelp_35;stachelp_38;spid_2', 0),
+(3, 'дети (0-17)', 0, 0, '', '1;9;stachelp_36;stachelp_39;spid_3', 0),
 (4, 'Количество случаев инфекционных заболеваний по данным отчетной формы №2', 1, 1, 'id5+id6', '7', 0),
 (5, 'у взрослых (с 18 лет)', 0, 0, '', '4;8', 0),
 (6, 'у детей (0-17)', 0, 0, '', '4;9', 0),
@@ -288,7 +335,7 @@ INSERT INTO `infos` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno
 (36, 'Количество клинических (госпитальных) эпидемиологов ', 0, 0, '', '', 0),
 (37, 'Количество штатных должностей клинических (госпитальных) эпидемиологов ', 0, 0, '', '', 0),
 (38, 'Сведения о кабинетах инфекционных заболеваний (КИЗ)', 1, 1, '', '', 0),
-(39, 'Количество врачей-инфекционистов, работающих в КИЗ (физических лиц)', 0, 0, '', '42', 0),
+(39, 'Количество врачей-инфекционистов, работающих в КИЗ (физических лиц)', 0, 0, '', '42;ambulathelp_7', 0),
 (40, 'Количество штатных должностей врачей-инфекционистов в КИЗ', 0, 0, '', '', 0),
 (41, 'Количество фактически занятых штатных должностей ', 0, 0, '', '42', 0),
 (42, 'Коэффициент совместительства', 0, 1, 'id41/id39', '', 0),
@@ -314,7 +361,6 @@ INSERT INTO `infos` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno
 -- Структура таблицы `kdcs`
 --
 
-DROP TABLE IF EXISTS `kdcs`;
 CREATE TABLE IF NOT EXISTS `kdcs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -324,7 +370,24 @@ CREATE TABLE IF NOT EXISTS `kdcs` (
   `use` text,
   `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+--
+-- Дамп данных таблицы `kdcs`
+--
+
+INSERT INTO `kdcs` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno`) VALUES
+(1, 'Число посещений врачей-инфекционистов  в год', 1, 1, 'id2+id3', '', 0),
+(2, 'взрослых', 0, 0, '', '1', 0),
+(3, 'детей', 0, 0, '', '1', 0),
+(4, 'Нагрузка на врача КДЦ в час', 1, 1, '', '', 0),
+(5, 'КДЦ специализированный для взрослых', 0, 0, '', '', 0),
+(6, 'КДЦ специализированный для детей', 0, 0, '', '', 0),
+(7, 'КДЦ смешанный (для взрослых и детей)', 0, 0, '', '', 0),
+(8, 'Количество консультативно-диагностических центров', 1, 1, 'id9+id10+id11', '', 0),
+(9, 'взрослых', 0, 0, '', '8', 0),
+(10, 'детей', 0, 0, '', '8', 0),
+(11, 'смешанных', 0, 0, '', '8', 0);
 
 -- --------------------------------------------------------
 
@@ -332,7 +395,6 @@ CREATE TABLE IF NOT EXISTS `kdcs` (
 -- Структура таблицы `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
@@ -355,7 +417,6 @@ INSERT INTO `roles` (`id`, `name`, `description`) VALUES
 -- Структура таблицы `roles_users`
 --
 
-DROP TABLE IF EXISTS `roles_users`;
 CREATE TABLE IF NOT EXISTS `roles_users` (
   `user_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
@@ -379,7 +440,6 @@ INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES
 -- Структура таблицы `spids`
 --
 
-DROP TABLE IF EXISTS `spids`;
 CREATE TABLE IF NOT EXISTS `spids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -389,7 +449,34 @@ CREATE TABLE IF NOT EXISTS `spids` (
   `use` text,
   `yesno` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+
+--
+-- Дамп данных таблицы `spids`
+--
+
+INSERT INTO `spids` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `yesno`) VALUES
+(1, 'Количество случаев ВИЧ-инфекции по данным отчетной формы №2', 1, 1, 'id2+id3', '4', 0),
+(2, 'у взрослых (с 18 лет)', 0, 0, '', '1;5', 0),
+(3, 'у детей (0-17)', 0, 0, '', '1;6', 0),
+(4, 'Заболеваемость ВИЧ-инфекцией на 100 тыс. населения', 1, 1, 'id1*100000/info_1', '', 0),
+(5, 'среди взрослых', 0, 1, 'id2*100000/info_2', '', 0),
+(6, 'среди детей', 0, 1, 'id3*100000/info_3', '', 0),
+(7, 'Количество лицензированных инфекционных отделений в составе центра СПИД ', 1, 0, '', '', 0),
+(8, 'Количество лицензированных кабинетов инфекционных заболеваний (КИЗ) в составе центра СПИД', 1, 0, '', '', 0),
+(9, 'Количество лицензированных лабораторий в составе центра СПИД:', 1, 1, 'id10+id11+id12', '', 0),
+(10, 'ПЦР-лаборатория', 0, 0, '', '9', 0),
+(11, ' иммунологические (отделений по ф. 30, п.8)', 0, 0, '', '9', 0),
+(12, 'микробиологические (бактериологические) (отделений по ф. 30, ф 8)', 0, 0, '', '9', 0),
+(13, 'Количество врачей-инфекционистов центра СПИД', 1, 0, '', '16', 0),
+(14, 'Количество штатных должностей врачей-инфекционистов центра СПИД', 0, 0, '', '', 0),
+(15, 'Количество фактически занятых штатных должностей ', 0, 0, '', '16', 0),
+(16, 'Коэффициент совместительства', 1, 1, 'id15/id13', '', 0),
+(17, 'Имеют категорию из них: ', 1, 1, 'id18+id19+id20+id21', '', 0),
+(18, 'высшая категория', 0, 0, '', '17', 0),
+(19, 'первая категория', 0, 0, '', '17', 0),
+(20, 'вторая категория', 0, 0, '', '17', 0),
+(21, 'нет категории', 0, 0, '', '17', 0);
 
 -- --------------------------------------------------------
 
@@ -397,7 +484,6 @@ CREATE TABLE IF NOT EXISTS `spids` (
 -- Структура таблицы `stachelps`
 --
 
-DROP TABLE IF EXISTS `stachelps`;
 CREATE TABLE IF NOT EXISTS `stachelps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -431,12 +517,12 @@ INSERT INTO `stachelps` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `y
 (15, 'Выписано больных', 1, 1, 'id16+id17', '27;33;41;44', 0),
 (16, 'взрослых', 0, 0, '', '15;28;42;45', 0),
 (17, 'детей', 0, 0, '', '15;29;43;46', 0),
-(18, 'Умерло всего больных, госпитализированных в инфекционное отделение (стационар)', 1, 1, 'id19+id20', '27;33;41;41', 0),
-(19, 'всего взрослых', 0, 0, '', '18;28;42;42', 0),
-(20, 'всего детей', 0, 0, '', '18;29;43;43', 0),
-(21, 'Умерло больных от инфекционной патологии (в инфекц отделениях, стационарах)', 1, 1, 'id22+id23', '44;44', 0),
-(22, 'от инфекционной патологии взрослых', 0, 0, '', '21;45;45', 0),
-(23, 'от инфекционной патологии детей', 0, 0, '', '21;46;46', 0),
+(18, 'Умерло всего больных, госпитализированных в инфекционное отделение (стационар)', 1, 1, 'id19+id20', '27;33;41', 0),
+(19, 'всего взрослых', 0, 0, '', '18;28;42', 0),
+(20, 'всего детей', 0, 0, '', '18;29;43', 0),
+(21, 'Умерло больных от инфекционной патологии (в инфекц отделениях, стационарах)', 1, 1, 'id22+id23', '44', 0),
+(22, 'от инфекционной патологии взрослых', 0, 0, '', '21;45', 0),
+(23, 'от инфекционной патологии детей', 0, 0, '', '21;46', 0),
 (24, 'Число койко/дней, проведенных больными в отделении (стационаре)', 1, 1, 'id25+id26', '27;30', 0),
 (25, 'взрослыми', 0, 0, '', '24;28;31', 0),
 (26, 'детьми', 0, 0, '', '24;29;32', 0),
@@ -487,7 +573,6 @@ INSERT INTO `stachelps` (`id`, `title`, `bold`, `subtitle`, `formula`, `use`, `y
 -- Структура таблицы `subjects`
 --
 
-DROP TABLE IF EXISTS `subjects`;
 CREATE TABLE IF NOT EXISTS `subjects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL,
@@ -592,7 +677,6 @@ INSERT INTO `subjects` (`id`, `title`, `district_id`) VALUES
 -- Структура таблицы `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(254) NOT NULL,
@@ -613,7 +697,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`, `fio`, `district_id`, `subject_id`) VALUES
-(1, 'mikrit@mail.ru', 'mikrit', '496259cb6b4d9f3d3eaaf530c8534b847acf4c15ff8c56c0f319a3e0211814ac', 48, 1515156452, 'Егор', 0, 0),
+(1, 'mikrit@mail.ru', 'mikrit', '496259cb6b4d9f3d3eaaf530c8534b847acf4c15ff8c56c0f319a3e0211814ac', 50, 1517211720, 'Егор', 0, 0),
 (2, 'test1@mail.ru', 'test1', '18c7a796f76b61d396800f649243f7a58ed370154a3b39af52c48a819d0f0040', 11, 1512926568, 'Видит всё', 0, 0);
 
 -- --------------------------------------------------------
@@ -622,7 +706,6 @@ INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_logi
 -- Структура таблицы `user_tokens`
 --
 
-DROP TABLE IF EXISTS `user_tokens`;
 CREATE TABLE IF NOT EXISTS `user_tokens` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
@@ -646,23 +729,6 @@ INSERT INTO `user_tokens` (`id`, `user_id`, `user_agent`, `token`, `created`, `e
 (5, 1, '426e2d5a0dfe954005ba65bbfb4eb5121cf98e1f', '6f22b825de92d457481d22cd2241e18a4fda1c32', 1510125360, 1511334960),
 (6, 1, '426e2d5a0dfe954005ba65bbfb4eb5121cf98e1f', 'cfbf597a5f9df34a07ad72eea7754fa7e97dd757', 1512889026, 1514098626),
 (9, 1, '426e2d5a0dfe954005ba65bbfb4eb5121cf98e1f', 'b8021d41ccfcd3f3346118e4c220a0f8ed252ce6', 1512926635, 1514136235);
-
---
--- Ограничения внешнего ключа сохраненных таблиц
---
-
---
--- Ограничения внешнего ключа таблицы `roles_users`
---
-ALTER TABLE `roles_users`
-  ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `user_tokens`
---
-ALTER TABLE `user_tokens`
-  ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
