@@ -4,3 +4,4 @@ application/logs
 application/cache
 modules/profilertoolbar
 *.sql
+excel/

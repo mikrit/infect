@@ -16,8 +16,6 @@ class Controller_Main extends Controller_Base
 			$years[$i] = $i;
 		}
 
-		//Надо таблицу ввида -> Название/2016/2017/(Прирост-снижение)%
-
 		$user = Auth::instance()->get_user();
 
 		$user_district = $user->district_id;
@@ -69,13 +67,74 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
+		$infoO = ORM::factory('info')->find_all();
+		$formuls = array();
+		foreach($infoO as $elem)
+		{
+			if($elem->formula != '')
+			{
+				$formuls[$elem->id] = $elem->formula;
+			}
+		}
+
 		$data = array();
 		foreach($data_O as $elem)
 		{
 			$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
 		}
 
-		//var_dump($data);die;
+		foreach($data as $year => $dd)
+		{
+			foreach($dd as $e_id => $val)
+			{
+				if(isset($formuls[$e_id]))
+				{
+					$formula = $formuls[$e_id];
+
+					/*preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
+
+					foreach($arr[0] as $elem)
+					{
+						$massiv = explode('_', $elem);
+
+						$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year)->and_where('elem_id', '=', (int)$massiv[1])->find_all();
+
+						$value = 0;
+						if(isset($dataO[0]->value) && $dataO[0]->value != NULL)
+						{
+							$value = $dataO[0]->value;
+						}
+
+						$formula = str_replace($elem, $value, $formula);
+					}*/
+
+
+					preg_match_all('/id\d+/', $formula, $arr);
+
+					foreach($arr as $elem)
+					{
+						foreach($elem as $el)
+						{
+							preg_match_all('/\d+/', $el, $dd);
+
+							$formula = str_replace('id'.$dd[0][0], $data[$year][$dd[0][0]]['value'], $formula);
+						}
+					}
+
+					if(@eval("\$result = $formula;") === FALSE)
+					{
+						$result = 0;
+					}
+
+					if($result == INF)
+					{
+						$result = 0;
+					}
+
+					$data[$year][$e_id]['value'] = $result;
+				}
+			}
+		}
 
 		$titles = ORM::factory('info')->find_all();
 
