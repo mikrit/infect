@@ -50,19 +50,16 @@ class Controller_Main extends Controller_Base
 
 		if($district_id == 0)
 		{
-			//$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
 			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM datainfos WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 		}
 		else
 		{
 			if($subject_id == 0)
 			{
-				//$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
 				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM datainfos WHERE district_id = ' . $district_id . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 			else
 			{
-				//$data_O = DB::select('id', 'elem_id', array(DB::expr('SUM(`value`)'), 'value'), 'yesno')->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', 'BETWEEN', array($r_year_begin, $r_year_end))->from('datainfects')->group_by('elem_id')->execute();
 				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM datainfos WHERE district_id = ' . $district_id . ' AND subject_id = ' . $subject_id . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 		}
@@ -90,24 +87,6 @@ class Controller_Main extends Controller_Base
 				if(isset($formuls[$e_id]))
 				{
 					$formula = $formuls[$e_id];
-
-					/*preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
-
-					foreach($arr[0] as $elem)
-					{
-						$massiv = explode('_', $elem);
-
-						$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year)->and_where('elem_id', '=', (int)$massiv[1])->find_all();
-
-						$value = 0;
-						if(isset($dataO[0]->value) && $dataO[0]->value != NULL)
-						{
-							$value = $dataO[0]->value;
-						}
-
-						$formula = str_replace($elem, $value, $formula);
-					}*/
-
 
 					preg_match_all('/id\d+/', $formula, $arr);
 
