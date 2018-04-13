@@ -37,7 +37,7 @@
 					<?=$end = isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : ''?>
 				</td>
 				<td>
-					<?if($begin != '' && $end != ''){?>
+					<?if($begin != '' && $end != '' && $begin != 0){?>
 						<?=number_format($end/$begin*100-100, 2, '.', ' ')?>%
 					<?}elseif($begin != '' || $end != ''){?>
 						<?=number_format(0, 2, '.', ' ')?>%

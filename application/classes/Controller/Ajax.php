@@ -21,33 +21,85 @@ class Controller_Ajax extends Controller
 
 		if(!isset($_POST['district_id']))
 		{
-			$_POST['district_id'] = 0;
+			$_POST['district_id'] = 999;
 		}
 		elseif(!isset($_POST['subject_id']))
 		{
-			$_POST['subject_id'] = 0;
+			$_POST['subject_id'] = 999;
 		}
 
-		if($_POST['district_id'] == 0)
+		$user = Auth::instance()->get_user();
+		$district_id = $user->district_id;
+		$subject_id = $user->subject_id;
+
+		$data = array();
+		$flag = FALSE;
+
+		if($district_id != 0)
 		{
-			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+			if($district_id == $_POST['district_id'])
+			{
+				if($subject_id != 0)
+				{
+					if($subject_id == $_POST['subject_id'])
+					{
+						$flag = TRUE;
+					}
+				}
+				else
+				{
+					$flag = TRUE;
+				}
+			}
 		}
 		else
 		{
-			if($_POST['subject_id'] == 0)
+			$flag = TRUE;
+		}
+
+		if($flag)
+		{
+			if($_POST['district_id'] == 0)
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
 			}
 			else
 			{
-				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND subject_id = ' . $_POST['subject_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				if($_POST['subject_id'] == 0)
+				{
+					$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				}
+				else
+				{
+					$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND subject_id = ' . $_POST['subject_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				}
 			}
-		}
 
-		$data = array();
-		foreach($data_O as $elem)
-		{
-			$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+			$DataFO = ORM::factory($_POST['table'])->find_all();
+			$formuls = array();
+			foreach($DataFO as $elem)
+			{
+				if($elem->formula != '')
+				{
+					$formuls[$elem->id] = $elem->formula;
+				}
+			}
+
+			foreach($data_O as $elem)
+			{
+				$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+			}
+
+			foreach($data as $year => $dd)
+			{
+				foreach($dd as $e_id => $val)
+				{
+					if(isset($formuls[$e_id]))
+					{
+						$data[$year][$e_id]['value'] = $this->calcByFolmula($data, $formuls[$e_id], $year, $_POST['district_id'], $_POST['subject_id']);
+					}
+				}
+			}
 		}
 
 		$view_panel = View::factory('main/list');
@@ -64,6 +116,54 @@ class Controller_Ajax extends Controller
 		$view_panel->subject_id = $_POST['subject_id'];
 
 		echo json_encode(array('panel' => $view_panel->render()));
+	}
+
+	public function calcByFolmula($data, $formula, $year, $district_id, $subject_id)
+	{
+		preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
+
+		foreach($arr[0] as $elem)
+		{
+			$massiv = explode('_', $elem);
+
+			$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year)->and_where('elem_id', '=', (int)$massiv[1])->find_all();
+
+			$value = 0;
+			if(isset($dataO[0]->value) && $dataO[0]->value != NULL)
+			{
+				$value = $dataO[0]->value;
+			}
+
+			$formula = str_replace($elem, $value, $formula);
+		}
+
+		preg_match_all('/id\d+/', $formula, $arr);
+
+		foreach($arr as $elem)
+		{
+			foreach($elem as $el)
+			{
+				preg_match_all('/\d+/', $el, $dd);
+
+				if(!isset($data[$year][$dd[0][0]]['value']))
+				{
+					$data[$year][$dd[0][0]]['value'] = 0;
+				}
+				$formula = str_replace('id'.$dd[0][0], $data[$year][$dd[0][0]]['value'], $formula);
+			}
+		}
+
+		if(@eval("\$result = $formula;") === FALSE)
+		{
+			$result = 0;
+		}
+
+		if($result == INF)
+		{
+			$result = 0;
+		}
+
+		return $result;
 	}
 
 	public function action_change_district3()

@@ -11,28 +11,25 @@ class Controller_Main extends Controller_Base
 		$r_year_end = $date - 1;
 
 		$years = array();
-		for($i = 2015; $i <= $date; $i++)
+		for($i = 2016; $i <= $date; $i++)
 		{
 			$years[$i] = $i;
 		}
 
 		$user = Auth::instance()->get_user();
 
-		$user_district = $user->district_id;
 		$district_id = $user->district_id;
-		if($user_district == 0)
+		if($district_id == 0)
 		{
 			$districts = array_merge(array(0 => 'Все'), ORM::factory('district')->find_all()->as_array('id', 'title'));
-			$district_id = 0;
 		}
 		else
 		{
 			$districts = ORM::factory('district')->where('id', '=', $district_id)->find_all()->as_array('id', 'title');
 		}
 
-		$user_subject = $user->subject_id;
 		$subject_id = $user->subject_id;
-		if($user_subject == 0)
+		if($subject_id == 0)
 		{
 			$subjects = array(0 => 'Все');
 			$subjectsO = ORM::factory('subject')->where('district_id', '=', $district_id)->find_all()->as_array('id', 'title');
@@ -40,8 +37,6 @@ class Controller_Main extends Controller_Base
 			{
 				$subjects[$key] = $val;
 			}
-
-			$subject_id = 0;
 		}
 		else
 		{
@@ -64,9 +59,9 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
-		$infoO = ORM::factory('info')->find_all();
+		$DataFO = ORM::factory('info')->find_all();
 		$formuls = array();
-		foreach($infoO as $elem)
+		foreach($DataFO as $elem)
 		{
 			if($elem->formula != '')
 			{
@@ -115,6 +110,8 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
+		//var_dump($district_id, $subject_id);die;
+
 		$titles = ORM::factory('info')->find_all();
 
 		$view = View::factory('main/index');
@@ -125,11 +122,11 @@ class Controller_Main extends Controller_Base
 
 		$view->districts = $districts;
 		$view->district_id = $district_id;
-		$view->user_district = $user_district;
+		$view->user_district = $district_id;
 
 		$view->subjects = $subjects;
 		$view->subject_id = $subject_id;
-		$view->user_subject = $user_subject;
+		$view->user_subject = $subject_id;
 
 		$view_list = View::factory('main/list');
 		$view_list->titles = $titles;

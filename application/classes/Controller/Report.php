@@ -6,8 +6,8 @@ class Controller_Report extends Controller_Base
 	{
 		$spreadsheet = Spreadsheet::factory(array(
 			'path'     => 'C:/http/infect/excel/',
-			'filename' => 'szfo_infect.xlsx'
-			//'filename' => 'szfo_stac.xlsx'
+			//'filename' => 'szfo_infect.xlsx'
+			'filename' => 'szfo_stac.xlsx'
 		), FALSE)->load()->read();
 
 		$data = array();
@@ -71,7 +71,9 @@ class Controller_Report extends Controller_Base
 				{
 					if($elem != 0)
 					{
-						/*$datainfo = ORM::factory('datainfo');
+						//var_dump((int)$regions[$r][0], (int)$regions[$r][1], (int)$y, (int)$t, $elem);
+
+						/*$datainfo = ORM::factory('datastachelp');
 
 						$datainfo->elem_id = (int)$t;
 						$datainfo->value = (float)$elem;
@@ -80,7 +82,7 @@ class Controller_Report extends Controller_Base
 						$datainfo->subject_id = (int)$regions[$r][1];
 
 						$datainfo->save();*/
-						//var_dump((int)$regions[$r][0], (int)$regions[$r][1], (int)$y, (int)$t, $elem);
+
 					}
 				}
 			}
