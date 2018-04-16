@@ -43,15 +43,18 @@ class Controller_Main extends Controller_Base
 			$subjects = ORM::factory('subject')->where('id', '=', $subject_id)->find_all()->as_array('id', 'title');
 		}
 
+		$count_subjects = 1;
 		if($district_id == 0)
 		{
 			$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM datainfos WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+			$count_subjects = ORM::factory('subject')->count_all();
 		}
 		else
 		{
 			if($subject_id == 0)
 			{
 				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM datainfos WHERE district_id = ' . $district_id . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				$count_subjects = ORM::factory('subject')->where('district_id', '=', $district_id)->count_all();
 			}
 			else
 			{
@@ -69,48 +72,25 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
-		$data = array();
 		foreach($data_O as $elem)
 		{
-			$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
-		}
-
-		foreach($data as $year => $dd)
-		{
-			foreach($dd as $e_id => $val)
+			if($elem['elem_id'] == 29 || $elem['elem_id'] == 30)
 			{
-				if(isset($formuls[$e_id]))
-				{
-					$formula = $formuls[$e_id];
-
-					preg_match_all('/id\d+/', $formula, $arr);
-
-					foreach($arr as $elem)
-					{
-						foreach($elem as $el)
-						{
-							preg_match_all('/\d+/', $el, $dd);
-
-							$formula = str_replace('id'.$dd[0][0], $data[$year][$dd[0][0]]['value'], $formula);
-						}
-					}
-
-					if(@eval("\$result = $formula;") === FALSE)
-					{
-						$result = 0;
-					}
-
-					if($result == INF)
-					{
-						$result = 0;
-					}
-
-					$data[$year][$e_id]['value'] = $result;
-				}
+				$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'] / $count_subjects;
+			}
+			else
+			{
+				$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
 			}
 		}
 
-		//var_dump($district_id, $subject_id);die;
+		for($year = $r_year_begin; $year <= $r_year_end; $year++)
+		{
+			foreach($formuls as $e_id => $formula)
+			{
+				$data[$year][$e_id]['value'] = $this->calcByFolmula($data, $formula, $year, $district_id, $subject_id);
+			}
+		}
 
 		$titles = ORM::factory('info')->find_all();
 
@@ -141,5 +121,67 @@ class Controller_Main extends Controller_Base
 		$view->list = $view_list->render();
 
 		$this->template->content = $view->render();
+	}
+
+	public function calcByFolmula($data, $formula, $year, $district_id, $subject_id)
+	{
+		preg_match_all('/infect_\d+|info_\d+|stachelp_\d+|spid_\d+|ambulathelp_\d+|kdc_\d+|gepatid_\d+/', $formula, $arr);
+
+		foreach($arr[0] as $elem)
+		{
+			$massiv = explode('_', $elem);
+
+			if($district_id == 0)
+			{
+				$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND elem_id = '.(int)$massiv[1]);
+			}
+			else
+			{
+				if($subject_id == 0)
+				{
+					$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND district_id = '.$district_id.' AND elem_id = '.(int)$massiv[1]);
+				}
+				else
+				{
+					$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND district_id = '.$district_id.' AND subject_id = '.$subject_id.' AND elem_id = '.(int)$massiv[1]);
+				}
+			}
+
+			$value = 0;
+			if(isset($dataO[0]['value']) && $dataO[0]['value'] != NULL)
+			{
+				$value = $dataO[0]['value'];
+			}
+
+			$formula = str_replace($elem, $value, $formula);
+		}
+
+		preg_match_all('/id\d+/', $formula, $arr);
+
+		foreach($arr as $elem)
+		{
+			foreach($elem as $el)
+			{
+				preg_match_all('/\d+/', $el, $dd);
+
+				if(!isset($data[$year][$dd[0][0]]['value']))
+				{
+					$data[$year][$dd[0][0]]['value'] = 0;
+				}
+				$formula = str_replace('id'.$dd[0][0], $data[$year][$dd[0][0]]['value'], $formula);
+			}
+		}
+
+		if(@eval("\$result = $formula;") === FALSE)
+		{
+			$result = 0;
+		}
+
+		if($result == INF)
+		{
+			$result = 0;
+		}
+
+		return $result;
 	}
 }

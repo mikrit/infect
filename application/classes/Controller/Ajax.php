@@ -6,6 +6,7 @@ class Controller_Ajax extends Controller
 
 	public function action_change_data_main()
 	{
+		$data = array();
 		$tabs = array(
 			//'infect'      => 'Инфекционная заболеваемость',
 			'info'        => 'Инф служба',
@@ -32,9 +33,7 @@ class Controller_Ajax extends Controller
 		$district_id = $user->district_id;
 		$subject_id = $user->subject_id;
 
-		$data = array();
 		$flag = FALSE;
-
 		if($district_id != 0)
 		{
 			if($district_id == $_POST['district_id'])
@@ -57,17 +56,21 @@ class Controller_Ajax extends Controller
 			$flag = TRUE;
 		}
 
+		$count_subjects = 1;
 		if($flag)
 		{
 			if($_POST['district_id'] == 0)
 			{
+				$_POST['subject_id'] = 0;
 				$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+				$count_subjects = ORM::factory('subject')->count_all();
 			}
 			else
 			{
 				if($_POST['subject_id'] == 0)
 				{
 					$data_O = Database::instance()->query(Database::SELECT, 'SELECT id, year, elem_id, SUM(value) as value FROM data' . $_POST['table'] . 's WHERE district_id = ' . $_POST['district_id'] . ' AND year BETWEEN ' . $r_year_begin . ' AND ' . $r_year_end . ' GROUP BY year, elem_id');
+					$count_subjects = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->count_all();
 				}
 				else
 				{
@@ -87,17 +90,21 @@ class Controller_Ajax extends Controller
 
 			foreach($data_O as $elem)
 			{
-				$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+				if($_POST['table'] == 'info' && ($elem['elem_id'] == 29 || $elem['elem_id'] == 30))
+				{
+					$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'] / $count_subjects;
+				}
+				else
+				{
+					$data[$elem['year']][$elem['elem_id']]['value'] = $elem['value'];
+				}
 			}
 
-			foreach($data as $year => $dd)
+			for($year = $r_year_begin; $year <= $r_year_end; $year++)
 			{
-				foreach($dd as $e_id => $val)
+				foreach($formuls as $e_id => $formula)
 				{
-					if(isset($formuls[$e_id]))
-					{
-						$data[$year][$e_id]['value'] = $this->calcByFolmula($data, $formuls[$e_id], $year, $_POST['district_id'], $_POST['subject_id']);
-					}
+					$data[$year][$e_id]['value'] = $this->calcByFolmula($data, $formula, $year, $_POST['district_id'], $_POST['subject_id']);
 				}
 			}
 		}
@@ -126,12 +133,26 @@ class Controller_Ajax extends Controller
 		{
 			$massiv = explode('_', $elem);
 
-			$dataO = ORM::factory('data'.$massiv[0])->where('district_id', '=', $district_id)->and_where('subject_id', '=', $subject_id)->and_where('year', '=', $year)->and_where('elem_id', '=', (int)$massiv[1])->find_all();
+			if($district_id == 0)
+			{
+				$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND elem_id = '.(int)$massiv[1]);
+			}
+			else
+			{
+				if($subject_id == 0)
+				{
+					$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND district_id = '.$district_id.' AND elem_id = '.(int)$massiv[1]);
+				}
+				else
+				{
+					$dataO = Database::instance()->query(Database::SELECT, 'SELECT SUM(value) as value FROM data'.$massiv[0].'s WHERE year = '.$year.' AND district_id = '.$district_id.' AND subject_id = '.$subject_id.' AND elem_id = '.(int)$massiv[1]);
+				}
+			}
 
 			$value = 0;
-			if(isset($dataO[0]->value) && $dataO[0]->value != NULL)
+			if(isset($dataO[0]['value']) && $dataO[0]['value'] != NULL)
 			{
-				$value = $dataO[0]->value;
+				$value = $dataO[0]['value'];
 			}
 
 			$formula = str_replace($elem, $value, $formula);
@@ -158,7 +179,7 @@ class Controller_Ajax extends Controller
 			$result = 0;
 		}
 
-		if($result == INF)
+		if($result == INF || is_nan($result))
 		{
 			$result = 0;
 		}
@@ -178,11 +199,25 @@ class Controller_Ajax extends Controller
 		}
 		else
 		{
-			$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
+			$user = Auth::instance()->get_user();
 
-			foreach($subjects_o as $subject)
+			if($user->subject_id == 0)
 			{
-				$subjects[$subject->id] = $subject->title;
+				$subjects = array(0 => 'Все');
+				$subjectsO = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array('id', 'title');
+				foreach($subjectsO as $key => $val)
+				{
+					$subjects[$key] = $val;
+				}
+			}
+			else
+			{
+				$subjects_o = ORM::factory('subject')->where('district_id', '=', $_POST['district_id'])->find_all()->as_array();
+
+				foreach($subjects_o as $subject)
+				{
+					$subjects[$subject->id] = $subject->title;
+				}
 			}
 
 			$select = Form::select('subject_id', $subjects, 0, array(
