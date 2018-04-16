@@ -4,10 +4,37 @@ class Controller_Report extends Controller_Base
 {
 	public function action_index()
 	{
+
+		$view = View::factory('report/index');
+
+		$this->template->content = $view->render();
+	}
+
+	public function action_index2()
+	{
+		$use = 6;
+		$files = array(
+			1 => 'ambulathelp.xlsx',
+			2 => 'gepatid.xlsx',
+			3 => 'info.xlsx',
+			4 => 'kdc.xlsx',
+			5 => 'spid.xlsx',
+			6 => 'stachelp.xlsx'
+		);
+
+		$models = array(
+			1 => 'dataambulathelp',
+			2 => 'datagepatid',
+			3 => 'datainfo',
+			4 => 'datakdc',
+			5 => 'dataspid',
+			6 => 'datastachelp'
+		);
+
+
 		$spreadsheet = Spreadsheet::factory(array(
-			'path'     => 'C:/http/infect/excel/',
-			//'filename' => 'szfo_infect.xlsx'
-			'filename' => 'szfo_stac.xlsx'
+			'path'     => 'C:/http/infect/excel/cfo/',
+			'filename' => $files[$use]
 		), FALSE)->load()->read();
 
 		$data = array();
@@ -56,7 +83,18 @@ class Controller_Report extends Controller_Base
 			}
 		}
 
-		$regionsO = ORM::factory('subject')->where('district_id', '=', '2')->find_all();
+		/*
+			'1', 'Центральный федеральный округ'
+			'2', 'Северо-Западный федеральный округ' +
+			'3', 'Южный федеральный округ'
+			'4', 'Северо-Кавказский федеральный округ'
+			'5', 'Приволжский федеральный округ'
+			'6', 'Уральский федеральный округ'
+			'7', 'Сибирский федеральный округ'
+			'8', 'Дальневосточный федеральный округ'
+		*/
+
+		$regionsO = ORM::factory('subject')->where('district_id', '=', '1')->find_all();
 		$regions = array();
 		foreach($regionsO as $r)
 		{
@@ -73,7 +111,7 @@ class Controller_Report extends Controller_Base
 					{
 						//var_dump((int)$regions[$r][0], (int)$regions[$r][1], (int)$y, (int)$t, $elem);
 
-						/*$datainfo = ORM::factory('datastachelp');
+						/*$datainfo = ORM::factory($models[$use]);
 
 						$datainfo->elem_id = (int)$t;
 						$datainfo->value = (float)$elem;
@@ -89,8 +127,5 @@ class Controller_Report extends Controller_Base
 		}
 
 		die;
-		$view = View::factory('report/index');
-
-		$this->template->content = $view->render();
 	}
 }

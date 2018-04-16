@@ -18,7 +18,9 @@
 			['ЮАО', 1526000, 1517000]
 		]);
 
-		var materialOptions = {
+
+
+		/*var options = {
 			chart: {
 				title: 'Название'
 			},
@@ -31,7 +33,29 @@
 			},
 			bars: 'horizontal'
 		};
-		var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-		materialChart.draw(data, materialOptions);
+
+		var chart = new google.charts.Bar(document.getElementById('chart_div'));
+		chart.draw(data, options);*/
+
+
+		var options = {
+			chart: {
+				title: 'Название'
+			},
+			hAxis: {
+				title: 'Года',
+				minValue: 0
+			},
+			vAxis: {
+				title: 'Округа'
+			},
+			width: 1000,
+			height: 550,
+			legend: { position: 'top', maxLines: 3, textStyle: {color: 'black', fontSize: 16 } },
+			isStacked: true
+		};
+
+		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
 	}
 </script>
