@@ -172,7 +172,8 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
-		if(@eval("\$result = \$formula;") === FALSE)
+		var_dump($formula);
+		if(@eval("\$result = $formula;") === FALSE)
 		{
 			$result = 0;
 		}
