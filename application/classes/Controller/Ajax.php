@@ -174,7 +174,7 @@ class Controller_Ajax extends Controller
 			}
 		}
 
-		if(@eval("\$result = $formula;") === FALSE)
+		if(@eval("\$result = \"$formula\";") === FALSE)
 		{
 			$result = 0;
 		}
@@ -417,7 +417,7 @@ class Controller_Ajax extends Controller
 					}
 				}
 
-				if(@eval("\$result = $formula;") === FALSE)
+				if(@eval("\$result = \"$formula\";") === FALSE)
 				{
 					$result = 0;
 				}
