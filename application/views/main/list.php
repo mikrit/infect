@@ -31,11 +31,11 @@
 					<?}?>
 				</td>
 				<td style="white-space: nowrap">
-					<?=isset($data[$r_year_begin][$title->id]['value']) ? number_format($data[$r_year_begin][$title->id]['value'], 2, '.', ' ') : ''?>
+					<?=(isset($data[$r_year_begin][$title->id]['value']) ? number_format($data[$r_year_begin][$title->id]['value'], 2, '.', ' ') : '')?>
 					<?$begin = isset($data[$r_year_begin][$title->id]['value']) ? (float)$data[$r_year_begin][$title->id]['value'] : 0?>
 				</td>
 				<td style="white-space: nowrap">
-					<?=isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : ''?>
+					<?=(isset($data[$r_year_end][$title->id]['value']) ? number_format($data[$r_year_end][$title->id]['value'], 2, '.', ' ') : '')?>
 					<?$end = isset($data[$r_year_end][$title->id]['value']) ? (float)$data[$r_year_end][$title->id]['value'] : 0?>
 				</td>
 				<td>
