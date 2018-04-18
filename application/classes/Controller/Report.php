@@ -10,7 +10,7 @@ class Controller_Report extends Controller_Base
 		$this->template->content = $view->render();
 	}
 
-	public function action_index2()
+	public function action_eimport()
 	{
 		$use = 6;
 		$files = array(
@@ -33,7 +33,7 @@ class Controller_Report extends Controller_Base
 
 
 		$spreadsheet = Spreadsheet::factory(array(
-			'path'     => 'C:/http/infect/excel/cfo/',
+			'path'     => 'C:/http/infect/excel/sfo/',
 			'filename' => $files[$use]
 		), FALSE)->load()->read();
 
@@ -94,7 +94,7 @@ class Controller_Report extends Controller_Base
 			'8', 'Дальневосточный федеральный округ'
 		*/
 
-		$regionsO = ORM::factory('subject')->where('district_id', '=', '1')->find_all();
+		$regionsO = ORM::factory('subject')->where('district_id', '=', '7')->find_all();
 		$regions = array();
 		foreach($regionsO as $r)
 		{
@@ -109,9 +109,9 @@ class Controller_Report extends Controller_Base
 				{
 					if($elem != 0)
 					{
-						//var_dump((int)$regions[$r][0], (int)$regions[$r][1], (int)$y, (int)$t, $elem);
+						 var_dump((int)$regions[$r][0], (int)$regions[$r][1], (int)$y, (int)$t, $elem);
 
-						/*$datainfo = ORM::factory($models[$use]);
+					/*	$datainfo = ORM::factory($models[$use]);
 
 						$datainfo->elem_id = (int)$t;
 						$datainfo->value = (float)$elem;
