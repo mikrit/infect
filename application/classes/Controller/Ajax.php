@@ -174,6 +174,7 @@ class Controller_Ajax extends Controller
 			}
 		}
 
+		$formula = str_replace(',', '.', $formula);
 		if(@eval("\$result = $formula;") === FALSE)
 		{
 			$result = 0;
@@ -417,6 +418,7 @@ class Controller_Ajax extends Controller
 					}
 				}
 
+				$formula = str_replace(',', '.', $formula);
 				if(@eval("\$result = $formula;") === FALSE)
 				{
 					$result = 0;
