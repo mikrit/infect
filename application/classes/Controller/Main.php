@@ -172,7 +172,7 @@ class Controller_Main extends Controller_Base
 			}
 		}
 
-		var_dump($formula);
+		$formula = str_replace(',', '.', $formula);
 		if(@eval("\$result = $formula;") === FALSE)
 		{
 			$result = 0;
