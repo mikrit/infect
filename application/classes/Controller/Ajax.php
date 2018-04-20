@@ -558,4 +558,56 @@ class Controller_Ajax extends Controller
 		$elem->save();
 	}
 	/** ---------- End Adminka ---------- */
+
+	public function action_change_data_report()
+	{
+		$data = array();
+		$tabs = array(
+			'info'        => 'Инф служба',
+			'stachelp'    => 'Стац помощь',
+			'spid'        => 'СПИД-центры',
+			'ambulathelp' => 'Амбулат помощь',
+			'kdc'         => 'КДЦ',
+			'gepatid'     => 'Вирусные гепатиты'
+		);
+
+		if(!isset($_POST['district_id']))
+		{
+			$_POST['district_id'] = 999;
+		}
+		elseif(!isset($_POST['subject_id']))
+		{
+			$_POST['subject_id'] = 999;
+		}
+
+		$view_panel = View::factory('report/list');
+
+		$titles = ORM::factory($_POST['table'])->find_all();
+
+		$view_panel->titles = $titles;
+		$view_panel->data = $data;
+		$view_panel->title = $tabs[$_POST['table']];
+		$view_panel->table = $_POST['table'];
+
+		echo json_encode(array('panel' => $view_panel->render()));
+	}
+
+	public function action_get_data_chart()
+	{
+		$post_ar = array();
+		foreach($_POST['data'] as $elem)
+		{
+			if($elem['name'] == 'categorie')
+			{
+				$post_ar[$elem['name']][] = $elem['value'];
+			}
+			else
+			{
+				$post_ar[$elem['name']] = $elem['value'];
+			}
+
+		}
+
+		die;
+	}
 }

@@ -4,8 +4,30 @@ class Controller_Report extends Controller_Base
 {
 	public function action_index()
 	{
+		$today_p = new DateTime();
+		$date = $today_p->modify('-3 month')->format('Y');
+
+		$r_year_begin = $date - 2;
+		$r_year_end = $date - 1;
+
+		$years = array();
+		for($i = 2016; $i <= $date; $i++)
+		{
+			$years[$i] = $i;
+		}
+
+		$titles = ORM::factory('info')->find_all();
 
 		$view = View::factory('report/index');
+		$view->years = $years;
+		$view->r_year_begin = $r_year_begin;
+		$view->r_year_end = $r_year_end;
+
+		$view_list = View::factory('report/list');
+		$view_list->titles = $titles;
+		$view_list->table = 'info';
+
+		$view->list = $view_list->render();
 
 		$this->template->content = $view->render();
 	}
