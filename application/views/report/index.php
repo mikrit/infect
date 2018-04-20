@@ -30,6 +30,11 @@
 			</ul>
 
 			<div class="form-group" style="padding-left: 0px;">
+				<label>Название:</label>
+				<?=Form::input('title', '', array('class' => 'form-control', 'id' => 'title'));?>
+			</div>
+
+			<div class="form-group" style="padding-left: 0px;">
 				<label>Графики</label>
 				<select name="charts" id="charts" class="form-control" >
 					<option value="0">Гистограмма</option>
@@ -50,7 +55,7 @@
 				<?=Form::select('year_end', $years, $r_year_end, array('class' => 'form-control', 'id' => 'year_end'));?>
 			</div>
 
-			<?=Form::input('submit', 'Построить', array('class' => 'btn btn-primary', 'type'=>'submit'));?>
+			<?=Form::input('button', 'Построить', array('class' => 'btn btn-primary', 'type'=>'submit'));?>
 		</div>
 
 		<div id="panel" class="col-sm-7 col-md-8 col-lg-8 container" >
@@ -136,9 +141,15 @@
 	$('#f1').submit(function (){
 		var data = $("#f1").serializeArray();
 
+		var title = $('#title').val();
+
 		if(count == 0)
 		{
 			alert('Не выбрано ни одной категории');
+		}
+		else if(title == '')
+		{
+			alert('Введине название');
 		}
 		else
 		{

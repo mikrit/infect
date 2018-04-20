@@ -608,6 +608,50 @@ class Controller_Ajax extends Controller
 
 		}
 
+		$data = array();
+		if($post_ar['charts'] == 0)
+		{
+			// 'title'
+			// 'year_begin'
+			// 'year_end'
+			// 'table'
+			/*
+				'categorie' =>
+			    array (size=2)
+			      0 => string '2' (length=1)
+			      1 => string '3' (length=1)
+			*/
+
+			$categories = 'elem_id = '.$post_ar['categorie'][0];
+
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT year, elem_id, SUM(value) as value FROM data' . $post_ar['table'] . 's WHERE year BETWEEN ' . $post_ar['year_begin'] . ' AND ' . $post_ar['year_end'] . ' AND ('.$categories.') GROUP BY year, elem_id');
+		}
+		else if($post_ar['charts'] == 1)
+		{
+
+		}
+		else if($post_ar['charts'] == 2)
+		{
+
+		}
+		else if($post_ar['charts'] == 3)
+		{
+
+		}
+		else
+		{
+
+		}
+
+		foreach($data_O as $elem)
+		{
+			var_dump($elem);
+		}
+
+		//var_dump($post_ar);
+
 		die;
+
+		echo json_encode($data);
 	}
 }
