@@ -38,10 +38,10 @@
 				<label>Графики</label>
 				<select name="charts" id="charts" class="form-control" >
 					<option value="0">Гистограмма</option>
-					<option value="1">Гистограмма с накоплением</option>
+					<!--<option value="1">Гистограмма с накоплением</option>
 					<option value="2">Линейная гистограмма</option>
 					<option value="3">Круговая диаграмма по округам</option>
-					<option value="4">Круговая диаграмма по категориям</option>
+					<option value="4">Круговая диаграмма по категориям</option>-->
 				</select>
 			</div>
 
@@ -138,6 +138,9 @@
 		return false;
 	});
 
+	google.charts.load('current', {packages: ['corechart', 'bar'], 'language': 'ru'});
+	google.charts.setOnLoadCallback(drawMaterial);
+
 	$('#f1').submit(function (){
 		var data = $("#f1").serializeArray();
 
@@ -161,7 +164,18 @@
 					data: data
 				},
 				success: function(data){
-					$('#panel').html(data.panel);
+					var dat = google.visualization.arrayToDataTable(data.data);
+
+					var options = {
+						chart: {
+							title: data.title
+						},
+						width: 900,
+						height: 550
+					};
+
+					var chart = new google.charts.Bar(document.getElementById('panel'));
+					chart.draw(dat, google.charts.Bar.convertOptions(options));
 				}
 			});
 		}
@@ -169,22 +183,13 @@
 		return false;
 	});
 
-	google.charts.load('current', {packages: ['corechart', 'bar'], 'language': 'ru'});
-	google.charts.setOnLoadCallback(drawMaterial);
-
-	function drawMaterial() {
-		var data = google.visualization.arrayToDataTable([
-			['Округа', '2015', '2016'],
-			['СВАО', 5175000, 5008000],
-			['САО', 3792000, 3694000],
-			['ЗАО', 2695000, 2896000],
-			['ЦАО', 2099000, 1953000],
-			['ЮАО', 1526000, 1517000]
-		]);
 
 
+	function drawMaterial(dd) {
+		/*google.charts.load('current', {packages: ['corechart', 'bar'], 'language': 'ru'});
+		google.charts.setOnLoadCallback(drawMaterial);
 
-		/*var options = {
+		var options = {
 			chart: {
 				title: 'Название'
 			},
@@ -201,8 +206,7 @@
 		var chart = new google.charts.Bar(document.getElementById('chart_div'));
 		chart.draw(data, options);*/
 
-
-		var options = {
+		/*var options = {
 			chart: {
 				title: 'Название'
 			},
@@ -217,7 +221,7 @@
 			height: 550,
 			legend: { position: 'top', maxLines: 3, textStyle: {color: 'black', fontSize: 16 } },
 			isStacked: true
-		};
+		};*/
 
 		//var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 		//chart.draw(data, options);

@@ -594,6 +594,17 @@ class Controller_Ajax extends Controller
 
 	public function action_get_data_chart()
 	{
+		$distr = array(
+			1 => 'ЦФО',
+			2 => 'СЗФО',
+			3 => 'ЮФО',
+			4 => 'СКФО',
+			5 => 'ПФО',
+			6 => 'УрФО',
+			7 => 'СибФО',
+			8 => 'ДФО',
+		);
+
 		$post_ar = array();
 		foreach($_POST['data'] as $elem)
 		{
@@ -605,26 +616,76 @@ class Controller_Ajax extends Controller
 			{
 				$post_ar[$elem['name']] = $elem['value'];
 			}
+		}
 
+		$years = array();
+		for($i = $post_ar['year_begin']; $i <= $post_ar['year_end']; $i++)
+		{
+			$years[] = (string)$i;
 		}
 
 		$data = array();
+		$data1 = array();
 		if($post_ar['charts'] == 0)
 		{
-			// 'title'
-			// 'year_begin'
-			// 'year_end'
-			// 'table'
-			/*
-				'categorie' =>
-			    array (size=2)
-			      0 => string '2' (length=1)
-			      1 => string '3' (length=1)
-			*/
+			$categories = implode(', ', $post_ar['categorie']);
 
-			$categories = 'elem_id = '.$post_ar['categorie'][0];
+			$categ_O = Database::instance()->query(Database::SELECT, 'SELECT id, title FROM '.$post_ar['table'].'s WHERE id IN ('.$categories.')');
+			$categ = array();
+			foreach($categ_O as $elem)
+			{
+				$categ[$elem['id']] = $elem['title'];
+			}
 
-			$data_O = Database::instance()->query(Database::SELECT, 'SELECT year, elem_id, SUM(value) as value FROM data' . $post_ar['table'] . 's WHERE year BETWEEN ' . $post_ar['year_begin'] . ' AND ' . $post_ar['year_end'] . ' AND ('.$categories.') GROUP BY year, elem_id');
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT year, district_id, elem_id, SUM(value) as value
+																						FROM data' . $post_ar['table'] . 's
+																							WHERE year BETWEEN ' . $post_ar['year_begin'] . '
+																								AND ' . $post_ar['year_end'] . '
+																								AND elem_id IN ('.$categories.')
+																							GROUP BY year, district_id, elem_id');
+
+			if(count($post_ar['categorie']) == 1)
+			{
+				$data[] = array_merge(array('Округа'), $years);
+			}
+			else
+			{
+				$years2 = array();
+				foreach($years as $y)
+				{
+					foreach($categ as $c)
+					{
+						$years2[] = $c.' '.$y;
+					}
+				}
+
+				$data[] = array_merge(array('Округа'), $years2);
+			}
+
+			foreach($data_O as $elem)
+			{
+				$data1[$elem['district_id']][$elem['year']][$elem['elem_id']] = (float)$elem['value'];
+			}
+
+			foreach($distr as $key => $d)
+			{
+				$tmp = array();
+				foreach($years as $y)
+				{
+					foreach($categ as $c => $c_val)
+					{
+						if(isset($data1[$key][$y][$c]))
+						{
+							$tmp[] = $data1[$key][$y][$c];
+						}
+						else
+						{
+							$tmp[] = 0;
+						}
+					}
+				}
+				$data[] = array_merge(array($d), $tmp);
+			}
 		}
 		else if($post_ar['charts'] == 1)
 		{
@@ -643,15 +704,8 @@ class Controller_Ajax extends Controller
 
 		}
 
-		foreach($data_O as $elem)
-		{
-			var_dump($elem);
-		}
+		//var_dump($data);die;
 
-		//var_dump($post_ar);
-
-		die;
-
-		echo json_encode($data);
+		echo json_encode(array('title' => $post_ar['title'], 'data' => $data));
 	}
 }
