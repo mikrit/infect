@@ -355,6 +355,7 @@ class Controller_Ajax extends Controller
 		$formula = 0;
 		$calc = ORM::factory($table, $elem_id);
 		$txt = $calc->use;
+		$result = 0;
 
 		if($txt == NULL)
 		{
@@ -419,14 +420,18 @@ class Controller_Ajax extends Controller
 				}
 
 				$formula = str_replace(',', '.', $formula);
-				if(@eval("\$result = $formula;") === FALSE)
-				{
-					$result = 0;
-				}
 
-				if($result == INF)
+				if($formula != '')
 				{
-					$result = 0;
+					if(@eval("\$result = $formula;") === FALSE)
+					{
+						$result = 0;
+					}
+
+					if($result == INF)
+					{
+						$result = 0;
+					}
 				}
 
 				$arr_data['elem_id'] = $id;
@@ -717,5 +722,60 @@ class Controller_Ajax extends Controller
 		}
 
 		echo json_encode(array('title' => $post_ar['title'], 'data' => $data, 'chart' => $post_ar['charts']));
+	}
+
+	public function action_update_data()
+	{
+		$tables = array(
+			'info',
+			'stachelp',
+			'spid',
+			'ambulathelp',
+			'kdc',
+			'gepatid'
+		);
+
+		$table = $tables[2];
+
+		$data_O = Database::instance()->query(Database::SELECT, 'SELECT * FROM data'.$table.'s as d
+																						JOIN '.$table.'s as e ON e.id = d.elem_id
+																						WHERE e.formula = \'\'');
+
+		$count = 0;
+		foreach($data_O as $elem)
+		{
+			$post = array(
+				'table' => $table,
+				'elem_id' => $elem['elem_id'],
+				'year' => $elem['year'],
+				'district_id' => $elem['district_id'],
+				'subject_id' => $elem['subject_id'],
+				'value' => $elem['value'],
+			);
+
+			$this->elem_add_or_edit($post, $table);
+
+			$data_O = ORM::factory('data' . $post['table'])->where('district_id', '=', $post['district_id'])->and_where('subject_id', '=', $post['subject_id'])->and_where('year', '=', $post['year'])->find_all();
+			$data = array();
+			foreach($data_O as $el_data)
+			{
+				$data['id' . $el_data->elem_id] = $el_data->value;
+			}
+
+			$arr_data = array(
+				'district_id' => $post['district_id'],
+				'subject_id'  => $post['subject_id'],
+				'year'        => $post['year']
+			);
+
+			$this->calc($table, $post['elem_id'], $data, $arr_data);
+
+			$count++;
+		}
+
+		var_dump($table, $count);
+
+
+		die;
 	}
 }

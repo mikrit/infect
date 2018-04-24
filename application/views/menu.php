@@ -32,6 +32,9 @@
 						<li>
 							<?=HTML::anchor('adminka/close', 'Закрытие изменений'); ?>
 						</li>
+						<li>
+							<?=HTML::anchor('adminka/update', 'Обновление'); ?>
+						</li>
 					<?}?>
 				<li>
 					<?=HTML::anchor('adminka/logs', 'Логирование'); ?>
