@@ -735,46 +735,46 @@ class Controller_Ajax extends Controller
 			'gepatid'
 		);
 
-		$table = $tables[2];
-
-		$data_O = Database::instance()->query(Database::SELECT, 'SELECT * FROM data'.$table.'s as d
-																						JOIN '.$table.'s as e ON e.id = d.elem_id
-																						WHERE e.formula = \'\'');
-
-		$count = 0;
-		foreach($data_O as $elem)
+		foreach($tables as $table)
 		{
-			$post = array(
-				'table' => $table,
-				'elem_id' => $elem['elem_id'],
-				'year' => $elem['year'],
-				'district_id' => $elem['district_id'],
-				'subject_id' => $elem['subject_id'],
-				'value' => $elem['value'],
-			);
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT * FROM data'.$table.'s as d
+																							JOIN '.$table.'s as e ON e.id = d.elem_id
+																							WHERE e.formula = \'\'');
 
-			$this->elem_add_or_edit($post, $table);
-
-			$data_O = ORM::factory('data' . $post['table'])->where('district_id', '=', $post['district_id'])->and_where('subject_id', '=', $post['subject_id'])->and_where('year', '=', $post['year'])->find_all();
-			$data = array();
-			foreach($data_O as $el_data)
+			$count = 0;
+			foreach($data_O as $elem)
 			{
-				$data['id' . $el_data->elem_id] = $el_data->value;
+				$post = array(
+					'table' => $table,
+					'elem_id' => $elem['elem_id'],
+					'year' => $elem['year'],
+					'district_id' => $elem['district_id'],
+					'subject_id' => $elem['subject_id'],
+					'value' => $elem['value'],
+				);
+
+				$this->elem_add_or_edit($post, $table);
+
+				$data_O = ORM::factory('data' . $post['table'])->where('district_id', '=', $post['district_id'])->and_where('subject_id', '=', $post['subject_id'])->and_where('year', '=', $post['year'])->find_all();
+				$data = array();
+				foreach($data_O as $el_data)
+				{
+					$data['id' . $el_data->elem_id] = $el_data->value;
+				}
+
+				$arr_data = array(
+					'district_id' => $post['district_id'],
+					'subject_id'  => $post['subject_id'],
+					'year'        => $post['year']
+				);
+
+				$this->calc($table, $post['elem_id'], $data, $arr_data);
+
+				$count++;
 			}
 
-			$arr_data = array(
-				'district_id' => $post['district_id'],
-				'subject_id'  => $post['subject_id'],
-				'year'        => $post['year']
-			);
-
-			$this->calc($table, $post['elem_id'], $data, $arr_data);
-
-			$count++;
+			var_dump($table, $count);
 		}
-
-		var_dump($table, $count);
-
 
 		die;
 	}
