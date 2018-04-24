@@ -600,6 +600,7 @@ class Controller_Ajax extends Controller
 	public function action_get_data_chart()
 	{
 		$distr = array(
+			0 => 'Россия',
 			1 => 'ЦФО',
 			2 => 'СЗФО',
 			3 => 'ЮФО',
@@ -673,11 +674,25 @@ class Controller_Ajax extends Controller
 
 			foreach($data_O as $elem)
 			{
+				if(!isset($data1[0][$elem['year']][$elem['elem_id']]))
+				{
+					$data1[0][$elem['year']][$elem['elem_id']] = (float)$elem['value'];
+				}
+				else
+				{
+					$data1[0][$elem['year']][$elem['elem_id']] += (float)$elem['value'];
+				}
+
 				$data1[$elem['district_id']][$elem['year']][$elem['elem_id']] = (float)$elem['value'];
 			}
 
 			foreach($distr as $key => $d)
 			{
+				if($post_ar['charts'] == 3 && $key == 0)
+				{
+					continue;
+				}
+
 				$tmp = array();
 				foreach($years as $y)
 				{
