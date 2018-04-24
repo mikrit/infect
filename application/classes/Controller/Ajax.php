@@ -618,6 +618,11 @@ class Controller_Ajax extends Controller
 			}
 		}
 
+		if(!isset($post_ar['year_end']))
+		{
+			$post_ar['year_end'] = $post_ar['year_begin'];
+		}
+
 		$years = array();
 		for($i = $post_ar['year_begin']; $i <= $post_ar['year_end']; $i++)
 		{
@@ -626,7 +631,7 @@ class Controller_Ajax extends Controller
 
 		$data = array();
 		$data1 = array();
-		if($post_ar['charts'] == 0)
+		if($post_ar['charts'] == 0 || $post_ar['charts'] == 1 || $post_ar['charts'] == 2 || $post_ar['charts'] == 3)
 		{
 			$categories = implode(', ', $post_ar['categorie']);
 
@@ -639,8 +644,7 @@ class Controller_Ajax extends Controller
 
 			$data_O = Database::instance()->query(Database::SELECT, 'SELECT year, district_id, elem_id, SUM(value) as value
 																						FROM data' . $post_ar['table'] . 's
-																							WHERE year BETWEEN ' . $post_ar['year_begin'] . '
-																								AND ' . $post_ar['year_end'] . '
+																							WHERE year BETWEEN ' . $post_ar['year_begin'] . ' AND ' . $post_ar['year_end'] . '
 																								AND elem_id IN ('.$categories.')
 																							GROUP BY year, district_id, elem_id');
 
@@ -687,25 +691,31 @@ class Controller_Ajax extends Controller
 				$data[] = array_merge(array($d), $tmp);
 			}
 		}
-		else if($post_ar['charts'] == 1)
-		{
-
-		}
-		else if($post_ar['charts'] == 2)
-		{
-
-		}
-		else if($post_ar['charts'] == 3)
-		{
-
-		}
 		else
 		{
+			$categories = implode(', ', $post_ar['categorie']);
 
+			$categ_O = Database::instance()->query(Database::SELECT, 'SELECT id, title FROM '.$post_ar['table'].'s WHERE id IN ('.$categories.')');
+			$categ = array();
+			foreach($categ_O as $elem)
+			{
+				$categ[$elem['id']] = $elem['title'];
+			}
+
+			$data_O = Database::instance()->query(Database::SELECT, 'SELECT year, elem_id, SUM(value) as value
+																						FROM data'.$post_ar['table'].'s
+																							WHERE year = '.$post_ar['year_begin'].'
+																								AND elem_id IN ('.$categories.')
+																							GROUP BY year, elem_id');
+
+			$data[] = array('Категории', 'num');
+
+			foreach($data_O as $elem)
+			{
+				$data[] = array($categ[$elem['elem_id']], (float)$elem['value']);
+			}
 		}
 
-		//var_dump($data);die;
-
-		echo json_encode(array('title' => $post_ar['title'], 'data' => $data));
+		echo json_encode(array('title' => $post_ar['title'], 'data' => $data, 'chart' => $post_ar['charts']));
 	}
 }

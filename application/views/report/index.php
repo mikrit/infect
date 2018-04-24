@@ -38,10 +38,10 @@
 				<label>Графики</label>
 				<select name="charts" id="charts" class="form-control" >
 					<option value="0">Гистограмма</option>
-					<!--<option value="1">Гистограмма с накоплением</option>
+					<option value="1">Гистограмма с накоплением</option>
 					<option value="2">Линейная гистограмма</option>
 					<option value="3">Круговая диаграмма по округам</option>
-					<option value="4">Круговая диаграмма по категориям</option>-->
+					<option value="4">Круговая диаграмма по категориям</option>
 				</select>
 			</div>
 
@@ -163,19 +163,89 @@
 				data: {
 					data: data
 				},
-				success: function(data){
+				success: function(data)
+				{
 					var dat = google.visualization.arrayToDataTable(data.data);
 
-					var options = {
-						chart: {
-							title: data.title
-						},
-						width: 900,
-						height: 550
-					};
+					if(data.chart == 0)
+					{
+						var options = {
+							chart: {
+								title: data.title
+							},
+							hAxis: {
+								title: 'Округа',
+								minValue: 0
+							},
+							width: 900,
+							height: 550
+						};
 
-					var chart = new google.charts.Bar(document.getElementById('panel'));
-					chart.draw(dat, google.charts.Bar.convertOptions(options));
+						var chart = new google.charts.Bar(document.getElementById('panel'));
+						chart.draw(dat, google.charts.Bar.convertOptions(options));
+					}
+					else if(data.chart == 1)
+					{
+						var options = {
+							title: data.title,
+							hAxis: {
+								title: 'Округа',
+								minValue: 0
+							},
+							width: 900,
+							height: 550,
+							legend: {position: 'right', maxLines: 3, textStyle: {color: 'black', fontSize: 16 }},
+							isStacked: true
+						};
+
+						var chart = new google.visualization.ColumnChart(document.getElementById('panel'));
+						chart.draw(dat, options);
+					}
+					else if(data.chart == 2)
+					{
+						var options = {
+							chart: {
+								title: data.title
+							},
+							vAxis: {
+								title: 'Округа'
+							},
+							bars: 'horizontal',
+							width: 900,
+							height: 550
+						};
+
+						var chart = new google.charts.Bar(document.getElementById('panel'));
+						chart.draw(dat, google.charts.Bar.convertOptions(options));
+					}
+					else if(data.chart == 3)
+					{
+						var options = {
+							title: data.title,
+							width: 900,
+							height: 550
+						};
+
+						var chart = new google.visualization.PieChart(document.getElementById('panel'));
+						chart.draw(dat, options);
+					}
+					else if(data.chart == 4)
+					{
+						var options = {
+							title: data.title,
+							width: 900,
+							height: 550,
+							legend: 'none',
+							pieSliceText: 'label'
+						};
+
+						var chart = new google.visualization.PieChart(document.getElementById('panel'));
+						chart.draw(dat, options);
+					}
+					else
+					{
+						return false;
+					}
 				}
 			});
 		}
@@ -186,10 +256,8 @@
 
 
 	function drawMaterial(dd) {
-		/*google.charts.load('current', {packages: ['corechart', 'bar'], 'language': 'ru'});
-		google.charts.setOnLoadCallback(drawMaterial);
 
-		var options = {
+		/*var options = {
 			chart: {
 				title: 'Название'
 			},
